@@ -34,6 +34,10 @@ theme: minima
 plugins:
   - jekyll-feed
 
+collections:
+  pages:
+    output: false
+
 include:
   - _pages/
   - _includes/
