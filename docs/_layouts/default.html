@@ -2,8 +2,6 @@
 <html lang="en-us">
 
 {% include head.html %}
-<body>
-  <h1>Hello World</h1></body>
 <body onload="start()">
   <h1>Hello World</h1>
   {% for page in site.pages %}
@@ -17,15 +15,9 @@
     {% include pairwise.html content=page.content title=page.title questions=page.questions %}
     {% endif %}
 
-    {% if page.layout == "questions" %}
-    {% include questions.html content=page.content title=page.title questions=page.questions button=page.button page=page.pageNo%}
-    {% endif %}
-  </section>
+   </section>
   {% endfor %}
-
-  {% include ga.html %}
-  {% include firebase.html %}
-  <script src="/docs/js/app.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 
 </html>

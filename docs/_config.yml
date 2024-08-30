@@ -34,6 +34,9 @@ theme: minima
 markdown: kramdown
 plugins:
   - jekyll-feed
+  - likert
+  - text_input
+  - multiple_choise
 
 collections:
   pages:

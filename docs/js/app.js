@@ -3,13 +3,6 @@ var startTime = new Date().toUTCString();
 var id = Math.floor(Math.random() * 10000);
 var admin, db, surveyResponse, ref = null;
 
-function startDB()
-{
-  // Get a database reference to our blog
-  db = firebase.database();
-  // Get a new reference:
-  ref = db.ref().push();
-}
 
 function nextPage()
 {
@@ -18,13 +11,13 @@ function nextPage()
   });
   document.getElementById("page" + page).style.display = "block";
 
-  collectAndSendInputs()
+  /*collectAndSendInputs()
 
   if(page === 1)
   {
     calcCombos()
     next()
-  }
+  }*/
   page++
 }
 
@@ -56,6 +49,5 @@ function collectAndSendInputs() {
 
 function start()
 {
-  startDB();
   nextPage();
 }
