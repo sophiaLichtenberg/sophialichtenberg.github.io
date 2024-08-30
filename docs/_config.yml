@@ -38,6 +38,20 @@ collections:
   pages:
     output: false
 
+defaults:
+  - scope:
+      type: posts
+    values:
+      layout: post
+  - scope:
+      type: pages
+    values:
+      layout: page
+  - scope:
+      type: authors
+    values:
+      layout: authors
+
 include:
   - _pages/
   - _includes/
