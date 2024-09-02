@@ -3,7 +3,6 @@
 
 {% include head.html %}
 <body onload="start()">
-  <h1>Hello World</h1>
   {% for page in site.pages %}
   <section id="page{{page.pageNo}}" class="page">
     <!-- page.layout: {{ page.layout }} -->
@@ -17,7 +16,7 @@
 
    </section>
   {% endfor %}
-  <script src="/docs/js/app.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 
 </html>
