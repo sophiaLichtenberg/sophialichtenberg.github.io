@@ -39,9 +39,7 @@
          <button class="inline submit" type="button" onclick="previousPage()" >{{ item.placeholder }}</button>
 
          {% elsif item.input_type == 'submit' %}
-         <div class="inline" >
-            <input class="inline submit" onclick="validator()" type="button" value="{{ item.placeholder }}" >{{ include.nextButton }}</input>
-         </div>
+         <input class="inline submit" onclick="validator()" type="button" value="{{ item.placeholder }}" >{{ include.nextButton }}</input>
 
          
          {% else %}
