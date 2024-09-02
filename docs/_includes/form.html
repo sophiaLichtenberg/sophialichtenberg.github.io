@@ -1,89 +1,89 @@
-{% if include.form %}
-{% assign formnumber = include.form | minus: 1 %}
-{% else %}
-{% assign formnumber = 0 %}
-{% endif %}
-{% assign pageform = page.forms[formnumber] %}
-{% if pageform.form_engine == 'netlify' %}
-<form name="{{ include.title }} {% if formnumber > 0 %}{{ formnumber | plus:1 }}{% endif %}" id="{{ page.url | slugify }}" class="form autofill" method="POST" action="{{ pageform.redirect }}" data-netlify="true" netlify-honeypot="_gotcha">
-    <input type="hidden" name="_to" value="{{ pageform.to }}">
-   {% elsif pageform.form_engine == 'cloudcannon' %}
-<form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="">
-   <input type="hidden" name="_to" value="{{ pageform.to }}">
-   {% elsif pageform.form_engine == 'formspree' %}
-<form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="">
-   <input type="hidden" name="_next" value="{{ site.url }}{{ pageform.redirect }}" />
-   {% elsif pageform.form_engine == 'formbucket' %}
-<form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="form.py">
-   {% endif %}
-   <input type="text" name="_gotcha" style="display:none" class="myform" />
-   <input type="hidden" name="_subject" value="{{ pageform.subject }}" class="myform"/>
-   {% for item in pageform.fields %}
-   {% if item.required %}{% assign requiredstar = '' %}{% else %}{% assign requiredstar = ' (optional)' %}{% endif %}
-   {% if item.required %}{% assign requiredtext = 'required' %}{% else %}{% assign requiredtext = '' %}{% endif %}
-   {% if item.input_type == 'textarea' %}
-   <div class="myformlabel">
-      <label {% if pageform.placeholders == true %} class="sr-only"{% endif %} for="{{ item.name }}">{{ item.placeholder }}{{ requiredstar }}</label>
-      <textarea name="{{ item.name }}" name="{{ item.name }}" id="{{ item.name }}" cols="30" rows="10" class="form-control" {% if pageform.placeholders == true %}placeholder="{{ item.placeholder }}{{ requiredstar }}"{% endif %} {{ requiredtext }}></textarea>
-   </div>
-   {% elsif item.input_type == 'radio' %}
-   <div class="myform radio">
-      <input type="radio" name="{{ item.name }}" value="{{ item.placeholder }}" {{ requiredtext }}>{{ item.placeholder }}</label>
-   </div>
-   {% elsif item.input_type == 'checkbox' %}
-   <div class="myform checkbox">
-      <label><input type="checkbox" name="{{ item.name }}" value="{{ item.placeholder }}" {{ requiredtext }}>{{ item.placeholder }}</label>
-   </div>
-   {% elsif item.input_type == 'recaptcha' %}
-   <div>
-      {% if pageform.form_engine == 'netlify' %}
-      <div data-netlify-recaptcha></div>
+      {% if include.form %}
+      {% assign formnumber = include.form | minus: 1 %}
       {% else %}
-      <div class="myform g-recaptcha" data-sitekey="{{ item.placeholder }}"></div>
+      {% assign formnumber = 0 %}
       {% endif %}
-   </div>
-   {% elsif item.input_type == 'html' %}
-   <h3 class="myformtitle">{{ item.placeholder }}</h3>
+      {% assign pageform = page.forms[formnumber] %}
+      {% if pageform.form_engine == 'netlify' %}
+      <form name="{{ include.title }} {% if formnumber > 0 %}{{ formnumber | plus:1 }}{% endif %}" id="{{ page.url | slugify }}" class="form autofill" method="POST" action="{{ pageform.redirect }}" data-netlify="true" netlify-honeypot="_gotcha">
+         <input type="hidden" name="_to" value="{{ pageform.to }}">
+         {% elsif pageform.form_engine == 'cloudcannon' %}
+      <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="">
+         <input type="hidden" name="_to" value="{{ pageform.to }}">
+         {% elsif pageform.form_engine == 'formspree' %}
+      <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="">
+         <input type="hidden" name="_next" value="{{ site.url }}{{ pageform.redirect }}" />
+         {% elsif pageform.form_engine == 'formbucket' %}
+      <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="form.py">
+         {% endif %}
+         <input type="text" name="_gotcha" style="display:none" class="myform" />
+         <input type="hidden" name="_subject" value="{{ pageform.subject }}" class="myform"/>
+         {% for item in pageform.fields %}
+         {% if item.required %}{% assign requiredstar = '' %}{% else %}{% assign requiredstar = ' (optional)' %}{% endif %}
+         {% if item.required %}{% assign requiredtext = 'required' %}{% else %}{% assign requiredtext = '' %}{% endif %}
+         {% if item.input_type == 'textarea' %}
+         <div class="myformlabel">
+            <label {% if pageform.placeholders == true %} class="sr-only"{% endif %} for="{{ item.name }}">{{ item.placeholder }}{{ requiredstar }}</label>
+            <textarea name="{{ item.name }}" name="{{ item.name }}" id="{{ item.name }}" cols="30" rows="10" class="form-control" {% if pageform.placeholders == true %}placeholder="{{ item.placeholder }}{{ requiredstar }}"{% endif %} {{ requiredtext }}></textarea>
+         </div>
+         {% elsif item.input_type == 'radio' %}
+         <div class="myform radio">
+            <input type="radio" name="{{ item.name }}" value="{{ item.placeholder }}" {{ requiredtext }}>{{ item.placeholder }}</label>
+         </div>
+         {% elsif item.input_type == 'checkbox' %}
+         <div class="myform checkbox">
+            <label><input type="checkbox" name="{{ item.name }}" value="{{ item.placeholder }}" {{ requiredtext }}>{{ item.placeholder }}</label>
+         </div>
+         {% elsif item.input_type == 'recaptcha' %}
+         <div>
+            {% if pageform.form_engine == 'netlify' %}
+            <div data-netlify-recaptcha></div>
+            {% else %}
+            <div class="myform g-recaptcha" data-sitekey="{{ item.placeholder }}"></div>
+            {% endif %}
+         </div>
+         {% elsif item.input_type == 'html' %}
+         <h3 class="myformtitle">{{ item.placeholder }}</h3>
 
 
-   {% elsif item.input_type == 'back' %}
-   <button class="submit" onclick="previousPage()" >{{ item.placeholder }}</button>
+         {% elsif item.input_type == 'back' %}
+         <button class="submit" onclick="previousPage()" >{{ item.placeholder }}</button>
 
-   {% elsif item.input_type == 'submit' %}
-   <div>
-      <input class="submit" onclick="nextPage()" type="{{ item.input_type }}" value="{{ item.placeholder }}" >{{ include.nextButton }}</input>
-   </div>
+         {% elsif item.input_type == 'submit' %}
+         <div>
+            <input class="submit" onclick="nextPage()" type="{{ item.input_type }}" value="{{ item.placeholder }}" >{{ include.nextButton }}</input>
+         </div>
 
-   
-   {% else %}
-   {% if item.name == 'name' %}
-   <div class="myform half">
-      <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="firstname">First name{{ requiredstar }}</label>
-      <input type="{{ item.input_type }}" name="firstname" id="firstname" class="form-control" {% if pageform.placeholders == true %}placeholder="First name{{ requiredstar }}"{% endif %} {{ requiredtext }}>
-   </div>
-   <div class="myform half">
-      <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="lastname">Last name{{ requiredstar }}</label>
-      <input type="{{ item.input_type }}" name="lastname" id="lastname" class="form-control" {% if pageform.placeholders == true %}placeholder="Last name{{ requiredstar }}"{% endif %} {{ requiredtext }}>
-   </div>
-   {% elsif item.name == 'address' %}
-   <div>
-      <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="address">Address{{ requiredstar }}</label>
-      <input type="{{ item.input_type }}" name="address" id="address" class="form-control" {% if pageform.placeholders == true %}placeholder="Address{{ requiredstar }}"{% endif %} {{ requiredtext }}>
-   </div>
-   <div class="myform half">
-      <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="city">City{{ requiredstar }}</label>
-      <input type="{{ item.input_type }}" name="city" id="city" class="form-control" {% if pageform.placeholders == true %}placeholder="City{{ requiredstar }}"{% endif %} {{ requiredtext }}>
-   </div>
-   <div class="myform half">
-      <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="postalcode">Postal code{{ requiredstar }}</label>
-      <input type="{{ item.input_type }}" name="postalcode" id="postalcode" class="form-control" {% if pageform.placeholders == true %}placeholder="Postal code{{ requiredstar }}"{% endif %} {{ requiredtext }}>
-   </div>
-   {% else %}
-   <div>
-      <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="{{ item.name }}">{{ item.placeholder }}{{ requiredstar }}</label>
-      <input type="{{ item.input_type }}" name="{{ item.name }}" id="{{ item.name }}" class="form-control" {% if pageform.placeholders == true %}placeholder="{{ item.placeholder }}{{ requiredstar }}"{% endif %} {{ requiredtext }}>
-   </div>
-   {% endif %}
-   {% endif %}
-   {% endfor %}
-</form>
+         
+         {% else %}
+         {% if item.name == 'name' %}
+         <div class="myform half">
+            <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="firstname">First name{{ requiredstar }}</label>
+            <input type="{{ item.input_type }}" name="firstname" id="firstname" class="form-control" {% if pageform.placeholders == true %}placeholder="First name{{ requiredstar }}"{% endif %} {{ requiredtext }}>
+         </div>
+         <div class="myform half">
+            <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="lastname">Last name{{ requiredstar }}</label>
+            <input type="{{ item.input_type }}" name="lastname" id="lastname" class="form-control" {% if pageform.placeholders == true %}placeholder="Last name{{ requiredstar }}"{% endif %} {{ requiredtext }}>
+         </div>
+         {% elsif item.name == 'address' %}
+         <div>
+            <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="address">Address{{ requiredstar }}</label>
+            <input type="{{ item.input_type }}" name="address" id="address" class="form-control" {% if pageform.placeholders == true %}placeholder="Address{{ requiredstar }}"{% endif %} {{ requiredtext }}>
+         </div>
+         <div class="myform half">
+            <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="city">City{{ requiredstar }}</label>
+            <input type="{{ item.input_type }}" name="city" id="city" class="form-control" {% if pageform.placeholders == true %}placeholder="City{{ requiredstar }}"{% endif %} {{ requiredtext }}>
+         </div>
+         <div class="myform half">
+            <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="postalcode">Postal code{{ requiredstar }}</label>
+            <input type="{{ item.input_type }}" name="postalcode" id="postalcode" class="form-control" {% if pageform.placeholders == true %}placeholder="Postal code{{ requiredstar }}"{% endif %} {{ requiredtext }}>
+         </div>
+         {% else %}
+         <div>
+            <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="{{ item.name }}">{{ item.placeholder }}{{ requiredstar }}</label>
+            <input type="{{ item.input_type }}" name="{{ item.name }}" id="{{ item.name }}" class="form-control" {% if pageform.placeholders == true %}placeholder="{{ item.placeholder }}{{ requiredstar }}"{% endif %} {{ requiredtext }}>
+         </div>
+         {% endif %}
+         {% endif %}
+         {% endfor %}
+      </form>
