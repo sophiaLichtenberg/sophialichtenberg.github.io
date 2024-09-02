@@ -36,11 +36,11 @@
 
 
          {% elsif item.input_type == 'back' %}
-         <button class="submit" type="button" onclick="previousPage()" >{{ item.placeholder }}</button>
+         <button class="inline submit" type="button" onclick="previousPage()" >{{ item.placeholder }}</button>
 
          {% elsif item.input_type == 'submit' %}
          <div>
-            <input class="submit" onclick="validator()" type="button" value="{{ item.placeholder }}" >{{ include.nextButton }}</input>
+            <input class="inline submit" onclick="validator()" type="button" value="{{ item.placeholder }}" >{{ include.nextButton }}</input>
          </div>
 
          

@@ -124,6 +124,11 @@ img {
   padding-top: 2%;
 }
 
+.inline {
+  display:inline-block;
+  margin-right:5px;
+}
+
 .myformlabel{
   font-size: large;
   margin-left: 5%;
