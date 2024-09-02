@@ -12,6 +12,7 @@ forms:
       - name: age
         input_type: html
         placeholder: Age
+        required: true
       - name: age
         input_type: radio
         placeholder: "< 18"
@@ -36,6 +37,7 @@ forms:
       - name: sex
         input_type: html
         placeholder: Gender
+        required: true
       - name: sex
         input_type: radio
         placeholder: male
@@ -75,7 +77,7 @@ forms:
       - name: background
         input_type: textarea
         placeholder: Other background, below
-        required: true
+        required: false
 
       - name: prompt_experience
         input_type: html
