@@ -14,7 +14,7 @@
       <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="form.py">
          <input type="hidden" name="_next" value="{{ site.url }}{{ pageform.redirect }}" />
          {% elsif pageform.form_engine == 'formcarry' %}
-         <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="https://formcarry.com/s/hOMJJsIDFTb">
+         <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="https://formspree.io/f/xzzpwbod">
             <input type="hidden" name="_next" value="{{ site.url }}{{ pageform.redirect }}" />
             {% elsif pageform.form_engine == 'formbucket' %}
       <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="form.py">
@@ -50,11 +50,11 @@
 
 
          {% elsif item.input_type == 'back' %}
-         <button class="submit" onclick="previousPage()" >{{ item.placeholder }}</button>
+         <button class="submit" type="button" onclick="previousPage()" >{{ item.placeholder }}</button>
 
          {% elsif item.input_type == 'submit' %}
          <div>
-            <input class="submit" onclick="nextPage()" type="{{ item.input_type }}" value="{{ item.placeholder }}" >{{ include.nextButton }}</input>
+            <input class="submit" onclick="nextPage()" type="button" value="{{ item.placeholder }}" >{{ include.nextButton }}</input>
          </div>
 
          
@@ -81,11 +81,7 @@
             <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="postalcode">Postal code{{ requiredstar }}</label>
             <input type="{{ item.input_type }}" name="postalcode" id="postalcode" class="form-control" {% if pageform.placeholders == true %}placeholder="Postal code{{ requiredstar }}"{% endif %} {{ requiredtext }}>
          </div>
-         {% else %}
-         <div>
-            <label {% if pageform.placeholders == true %}class="sr-only"{% endif %} for="{{ item.name }}">{{ item.placeholder }}{{ requiredstar }}</label>
-            <input type="{{ item.input_type }}" name="{{ item.name }}" id="{{ item.name }}" class="form-control" {% if pageform.placeholders == true %}placeholder="{{ item.placeholder }}{{ requiredstar }}"{% endif %} {{ requiredtext }}>
-         </div>
+
          {% endif %}
          {% endif %}
          {% endfor %}
