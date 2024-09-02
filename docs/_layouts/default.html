@@ -3,26 +3,36 @@
 
 {% include head.html %}
 <body onload="start()">
-  {% for page in site.pages %}
-  <section id="page{{page.pageNo}}" class="page">
-    <!-- page.layout: {{ page.layout }} -->
-    {% if page.layout == "text" %}
-    {% include text.html content=page.content title=page.title button=page.button %}
-    {% endif %}
+    <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="https://formspree.io/f/xzzpwbod">
+        <input type="hidden" name="_next" value="{{ site.url }}{{ pageform.redirect }}" />
+      
+    {% for page in site.pages %}
+    <section id="page{{page.pageNo}}" class="page">
+      <!-- page.layout: {{ page.layout }} -->
+      {% if page.layout == "text" %}
+      {% include text.html content=page.content title=page.title button=page.button %}
+      {% endif %}
 
 
-    {% if page.layout == "form" %}
-    {% include form.html content=page.content form="0" button=page.button %}
-    {% endif %}
+      {% if page.layout == "form" %}
+      {% include form.html content=page.content form="0" button=page.button %}
+      {% endif %}
 
 
-    {% if page.layout == "pairwise" %}
-    {% include pairwise.html content=page.content title=page.title questions=page.questions %}
-    {% endif %}
+      {% if page.layout == "pairwise" %}
+      {% include pairwise.html content=page.content title=page.title questions=page.questions %}
+      {% endif %}
 
-   </section>
-  {% endfor %}
-  <script src="/docs/js/app.js"></script>
+    </section>
+    {% endfor %}
+
+    
+    
+    <button type="submit">Submit</button>
+    </form>
+
+
+    <script src="/docs/js/app.js"></script>
 </body>
 
 </html>

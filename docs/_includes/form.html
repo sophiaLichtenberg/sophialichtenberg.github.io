@@ -4,21 +4,7 @@
       {% assign formnumber = 0 %}
       {% endif %}
       {% assign pageform = page.forms[formnumber] %}
-      {% if pageform.form_engine == 'netlify' %}
-      <form name="{{ include.title }} {% if formnumber > 0 %}{{ formnumber | plus:1 }}{% endif %}" id="{{ page.url | slugify }}" class="form autofill" method="POST" action="https://formcarry.com/s/hOMJJsIDFTb" data-netlify="true" netlify-honeypot="_gotcha">
-         <input type="hidden" name="_to" value="{{ pageform.to }}">
-         {% elsif pageform.form_engine == 'cloudcannon' %}
-      <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="form.py">
-         <input type="hidden" name="_to" value="{{ pageform.to }}">
-         {% elsif pageform.form_engine == 'formspree' %}
-      <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="form.py">
-         <input type="hidden" name="_next" value="{{ site.url }}{{ pageform.redirect }}" />
-         {% elsif pageform.form_engine == 'formcarry' %}
-         <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="https://formspree.io/f/xzzpwbod">
-            <input type="hidden" name="_next" value="{{ site.url }}{{ pageform.redirect }}" />
-            {% elsif pageform.form_engine == 'formbucket' %}
-      <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="form.py">
-         {% endif %}
+ 
          <input type="text" name="_gotcha" style="display:none" class="myform" />
          <input type="hidden" name="_subject" value="{{ pageform.subject }}" class="myform"/>
          {% for item in pageform.fields %}
