@@ -21,6 +21,8 @@
   <div id="slider"></div>
 </div>
 
+<input type="hidden" id="answers" name="answers" value="">
+
 <script>
   var animals = {{ include.questions | jsonify }}
   var combos = [];
@@ -65,6 +67,7 @@
       setContent("right", animals[curPair[1]].title, animals[curPair[1]].image, animals[curPair[1]].img_pos, animals[curPair[1]].prompt)
       count++
     } else {
+      document.getElementById("answers").value = JSON.stringify(answers);
       nextPage()
     }
   }
