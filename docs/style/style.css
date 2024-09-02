@@ -156,6 +156,7 @@ textarea {
 @media (hover: hover) {
   .block {
     opacity: .5;
+    color: green;
   }
 }
 
