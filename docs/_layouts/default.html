@@ -3,7 +3,7 @@
 
 {% include head.html %}
 <body onload="start()">
-    <form id="promptForm" class="ajaxForm form autofill" method="POST" action="https://formcarry.com/s/hOMJJsIDFTb">
+    <form id="promptForm" class="ajaxForm form autofill" method="POST" action="https://formcarry.com/s/hOMJJsIDFTb"  accept-charset="UTF-8" enctype="multipart/form-data">
         <input type="hidden" name="_next" value="{{ site.url }}{{ pageform.redirect }}" />
       
           {% for page in site.pages %}
@@ -39,7 +39,7 @@
               e.preventDefault();
               var href = $(this).attr("action");
               var data = $(this).serialize();
-              data["answers"] = answers;
+              data["answers"] = $(answers).serialize();
               $.ajax({
                   type: "POST",
                   dataType: "json",
