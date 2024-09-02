@@ -13,7 +13,7 @@ function nextPage()
 
   /*collectAndSendInputs()*/
 
-  if(page === 1)
+  if(page === 2)
   {
     calcCombos()
     next()

@@ -1,6 +1,6 @@
 ---
 layout: text
-title: Example survey
+title: Prompt Annotation Survey
 button: start
 pageNo: 0
 ---
