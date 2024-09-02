@@ -4,6 +4,9 @@ title: Prompt Annotation Survey
 button: start
 pageNo: 0
 ---
+Thank you to help our research in participating in our study on Prompting. In the following, we ask you to fill out a small form about your background an experience with Prompting
+
+
 This is an example for the [Jekyll-survey repository](https://github.com/MatthijsZw/jekyll-survey). Surveys or questionnaires can be multipage or single page. This example is multipage with no questions on the first page.
 
 Pages can be as long as you want and are responsive (look good on mobile devices). You can easily [add links](https://www.matthijszwinderman.nl), images, tables, headings and make text **bold** or *italic* using Markdown.

@@ -21,6 +21,15 @@ function nextPage()
   page++
 }
 
+function previousPage(){
+  page = page-1
+  document.querySelectorAll('.page').forEach(function(pageElement) {
+    pageElement.style.display = "none";
+  });
+  document.getElementById("page" + page).style.display = "block";
+
+}
+
 function collectAndSendInputs() {
   var inputs = document.querySelectorAll("input")
   var textareas = document.querySelectorAll("textarea")

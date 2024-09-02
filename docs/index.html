@@ -14,7 +14,7 @@
   </title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/docs/style/style.css">
+  <link rel="stylesheet" href="docs/style/style.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|PT+Serif:300,600" rel="stylesheet">
 </head>
 
@@ -24,7 +24,9 @@
     <!-- page.layout: text -->
     
     <div class="text_section">
-<h1>Example survey</h1>
+<h1>Prompt Annotation Survey</h1>
+<p>Thank you to help our research in participating in our study on Prompting. In the following, we ask you to fill out a small form about your background an experience with Prompting</p>
+
 <p>This is an example for the <a href="https://github.com/MatthijsZw/jekyll-survey">Jekyll-survey repository</a>. Surveys or questionnaires can be multipage or single page. This example is multipage with no questions on the first page.</p>
 
 <p>Pages can be as long as you want and are responsive (look good on mobile devices). You can easily <a href="https://www.matthijszwinderman.nl">add links</a>, images, tables, headings and make text <strong>bold</strong> or <em>italic</em> using Markdown.</p>
@@ -44,16 +46,293 @@
 
     
 
+
+    
+
+
     
 
    </section>
   
   <section id="page1" class="page">
+    <!-- page.layout: form -->
+    
+
+
+    
+    
+
+
+<form id="pages-1-form-html" class="form autofill" method="POST" action="">
+   <input type="hidden" name="_next" value="http://localhost:4000/" />
+   
+   <input type="text" name="_gotcha" style="display:none" class="myform" />
+   <input type="hidden" name="_subject" value="New submission!" class="myform"/>
+   
+   
+   
+   
+   <h3 class="myformtitle">Age</h3>
+
+
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="age" value="< 18" required>< 18</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="age" value="18-24" required>18-24</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="age" value="25-34" required>25-34</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="age" value="35-45" required>35-45</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="age" value=">45" required>>45</label>
+   </div>
+   
+   
+   
+   
+   
+   <h3 class="myformtitle">Gender</h3>
+
+
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="sex" value="male" required>male</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="sex" value="female" required>female</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="sex" value="non-binary" required>non-binary</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="sex" value="Prefer to self-describe, below" required>Prefer to self-describe, below</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myformlabel">
+      <label  class="sr-only" for="sex">Self-describe (optional)</label>
+      <textarea name="sex" name="sex" id="sex" cols="30" rows="10" class="form-control" placeholder="Self-describe (optional)" ></textarea>
+   </div>
+   
+   
+   
+   
+   
+   <h3 class="myformtitle">Background</h3>
+
+
+   
+   
+   
+   
+   
+   <div class="myform checkbox">
+      <label><input type="checkbox" name="background" value="I have a background in Computer Science/Artificial intelligence/Human Computer Interaction or related expierence" >I have a background in Computer Science/Artificial intelligence/Human Computer Interaction or related expierence</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform checkbox">
+      <label><input type="checkbox" name="background" value="I have a background in Art/Design/Illustration or related expierence" >I have a background in Art/Design/Illustration or related expierence</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform checkbox">
+      <label><input type="checkbox" name="background" value="I have a background in a different field, describe below" >I have a background in a different field, describe below</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myformlabel">
+      <label  class="sr-only" for="background">Other background, below</label>
+      <textarea name="background" name="background" id="background" cols="30" rows="10" class="form-control" placeholder="Other background, below" required></textarea>
+   </div>
+   
+   
+   
+   
+   
+   <h3 class="myformtitle">Prompting Experience</h3>
+
+
+   
+   
+   
+   
+   
+   <div class="myform checkbox">
+      <label><input type="checkbox" name="prompt_experience" value="I have previous expierence with prompting LLM (ChatGPT, Gemini, Claude etc)" >I have previous expierence with prompting LLM (ChatGPT, Gemini, Claude etc)</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform checkbox">
+      <label><input type="checkbox" name="prompt_experience" value="I have previous expierence with prompting Text to Image Models (Stable Diffusion, Midjourney, DALL-E etc)" >I have previous expierence with prompting Text to Image Models (Stable Diffusion, Midjourney, DALL-E etc)</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform checkbox">
+      <label><input type="checkbox" name="prompt_experience" value="I have previous expierence with prompting other models" >I have previous expierence with prompting other models</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myformlabel">
+      <label  class="sr-only" for="prompt_experience">Other AI interaction experience, below (optional)</label>
+      <textarea name="prompt_experience" name="prompt_experience" id="prompt_experience" cols="30" rows="10" class="form-control" placeholder="Other AI interaction experience, below (optional)" ></textarea>
+   </div>
+   
+   
+   
+   
+   
+   <h3 class="myformtitle">Prompting Experience Frequency</h3>
+
+
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="prompt_experience_degree" value="Once before" >Once before</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="prompt_experience_degree" value="Occasionally" >Occasionally</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="prompt_experience_degree" value="Regulary" >Regulary</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myform radio">
+      <input type="radio" name="prompt_experience_degree" value="Daily" >Daily</label>
+   </div>
+   
+   
+   
+   
+   
+   <div class="myformlabel">
+      <label  class="sr-only" for="prompt_experience_degree">More details about your personal experience with prompting Text-to-Image models (optional)</label>
+      <textarea name="prompt_experience_degree" name="prompt_experience_degree" id="prompt_experience_degree" cols="30" rows="10" class="form-control" placeholder="More details about your personal experience with prompting Text-to-Image models (optional)" ></textarea>
+   </div>
+   
+   
+   
+   
+   
+   <div>
+      <input class="submit" onclick="nextPage()" type="submit" value="Continue" ></input>
+   </div>
+
+   
+   
+   
+   
+   
+   
+   <button class="submit" onclick="previousPage()" >Back</button>
+
+   
+   
+</form>
+
+    
+
+
+    
+
+   </section>
+  
+  <section id="page2" class="page">
     <!-- page.layout: pairwise -->
     
 
+
     
-    <h1>Which one is the most intelligent?</h1>
+
+
+    
+    <h1>Which of the following prompts do you find more creative?</h1>
 
 
 
@@ -70,12 +349,15 @@
   </div>
 </a>
 
+<div id="middlebar">
+  <button class="submit restart" onclick="previousPage()">Restart</button>
+</div>
 <div id="bottombar">
   <div id="slider"></div>
 </div>
 
 <script>
-  var animals = [{"title":"Adult Human","image":"https://i.kinja-img.com/gawker-media/image/upload/s--t3v-5K6H--/c_scale,f_auto,fl_progressive,q_80,w_800/bbzzph87t4jpwmzk54z3.jpg","img_pos":"10% 80%"},{"title":"Monkey","image":"https://images1.miaminewtimes.com/imager/u/745xauto/10764041/instagram-monkey.jpg","img_pos":"20% 20%"},{"title":"Apple Siri","image":"https://boygeniusreport.files.wordpress.com/2014/03/siri-ios-7-sign.jpg?quality=98&strip=all&w=768","img_pos":"center"}]
+  var animals = [{"title":"Prompt 1","prompt":"Test 1"},{"title":"Prompt 2","prompt":"Test 2"},{"title":"Prompt 3","prompt":"Test 3"},{"title":"Prompt 4","prompt":"Test 4"},{"title":"Prompt 5","prompt":"Test 5"},{"title":"Prompt 6","prompt":"Test 6"},{"title":"Prompt 7","prompt":"Test 7"}]
   var combos = [];
   var count = 0;
   var answers = []
@@ -98,8 +380,9 @@
     next()
   }
 
-  function setContent(id, name, img, pos) {
+  function setContent(id, name, img, pos, prompt) {
     document.getElementById(id + "_title").innerHTML = name
+    document.getElementById(id + "_img").innerHTML = prompt;
     document.getElementById(id + "_img").style.backgroundImage = "url('" + img + "')";
     document.getElementById(id + "_img").style.backgroundPosition = pos;
   }
@@ -112,21 +395,33 @@
     document.getElementById("slider").style.width = (count / combos.length) * 100 + "%";
     if (count < combos.length) {
       var curPair = combos[count]
-      setContent("left", animals[curPair[0]].title, animals[curPair[0]].image, animals[curPair[0]].img_pos)
+      setContent("left", animals[curPair[0]].title, animals[curPair[0]].image, animals[curPair[0]].img_pos, animals[curPair[0]].prompt)
 
-      setContent("right", animals[curPair[1]].title, animals[curPair[1]].image, animals[curPair[1]].img_pos)
+      setContent("right", animals[curPair[1]].title, animals[curPair[1]].image, animals[curPair[1]].img_pos, animals[curPair[1]].prompt)
       count++
     } else {
       nextPage()
     }
   }
+
+  function previous() {
+    document.getElementById("slider").style.width = (count / combos.length) * 100 + "%";
+    if (count < combos.length) {
+      count--
+      var curPair = combos[count]
+      setContent("left", animals[curPair[0]].title, animals[curPair[0]].image, animals[curPair[0]].img_pos)
+    } else {
+      previousPage()
+    }
+  }
+
 </script>
 
     
 
    </section>
   
-  <section id="page2" class="page">
+  <section id="page3" class="page">
     <!-- page.layout: text -->
     
     <div class="text_section">
@@ -138,11 +433,15 @@
 
     
 
+
+    
+
+
     
 
    </section>
   
-  <script src="https://sophialichtenberg.github.io/docs/js/app.js"></script>
+  <script src="/docs/js/app.js"></script>
 </body>
 
 </html>
