@@ -461,6 +461,7 @@
               var href = $(this).attr("action");
               var data = $(this).serialize();
               data["answers"] = answers;
+              print(data)
               $.ajax({
                   type: "POST",
                   dataType: "json",
