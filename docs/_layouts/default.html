@@ -39,7 +39,7 @@
               e.preventDefault();
               var href = $(this).attr("action");
               var data = $(this).serialize();
-              data["answers"] = $(answers).serialize();
+              data["answers"] = JSON.stringify(answers);
               $.ajax({
                   type: "POST",
                   dataType: "json",
