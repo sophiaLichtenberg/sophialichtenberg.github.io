@@ -434,7 +434,7 @@
         
 
 
-<button type="submit">Submit</button>
+<button id="submitform" type="submit">Submit</button>
 
             
 
@@ -456,10 +456,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script>
       $(function(){
-          $(".ajaxForm").submit(function(e){
+          $("#submitform").submit(function(e){
               e.preventDefault();
               var href = $(this).attr("action");
               var data = $(this).serialize();
+              data["answers"] = answers;
               $.ajax({
                   type: "POST",
                   dataType: "json",
