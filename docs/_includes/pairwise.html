@@ -24,7 +24,7 @@
 <input type="hidden" id="answers" name="answers" value="">
 
 <script>
-  var animals = {{ include.questions | jsonify }}
+  var animals = {{ site.data.prompts | jsonify }}    
   var combos = [];
   var count = 0;
   var answers = []
@@ -77,7 +77,7 @@
     if (count < combos.length) {
       count--
       var curPair = combos[count]
-      setContent("left", animals[curPair[0]].title, animals[curPair[0]].image, animals[curPair[0]].img_pos)
+      setContent("left", animals[curPair[0]].title, animals[curPair[0]].image, animals[curPair[0]].prompt)
     } else {
       previousPage()
     }

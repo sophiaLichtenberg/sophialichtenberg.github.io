@@ -66,6 +66,7 @@ form_engines:
   - netlify
 
 include:
+  - _data/
   - _pages/
   - _includes/
   - _plugins/
