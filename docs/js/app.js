@@ -11,13 +11,13 @@ function nextPage()
   });
   document.getElementById("page" + page).style.display = "block";
 
-  /*collectAndSendInputs()
+  /*collectAndSendInputs()*/
 
   if(page === 1)
   {
     calcCombos()
     next()
-  }*/
+  }
   page++
 }
 
