@@ -1,7 +1,13 @@
         <div class="text_section">
         <h1>{{ include.title }}</h1>
         {{ include.content | markdownify }}
-        {% if include.button %}
+        {% if include.button != "lastpage"  %}
         <button onclick="nextPage()">{{ include.button }}</button>
         {% endif %}
         </div>
+        
+    
+        {% if include.button == "lastpage" %}
+        <button type="submit">Submit</button>
+        </form>
+        {% endif %}
