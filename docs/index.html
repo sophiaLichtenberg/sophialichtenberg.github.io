@@ -19,7 +19,7 @@
   </head>
 
 <body onload="start()">
-    <form id="promptForm" class="form autofill" method="POST" action="https://formspree.io/f/xzzpwbod">
+    <form id="promptForm" class="ajaxForm form autofill" method="POST" action="https://formspree.io/f/xzzpwbod">
         <input type="hidden" name="_next" value="http://localhost:4000" />
       
           
@@ -453,6 +453,29 @@
 
 
     <script src="/docs/js/app.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+      $(function(){
+          $(".ajaxForm").submit(function(e){
+              e.preventDefault();
+              var href = $(this).attr("action");
+              var data = $(this).serialize();
+              $.ajax({
+                  type: "POST",
+                  dataType: "json",
+                  url: href,
+                  data: data,
+                  success: function(response){
+                      if(response.status == "success"){
+                          alert("We received your submission, thank you!");
+                      }else{
+                          alert("An error occured: " + response.message);
+                      }
+                  }
+              });
+          });
+      });
+    </script>
 </body>
 
 </html>
