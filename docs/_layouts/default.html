@@ -3,7 +3,7 @@
 
 {% include head.html %}
 <body onload="start()">
-    <form id="{{ page.url | slugify }}" class="form autofill" method="POST" action="https://formspree.io/f/xzzpwbod">
+    <form id="promptForm" class="form autofill" method="POST" action="https://formspree.io/f/xzzpwbod">
         <input type="hidden" name="_next" value="{{ site.url }}{{ pageform.redirect }}" />
       
           {% for page in site.pages %}

@@ -21,6 +21,28 @@ function nextPage()
   page++
 }
 
+function validator()
+{
+  let allAreFilled = true;
+  document.getElementById("promptForm").querySelectorAll("[required]").forEach(function(i) {
+    if (!allAreFilled) return;
+    if (i.type === "radio") {
+      let radioValueCheck = false;
+      document.getElementById("promptForm").querySelectorAll(`[name=${i.name}]`).forEach(function(r) {
+        if (r.checked) radioValueCheck = true;
+      })
+      allAreFilled = radioValueCheck;
+      return;
+    }
+    if (!i.value) { allAreFilled = false;  return; }
+  })
+  if (!allAreFilled) {
+    alert('Fill all the fields');
+  } else {
+    nextPage()
+  }
+}
+
 function previousPage(){
   page = page-1
   document.querySelectorAll('.page').forEach(function(pageElement) {
