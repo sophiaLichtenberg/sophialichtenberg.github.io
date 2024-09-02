@@ -2,7 +2,7 @@
         <h1>{{ include.title }}</h1>
         {{ include.content | markdownify }}
         {% if include.button != "lastpage"  %}
-        <button onclick="nextPage()">{{ include.button }}</button>
+        <button onclick="nextPage()" type="button">{{ include.button }}</button>
         {% endif %}
         </div>
         
