@@ -118,20 +118,20 @@ img {
 }
 
 .myformtitle{
-  font-size: xx-large;
+  font-size: x-large;
   margin-left: 5%;
   padding-top: 2%;
 }
 
 .myformlabel{
-  font-size: x-large;
+  font-size: large;
   margin-left: 5%;
   margin-top: 10px !important;
   padding-top: 10px;
 }
 
 .myform {
-  font-size: x-large;
+  font-size: large;
   margin-left: 5%;
   margin-right: 10%;
   margin-top: 5px;
