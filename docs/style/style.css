@@ -5,7 +5,6 @@ html, body {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   color: #333333;
-  height: 100%;
 }
 
 .text_section {
@@ -109,7 +108,7 @@ img {
   margin-bottom: 2%;
   margin-left: 5%;
   margin-right: 10%;
-  height: 80%;
+  height: 100%;
   width: 80%;
   background: #fff;
   border-radius: 2px;
@@ -162,6 +161,7 @@ textarea {
 
 .block:hover {
   opacity: 1;
+  color: green;
 }
 
 #middlebar {
