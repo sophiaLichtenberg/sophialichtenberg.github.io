@@ -126,7 +126,7 @@ forms:
 
 
       - name: submit
-        input_type: submit
+        input_type: continue
         placeholder: Continue
         required: true
       - name: submit

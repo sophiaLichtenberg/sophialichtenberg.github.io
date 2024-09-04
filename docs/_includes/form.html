@@ -38,8 +38,8 @@
          {% elsif item.input_type == 'back' %}
          <button class="inline submit" type="button" onclick="previousPage()" >{{ item.placeholder }}</button>
 
-         {% elsif item.input_type == 'submit' %}
-         <input class="inline submit" onclick="validator()" type="button" value="{{ item.placeholder }}" >{{ include.nextButton }}</input>
+         {% elsif item.input_type == 'continue' %}
+         <button class="inline submit" type="button" onclick="validator()" >{{ item.placeholder }}</button>
 
          
          {% else %}
