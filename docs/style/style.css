@@ -42,7 +42,8 @@ button, .submit {
 }
 
 .skip {
-  margin: 0px !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
   margin-left: 40% !important;
 }
 
@@ -118,9 +119,9 @@ img {
   margin-top: 2%;
   margin-bottom: 2%;
   margin-left: 5%;
-  margin-right: 10%;
+  margin-right: 5%;
   height: 100%;
-  width: 80%;
+  width: 100%;
   background: #fff;
   border-radius: 2px;
   box-shadow: 0 3px 0 0 rgba(0, 0, 0, .03), 0 0 0 2px rgba(0, 0, 0, .03);
