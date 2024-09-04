@@ -432,8 +432,11 @@
 
   function calcCombos() {
     // randomize combos
-    combos_1 = getCombos().sort(function() { return 0.5 - Math.random() })
-    combos_2 = getCombos().sort(function() { return 0.5 - Math.random() })
+    if (round == 1) {
+      combos_1 = getCombos().sort(function() { return 0.5 - Math.random() })
+    } else {
+      combos_2 = getCombos().sort(function() { return 0.5 - Math.random() })
+    }
   }
 
   function storeAndNext(answer) {
@@ -612,8 +615,11 @@
 
   function calcCombos() {
     // randomize combos
-    combos_1 = getCombos().sort(function() { return 0.5 - Math.random() })
-    combos_2 = getCombos().sort(function() { return 0.5 - Math.random() })
+    if (round == 1) {
+      combos_1 = getCombos().sort(function() { return 0.5 - Math.random() })
+    } else {
+      combos_2 = getCombos().sort(function() { return 0.5 - Math.random() })
+    }
   }
 
   function storeAndNext(answer) {
