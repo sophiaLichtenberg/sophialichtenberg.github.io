@@ -3,14 +3,14 @@
 
 <a href="#" onclick="storeAndNext('left')">
   <div class="block">
-    <div id="left_img" class="img right"></div>
-    <!--<label id="left_title">Empty</label>-->
+    <div id="left_img_{{page.round}}" class="img right"></div>
+    <label id="left_title_{{page.round}}">Empty</label>
   </div>
 </a>
 <a href="#" onclick="storeAndNext('right')">
   <div class="block">
-    <div id="right_img" class="img left"></div>
-    <!--<label id="right_title">Empty</label>-->
+    <div id="right_img_{{page.round}}" class="img left"></div>
+    <label id="right_title_{{page.round}}">Empty</label>
   </div>
 </a>
 <button class="submit restart" type="button" onclick="storeAndNext('skip')">Skip</button>
@@ -20,17 +20,16 @@
   <div>
     <button class="submit restart" type="button" onclick="previousPage()">Restart</button>
   </div>
-  <div id="slider"></div>
+  <div id="slider_{{page.round}}"></div>
 </div>
 
-<input type="hidden" id="answers_1" name="answers_1" value="">
-<input type="hidden" id="answers_2" name="answers_2" value="">
+<input type="hidden" id="answers_{{page.round}}" name="answers_{{page.round}}" value="">
 
 <script>
   var prompts = {{ site.data.prompts | jsonify }}    
   var combos = [];
   var count = 0;
-  var round =  {{ page.round   }};
+  var round =  {{ page.round }};
   var answers_1 = [];
   var answers_2 = [];
   const shuffle = ([...arr]) => {
@@ -54,8 +53,8 @@
   }
 
   function storeAndNext(answer) {
-    var left = document.getElementById("left_title").innerHTML
-    var right = document.getElementById("right_title").innerHTML
+    var left = document.getElementById("left_title_" + round).innerHTML
+    var right = document.getElementById("right_title_" + round).innerHTML
 
     setVal(left, right, answer)
     next()
@@ -63,7 +62,7 @@
 
   function setContent(id, prompt) {
     //document.getElementById(id + "_title").innerHTML = name
-    document.getElementById(id + "_img").innerHTML = prompt;
+    document.getElementById(id + "_img_" + round).innerHTML = prompt;
     //document.getElementById(id + "_img").style.backgroundImage = "url('" + img + "')";
     //document.getElementById(id + "_img").style.backgroundPosition = pos;
   }
@@ -77,7 +76,7 @@
   }
 
   function next() {
-    document.getElementById("slider").style.width = (count / combos.length) * 100 + "%";
+    document.getElementById("slider_" + round).style.width = (count / combos.length) * 100 + "%";
     if (count < combos.length) {
       var curPair = combos[count]
       setContent("left", prompts[curPair[0]].prompt)
@@ -95,7 +94,7 @@
   }
 
   function previous() {
-    document.getElementById("slider").style.width = (count / combos.length) * 100 + "%";
+    document.getElementById("slider_" + round).style.width = (count / combos.length) * 100 + "%";
     if (count < combos.length) {
       count--
       var curPair = combos[count]
