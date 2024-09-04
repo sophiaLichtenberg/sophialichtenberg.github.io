@@ -40,8 +40,4 @@ forms:
         input_type: submit
         placeholder: Continue
         required: true
-      - name: submit
-        input_type: back
-        placeholder: Back
-        required: true
 ---
