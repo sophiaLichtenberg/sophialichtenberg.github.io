@@ -2,7 +2,7 @@
     var prompts = {{ site.data.prompts | jsonify }}    
     var combos = [];
     var count = 0;
-    var round =  {{ page.round }};
+    var round = 0;
     var answers = [];
     const shuffle = ([...arr]) => {
       let m = arr.length;
@@ -24,9 +24,10 @@
       return temp_combos
     }
   
-    function calcCombos() {
+    function calcCombos(round) {
       count = 0;
       answers = [];
+      round = round;
       
       // randomize combos
       if (round == 1) {

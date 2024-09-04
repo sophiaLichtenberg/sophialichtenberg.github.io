@@ -15,13 +15,13 @@ function nextPage()
 
   if(page === 2)
   {
-    calcCombos()
+    calcCombos(1)
     next()
   }
 
   if(page === 4)
   {
-    calcCombos()
+    calcCombos(2)
     next()
   }
   page++
