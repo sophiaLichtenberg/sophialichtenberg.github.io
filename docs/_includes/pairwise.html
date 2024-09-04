@@ -27,12 +27,10 @@
 
 <script>
   var prompts = {{ site.data.prompts | jsonify }}    
-  var combos_1 = [];
-  var combos_2 = [];
+  var combos = [];
   var count = 0;
   var round =  {{ page.round }};
-  var answers_1 = [];
-  var answers_2 = [];
+  var answers = [];
   const shuffle = ([...arr]) => {
     let m = arr.length;
     while (m) {
@@ -43,22 +41,25 @@
   };
 
   function getCombos() {
-    combos = []
+    var temp_combos = [];
     selected_prompts = shuffle(prompts).slice(1, 5 + 1);
     for (var i = 0; i < selected_prompts.length; i++)
       for (var j = i + 1; j < selected_prompts.length; j++)
       {
-        combos[combos.length] = [i, j, false]
+        temp_combos[temp_combos.length] = [i, j, false]
       }
     return combos
   }
 
   function calcCombos() {
+    count = 0;
+    answers = [];
+    
     // randomize combos
     if (round == 1) {
-      combos_1 = getCombos().sort(function() { return 0.5 - Math.random() })
+      combos = getCombos().sort(function() { return 0.5 - Math.random() })
     } else {
-      combos_2 = getCombos().sort(function() { return 0.5 - Math.random() })
+      combos = getCombos().sort(function() { return 0.5 - Math.random() })
     }
   }
 
@@ -78,19 +79,10 @@
   }
 
   function setVal(a, b, slider, round) {
-    if (round == 1) {
-      answers_1	[answers_1.length] = [a, b, slider]
-    } else {
-      answers_2	[answers_2.length] = [a, b, slider]
-    }
+    answers[answers.length] = [a, b, slider]
   }
 
   function next() {
-    if (round == 1) {
-      combos = combos_1;
-    } else {
-      combos = combos_2;
-      }
     document.getElementById("slider_" + round).style.width = (count / combos.length) * 100 + "%";
     if (count < combos.length) {
       var curPair = combos[count]
@@ -99,21 +91,12 @@
       setContent("right", prompts[curPair[1]].prompt)
       count++
     } else {
-      if (round == 1) {
-        document.getElementById("answers_1").value = JSON.stringify(answers_1);
-      } else {
-        document.getElementById("answers_2").value = JSON.stringify(answers_2);
-      }
+      document.getElementById("answers_" + round).value = JSON.stringify(answers_1);
       nextPage()
     }
   }
 
   function previous() {
-    if (round == 1) {
-      combos = combos_1;
-    } else {
-      combos = combos_2;
-      }
     document.getElementById("slider_" + round).style.width = (count / combos.length) * 100 + "%";
     if (count < combos.length) {
       count--
