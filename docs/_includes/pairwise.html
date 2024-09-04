@@ -4,13 +4,13 @@
 <a href="#" onclick="storeAndNext('left')">
   <div class="block">
     <div id="left_img" class="img right"></div>
-    <label id="left_title">Empty</label>
+    <!--<label id="left_title">Empty</label>-->
   </div>
 </a>
 <a href="#" onclick="storeAndNext('right')">
   <div class="block">
     <div id="right_img" class="img left"></div>
-    <label id="right_title">Empty</label>
+    <!--<label id="right_title">Empty</label>-->
   </div>
 </a>
 <button class="submit restart" type="button" onclick="storeAndNext('skip')">Skip</button>
@@ -23,13 +23,16 @@
   <div id="slider"></div>
 </div>
 
-<input type="hidden" id="answers" name="answers" value="">
+<input type="hidden" id="answers_1" name="answers_1" value="">
+<input type="hidden" id="answers_2" name="answers_2" value="">
 
 <script>
   var prompts = {{ site.data.prompts | jsonify }}    
   var combos = [];
   var count = 0;
-  var answers = []
+  var round =  {{ page.round   }};
+  var answers_1 = [];
+  var answers_2 = [];
   const shuffle = ([...arr]) => {
     let m = arr.length;
     while (m) {
@@ -65,8 +68,12 @@
     //document.getElementById(id + "_img").style.backgroundPosition = pos;
   }
 
-  function setVal(a, b, slider) {
-    answers[answers.length] = [a, b, slider]
+  function setVal(a, b, slider, round) {
+    if (round == 1) {
+      answers_1	[answers_1.length] = [a, b, slider]
+    } else {
+      answers_2	[answers_2.length] = [a, b, slider]
+    }
   }
 
   function next() {
@@ -78,7 +85,11 @@
       setContent("right", prompts[curPair[1]].prompt)
       count++
     } else {
-      document.getElementById("answers").value = JSON.stringify(answers);
+      if (round == 1) {
+        document.getElementById("answers_1").value = JSON.stringify(answers_1);
+      } else {
+        document.getElementById("answers_2").value = JSON.stringify(answers_2);
+      }
       nextPage()
     }
   }
