@@ -47,6 +47,7 @@
 
               {% if page.layout == "pairwise_2" %}
               {% include pairwise.html content=page.content title=page.title questions=page.questions %}
+              {% include pairwise_script.html content=page.content title=page.title questions=page.questions %}
               {% endif %}
 
               {% if page.layout == "form_final" %}
