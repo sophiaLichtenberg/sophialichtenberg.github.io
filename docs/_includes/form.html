@@ -12,8 +12,8 @@
          {% if item.required %}{% assign requiredtext = 'required' %}{% else %}{% assign requiredtext = '' %}{% endif %}
          {% if item.input_type == 'textarea' %}
          <div class="myformlabel">
-            <label {% if pageform.placeholders == true %} class="sr-only"{% endif %} for="{{ item.name }}">{{ item.label }}{{ requiredstar }}</label>
-            <textarea name="{{ item.name }}" name="{{ item.name }}" id="{{ item.name }}" cols="30" rows="30" class="form-control" {% if pageform.placeholders == true %}placeholder="{{ item.placeholder }}{{ requiredstar }}"{% endif %} {{ requiredtext }}></textarea>
+            <label {% if pageform.placeholders == true %} class="sr-only"{% endif %} for="{{ item.name }}">{{ item.label }}</label>
+            <textarea name="{{ item.name }}" name="{{ item.name }}" id="{{ item.name }}" cols="30" rows="100" class="form-control" {% if pageform.placeholders == true %}placeholder="{{ item.placeholder }}{{ requiredstar }}"{% endif %} {{ requiredtext }}></textarea>
          </div>
          {% elsif item.input_type == 'radio' %}
          <div class="myform radio">
