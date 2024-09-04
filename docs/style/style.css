@@ -175,8 +175,8 @@ textarea {
   bottom: 0px;
   width: 100%;
   left: 0px;
-  -ms-transform: translateX(40%);
-  transform: translateX(40%);
+  /*-ms-transform: translateX(40%);
+  transform: translateX(40%);*/
 }
 
 #bottombar {
