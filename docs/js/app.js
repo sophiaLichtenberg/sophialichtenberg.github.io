@@ -13,9 +13,14 @@ function nextPage()
 
   /*collectAndSendInputs()*/
 
+  calcCombos()
   if(page === 2)
   {
-    calcCombos()
+    next()
+  }
+
+  if(page === 4)
+  {
     next()
   }
   page++

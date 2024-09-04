@@ -27,7 +27,8 @@
 
 <script>
   var prompts = {{ site.data.prompts | jsonify }}    
-  var combos = [];
+  var combos_1 = [];
+  var combos_2 = [];
   var count = 0;
   var round =  {{ page.round }};
   var answers_1 = [];
@@ -41,15 +42,21 @@
     return arr;
   };
 
-  function calcCombos() {
+  function getCombos() {
+    combos = []
     selected_prompts = shuffle(prompts).slice(1, 5 + 1);
     for (var i = 0; i < selected_prompts.length; i++)
       for (var j = i + 1; j < selected_prompts.length; j++)
       {
         combos[combos.length] = [i, j, false]
       }
+    return combos
+  }
+
+  function calcCombos() {
     // randomize combos
-    combos = combos.sort(function() { return 0.5 - Math.random() })
+    combos_1 = getCombos().sort(function() { return 0.5 - Math.random() })
+    combos_2 = getCombos().sort(function() { return 0.5 - Math.random() })
   }
 
   function storeAndNext(answer) {
@@ -76,6 +83,11 @@
   }
 
   function next() {
+    if (round == 1) {
+      combos = combos_1;
+    } else {
+      combos = combos_2;
+      }
     document.getElementById("slider_" + round).style.width = (count / combos.length) * 100 + "%";
     if (count < combos.length) {
       var curPair = combos[count]
@@ -94,6 +106,11 @@
   }
 
   function previous() {
+    if (round == 1) {
+      combos = combos_1;
+    } else {
+      combos = combos_2;
+      }
     document.getElementById("slider_" + round).style.width = (count / combos.length) * 100 + "%";
     if (count < combos.length) {
       count--
