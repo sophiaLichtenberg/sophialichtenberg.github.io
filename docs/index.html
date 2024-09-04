@@ -417,9 +417,9 @@
   };
 
   function calcCombos() {
-    prompts = shuffle(prompts).slice(1, 5 + 1);
-    for (var i = 0; i < prompts.length; i++)
-      for (var j = i + 1; j < prompts.length; j++)
+    selected_prompts = shuffle(prompts).slice(1, 5 + 1);
+    for (var i = 0; i < selected_prompts.length; i++)
+      for (var j = i + 1; j < selected_prompts.length; j++)
       {
         combos[combos.length] = [i, j, false]
       }
@@ -569,9 +569,9 @@
   };
 
   function calcCombos() {
-    prompts = shuffle(prompts).slice(1, 5 + 1);
-    for (var i = 0; i < prompts.length; i++)
-      for (var j = i + 1; j < prompts.length; j++)
+    selected_prompts = shuffle(prompts).slice(1, 5 + 1);
+    for (var i = 0; i < selected_prompts.length; i++)
+      for (var j = i + 1; j < selected_prompts.length; j++)
       {
         combos[combos.length] = [i, j, false]
       }
@@ -646,228 +646,51 @@
          
          
          
-         <h3 class="myformtitle">Age</h3>
+         <h3 class="myformtitle">Why did you find interesting, what did you notice about the prompts?</h3>
 
 
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="age" value="< 18" required>< 18</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="age" value="18-24" required>18-24</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="age" value="25-34" required>25-34</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="age" value="35-45" required>35-45</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="age" value=">45" required>>45</label>
-         </div>
-         
-         
-         
-         
-         
-         <h3 class="myformtitle">Gender</h3>
-
-
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="sex" value="male" required>male</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="sex" value="female" required>female</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="sex" value="non-binary" required>non-binary</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="sex" value="Prefer to self-describe, below" required>Prefer to self-describe, below</label>
-         </div>
          
          
          
          
          
          <div class="myformlabel">
-            <label  class="sr-only" for="sex">Self-describe (optional)</label>
-            <textarea name="sex" name="sex" id="sex" cols="30" rows="10" class="form-control" placeholder="Self-describe (optional)" ></textarea>
+            <label  class="sr-only" for="feedback_interesting">your feedback (optional)</label>
+            <textarea name="feedback_interesting" name="feedback_interesting" id="feedback_interesting" cols="30" rows="10" class="form-control" placeholder="your feedback (optional)" ></textarea>
          </div>
          
          
          
          
          
-         <h3 class="myformtitle">Background</h3>
+         <h3 class="myformtitle">When was it hard to decide?</h3>
 
 
-         
-         
-         
-         
-         
-         <div class="myform checkbox">
-            <label><input type="checkbox" name="background" value="I have a background in Computer Science/Artificial intelligence/Human Computer Interaction or related expierence" >I have a background in Computer Science/Artificial intelligence/Human Computer Interaction or related expierence</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform checkbox">
-            <label><input type="checkbox" name="background" value="I have a background in Art/Design/Illustration or related expierence" >I have a background in Art/Design/Illustration or related expierence</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform checkbox">
-            <label><input type="checkbox" name="background" value="I have a background in a different field, describe below" >I have a background in a different field, describe below</label>
-         </div>
          
          
          
          
          
          <div class="myformlabel">
-            <label  class="sr-only" for="background">Other background, below (optional)</label>
-            <textarea name="background" name="background" id="background" cols="30" rows="10" class="form-control" placeholder="Other background, below (optional)" ></textarea>
+            <label  class="sr-only" for="feedback_decision">your feedback (optional)</label>
+            <textarea name="feedback_decision" name="feedback_decision" id="feedback_decision" cols="30" rows="10" class="form-control" placeholder="your feedback (optional)" ></textarea>
          </div>
          
          
          
          
          
-         <h3 class="myformtitle">Prompting Experience</h3>
+         <h3 class="myformtitle">When did you skip?</h3>
 
 
-         
-         
-         
-         
-         
-         <div class="myform checkbox">
-            <label><input type="checkbox" name="prompt_experience" value="I have previous expierence with prompting LLM (ChatGPT, Gemini, Claude etc)" >I have previous expierence with prompting LLM (ChatGPT, Gemini, Claude etc)</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform checkbox">
-            <label><input type="checkbox" name="prompt_experience" value="I have previous expierence with prompting Text to Image Models (Stable Diffusion, Midjourney, DALL-E etc)" >I have previous expierence with prompting Text to Image Models (Stable Diffusion, Midjourney, DALL-E etc)</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform checkbox">
-            <label><input type="checkbox" name="prompt_experience" value="I have previous expierence with prompting other models" >I have previous expierence with prompting other models</label>
-         </div>
          
          
          
          
          
          <div class="myformlabel">
-            <label  class="sr-only" for="prompt_experience">Other AI interaction experience, below (optional)</label>
-            <textarea name="prompt_experience" name="prompt_experience" id="prompt_experience" cols="30" rows="10" class="form-control" placeholder="Other AI interaction experience, below (optional)" ></textarea>
-         </div>
-         
-         
-         
-         
-         
-         <h3 class="myformtitle">Prompting Experience Frequency</h3>
-
-
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="prompt_experience_degree" value="Once before" >Once before</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="prompt_experience_degree" value="Occasionally" >Occasionally</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="prompt_experience_degree" value="Regulary" >Regulary</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myform radio">
-            <input type="radio" name="prompt_experience_degree" value="Daily" >Daily</label>
-         </div>
-         
-         
-         
-         
-         
-         <div class="myformlabel">
-            <label  class="sr-only" for="prompt_experience_degree">More details about your personal experience with prompting Text-to-Image models (optional)</label>
-            <textarea name="prompt_experience_degree" name="prompt_experience_degree" id="prompt_experience_degree" cols="30" rows="10" class="form-control" placeholder="More details about your personal experience with prompting Text-to-Image models (optional)" ></textarea>
+            <label  class="sr-only" for="feedback_skip">your feedback (optional)</label>
+            <textarea name="feedback_skip" name="feedback_skip" id="feedback_skip" cols="30" rows="10" class="form-control" placeholder="your feedback (optional)" ></textarea>
          </div>
          
          

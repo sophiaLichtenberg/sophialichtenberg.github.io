@@ -40,9 +40,9 @@
   };
 
   function calcCombos() {
-    prompts = shuffle(prompts).slice(1, 5 + 1);
-    for (var i = 0; i < prompts.length; i++)
-      for (var j = i + 1; j < prompts.length; j++)
+    selected_prompts = shuffle(prompts).slice(1, 5 + 1);
+    for (var i = 0; i < selected_prompts.length; i++)
+      for (var j = i + 1; j < selected_prompts.length; j++)
       {
         combos[combos.length] = [i, j, false]
       }
