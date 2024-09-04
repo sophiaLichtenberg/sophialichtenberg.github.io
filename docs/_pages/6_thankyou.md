@@ -2,7 +2,7 @@
 layout: text
 title: End of survey!
 button: lastpage
-pageNo: 3
+pageNo: 6
 ---
 
 Thank you for participating! 
