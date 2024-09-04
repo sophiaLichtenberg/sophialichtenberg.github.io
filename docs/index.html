@@ -417,7 +417,7 @@
   };
 
   function calcCombos() {
-    prompts = shuffle(prompts)[:10];
+    prompts = shuffle(prompts).slice(1, 5 + 1);
     for (var i = 0; i < prompts.length; i++)
       for (var j = i + 1; j < prompts.length; j++)
       {
@@ -565,7 +565,7 @@
   };
 
   function calcCombos() {
-    prompts = shuffle(prompts)[:10];
+    prompts = shuffle(prompts).slice(1, 5 + 1);
     for (var i = 0; i < prompts.length; i++)
       for (var j = i + 1; j < prompts.length; j++)
       {
