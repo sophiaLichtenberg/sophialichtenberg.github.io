@@ -41,6 +41,11 @@ button, .submit {
   margin-bottom: 50px; /* leave some space at the bottom of the page */
 }
 
+.skip {
+  margin-top: 0px;
+  margin-left: 40%;
+}
+
 /* label {
   font-size: 36px;
   font-weight: bold;

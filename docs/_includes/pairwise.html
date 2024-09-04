@@ -2,7 +2,7 @@
 {{ include.content | markdownify }}
 
 <div>
-  <button id="skip_{{page.round}}" class="submit restart" type="button" onclick="storeAndNext('skip')">Skip</button>
+  <button id="skip_{{page.round}}" class="submit restart skip" type="button" onclick="storeAndNext('skip')">Skip</button>
 </div>
 <div>
   <a id="left_link_{{page.round}}" href="#" onclick="storeAndNext('left')">
