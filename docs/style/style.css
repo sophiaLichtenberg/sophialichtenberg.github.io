@@ -161,13 +161,13 @@ textarea {
 @media (hover: hover) {
   .block {
     opacity: .5;
-    color: green;
+    color: green !important;
   }
 }
 
 .block:hover {
   opacity: 1;
-  color: green;
+  color: green !important;
 }
 
 #middlebar {
