@@ -14,6 +14,7 @@ forms:
         placeholder: Why did you find interesting, what did you notice about the prompts?
       - name: feedback_interesting
         input_type: textarea
+        label: ""
         placeholder: your feedback
         required: false
 
@@ -22,6 +23,7 @@ forms:
         placeholder: When was it hard to decide?
       - name: feedback_decision
         input_type: textarea
+        label: ""
         placeholder: your feedback
         required: false
 
@@ -30,6 +32,7 @@ forms:
         placeholder: When did you skip?
       - name: feedback_skip
         input_type: textarea
+        label: ""
         placeholder: your feedback
         required: false
 

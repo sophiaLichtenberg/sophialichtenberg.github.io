@@ -56,6 +56,7 @@ forms:
         required: true
       - name: sex
         input_type: textarea
+        label: ""
         placeholder: Self-describe
         required: false
 
@@ -76,6 +77,7 @@ forms:
         required: false
       - name: background
         input_type: textarea
+        label: ""
         placeholder: Other background, below
         required: false
 
@@ -96,6 +98,7 @@ forms:
         required: false
       - name: prompt_experience
         input_type: textarea
+        label: ""
         placeholder: Other AI interaction experience, below
         required: false
 
@@ -121,6 +124,7 @@ forms:
         required: false
       - name: prompt_experience_degree
         input_type: textarea
+        label: ""
         placeholder: More details about your personal experience with prompting Text-to-Image models
         required: false
 
