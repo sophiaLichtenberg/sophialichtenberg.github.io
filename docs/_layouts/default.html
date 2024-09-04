@@ -41,6 +41,18 @@
               {% include pairwise.html content=page.content title=page.title questions=page.questions %}
               {% endif %}
 
+              {% if page.layout == "break" %}
+              {% include text.html content=page.content title=page.title button=page.button %}
+              {% endif %}
+
+              {% if page.layout == "pairwise" %}
+              {% include pairwise.html content=page.content title=page.title questions=page.questions %}
+              {% endif %}
+
+              {% if page.layout == "form_final" %}
+              {% include form.html content=page.content form="0" button=page.button %}
+              {% endif %}
+
             </section>
             {% endfor %}
 
