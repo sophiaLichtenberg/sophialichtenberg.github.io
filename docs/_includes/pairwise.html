@@ -48,7 +48,7 @@
       {
         temp_combos[temp_combos.length] = [i, j, false]
       }
-    return combos
+    return temp_combos
   }
 
   function calcCombos() {
@@ -87,7 +87,6 @@
     if (count < combos.length) {
       var curPair = combos[count]
       setContent("left", prompts[curPair[0]].prompt)
-
       setContent("right", prompts[curPair[1]].prompt)
       count++
     } else {
