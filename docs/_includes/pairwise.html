@@ -1,13 +1,13 @@
 <h1>{{ include.title }}{{ include.button }}</h1>
 {{ include.content | markdownify }}
 
-<a href="#" onclick="storeAndNext('left')">
+<a id="left_link_{{page.round}}" href="#" onclick="storeAndNext('left')">
   <div class="block">
     <div id="left_img_{{page.round}}" class="img right"></div>
     <label id="left_title_{{page.round}}">Empty</label>
   </div>
 </a>
-<a href="#" onclick="storeAndNext('right')">
+<a id="right_link_{{page.round}}" href="#" onclick="storeAndNext('right')">
   <div class="block">
     <div id="right_img_{{page.round}}" class="img left"></div>
     <label id="right_title_{{page.round}}">Empty</label>
