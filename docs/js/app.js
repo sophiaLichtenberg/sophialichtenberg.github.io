@@ -4,8 +4,7 @@ var id = Math.floor(Math.random() * 10000);
 var admin, db, surveyResponse, ref = null;
 
 
-function nextPage()
-{
+function nextPage() {
   document.querySelectorAll('.page').forEach(function(pageElement) {
     pageElement.style.display = "none";
   });
@@ -13,22 +12,19 @@ function nextPage()
 
   /*collectAndSendInputs()*/
 
-  if(page === 2)
-  {
+  if(page === 2) {
     calcCombos(1)
     next()
   }
 
-  if(page === 4)
-  {
+  if(page === 4) {
     calcCombos(2)
     next()
   }
   page++
 }
 
-function validator()
-{
+function validator() {
   let allAreFilled = true;
   document.getElementById("promptForm").querySelectorAll("[required]").forEach(function(i) {
     if (!allAreFilled) return;
@@ -63,16 +59,15 @@ function collectAndSendInputs() {
   var textareas = document.querySelectorAll("textarea")
   var sendObject = {}
 
-  for (var i = 0; i < inputs.length; i++)
-  {
+  for (var i = 0; i < inputs.length; i++) {
     if(inputs[i].type == "radio" || inputs[i].type == "checkbox")
       sendObject[inputs[i].id] = inputs[i].checked
-    else
+    else {
       sendObject[inputs[i].id] = inputs[i].value;
+    }
   }
 
-  for (var i = 0; i < textareas.length; i++)
-  {
+  for (var i = 0; i < textareas.length; i++) {
     sendObject[textareas[i].id] = textareas[i].value;
   }
 
@@ -84,7 +79,6 @@ function collectAndSendInputs() {
   ref.set(sendObject)
 }
 
-function start()
-{
+function start() {
   nextPage();
 }
