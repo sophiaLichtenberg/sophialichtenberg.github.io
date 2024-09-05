@@ -198,7 +198,7 @@ textarea {
   left: 0px;
 }
 
-#slider {
+.slider {
   width: 5%;
   height: 10px;
   background: orange;
