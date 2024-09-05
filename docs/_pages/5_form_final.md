@@ -36,8 +36,8 @@ forms:
         placeholder: your feedback
         required: false
 
-      - name: submit
-        input_type: submit
+      - name: submit_2
+        input_type: continue
         placeholder: Continue
         required: true
 ---
