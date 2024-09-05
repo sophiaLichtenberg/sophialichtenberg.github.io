@@ -9,56 +9,56 @@ forms:
     form_engine: formcarry
     placeholders: true
     fields: 
-      - name: age
-        input_type: html
-        placeholder: Age
-        required: true
-      - name: age
-        input_type: radio
-        placeholder: "< 18"
-        required: true
-      - name: age
-        input_type: radio
-        placeholder: 18-24
-        required: true
-      - name: age
-        input_type: radio
-        placeholder: 25-34
-        required: true
-      - name: age
-        input_type: radio
-        placeholder: 35-45
-        required: true
-      - name: age
-        input_type: radio
-        placeholder: ">45"
-        required: true
+#      - name: age
+#        input_type: html
+#        placeholder: Age
+#        required: true
+#      - name: age
+#        input_type: radio
+#        placeholder: "< 18"
+#        required: true
+#      - name: age
+#        input_type: radio
+#        placeholder: 18-24
+#        required: true
+#      - name: age
+#        input_type: radio
+#        placeholder: 25-34
+#        required: true
+#      - name: age
+#        input_type: radio
+#        placeholder: 35-45
+#        required: true
+#      - name: age
+#        input_type: radio
+#        placeholder: ">45"
+#        required: true 
 
-      - name: sex
-        input_type: html
-        placeholder: Gender
-        required: true
-      - name: sex
-        input_type: radio
-        placeholder: male
-        required: true
-      - name: sex
-        input_type: radio
-        placeholder: female
-        required: true
-      - name: sex
-        input_type: radio
-        placeholder: non-binary
-        required: true
-      - name: sex
-        input_type: radio
-        placeholder: Prefer to self-describe, below
-        required: true
-      - name: sex
-        input_type: textarea
-        label: ""
-        placeholder: Self-describe
-        required: false
+#      - name: sex
+#        input_type: html
+#        placeholder: Gender
+#        required: true
+#      - name: sex
+#        input_type: radio
+#        placeholder: male
+#        required: true
+#      - name: sex
+#        input_type: radio
+#        placeholder: female
+#        required: true
+#      - name: sex
+#        input_type: radio
+#        placeholder: non-binary
+#        required: true
+#      - name: sex
+#        input_type: radio
+#        placeholder: Prefer to self-describe, below
+#        required: true
+#      - name: sex
+#        input_type: textarea
+#        label: ""
+#        placeholder: Self-describe
+#        required: false
 
       - name: background
         input_type: html
