@@ -3,7 +3,7 @@ body{
   font-family: system-ui, Arial, sans-serif;
   background:#0b0f19;
   color:#e5e7eb;
-  transition: 0.3s ease;
+  transition:0.3s ease;
 }
 
 .container{
@@ -12,7 +12,7 @@ body{
   padding:60px 20px;
 }
 
-/* HERO */
+/* HEADER */
 .hero{
   display:flex;
   align-items:center;
@@ -36,6 +36,7 @@ h1{
 .subtitle{
   color:#94a3b8;
   margin-top:6px;
+  line-height:1.4;
 }
 
 /* BUTTONS */
@@ -74,6 +75,7 @@ section{
 h2{
   font-size:16px;
   color:#38bdf8;
+  margin-bottom:10px;
 }
 
 /* TEXT */
@@ -97,6 +99,25 @@ p{
   background:rgba(56,189,248,0.1);
   border:1px solid rgba(56,189,248,0.2);
   color:#bae6fd;
+}
+
+/* PUBLICATION BOX */
+.paper{
+  margin-bottom:14px;
+}
+
+/* SCHOLAR */
+.scholar-card{
+  margin-top:16px;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid rgba(148,163,184,0.15);
+  background:rgba(17,24,39,0.5);
+}
+
+body.light .scholar-card{
+  background:white;
+  border:1px solid #e5e7eb;
 }
 
 /* LIGHT MODE */

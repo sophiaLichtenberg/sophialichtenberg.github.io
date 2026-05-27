@@ -18,6 +18,7 @@
 
     <div>
       <h1>Sophia Lichtenberg</h1>
+
       <div class="subtitle">
         PhD Candidate · Human-Centered Computing · AI & Text-to-Image Models<br/>
         Utrecht University
@@ -25,10 +26,8 @@
 
       <div class="buttons">
 
-        <!-- CV DOWNLOAD -->
         <a class="btn" href="cv.pdf" download>📄 Download CV</a>
 
-        <!-- THEME TOGGLE -->
         <button class="btn ghost" onclick="toggleTheme()">
           🌙 Toggle Theme
         </button>
@@ -43,42 +42,84 @@
     <h2>About</h2>
     <p>
       I work on human-centered evaluation of generative AI systems, focusing on
-      text-to-image models, and responsible AI.
-
-      Contact me: s.lichtenberg@uu.nl
+      text-to-image models, interaction behavior, and responsible AI.<br/><br/>
+      Contact: s.lichtenberg@uu.nl
     </p>
   </section>
 
-  <!-- SUPERVISOR -->
+  <!-- SUPERVISORS -->
   <section>
-    <h2>Supervisor</h2>
+    <h2>Supervisors</h2>
+
     <p><b>Prof. Albert Gatt</b></p>
-    <p class="meta">Utrecht University · Natural Language Processing group, Department of Information and Computing Sciences.</p>
+    <p class="meta">
+      Utrecht University · Natural Language Processing Group · Department of Information and Computing Sciences
+    </p>
+
     <p><b>Prof. Judith Masthoff</b></p>
-    <p class="meta">Utrecht University · Human-Centered Computing group, Department of Information and Computing Sciences.</p>
+    <p class="meta">
+      Utrecht University · Human-Centered Computing Group · Department of Information and Computing Sciences
+    </p>
   </section>
 
   <!-- RESEARCH -->
   <section>
     <h2>Research Interests</h2>
+
     <span class="tag">Text-to-Image Models</span>
+    <span class="tag">Human-AI Interaction</span>
     <span class="tag">Fairness</span>
     <span class="tag">Responsible AI</span>
+    <span class="tag">Model Evaluation</span>
   </section>
 
   <!-- PUBLICATIONS -->
   <section>
     <h2>Publications</h2>
 
+    <p class="meta">
+      Selected publications and ongoing work. Full list available below.
+    </p>
+
+    <div class="paper">
+      <p><b>Computational and Empirical Evaluation of Text-to-Image Models</b></p>
+      <p class="meta">Utrecht University · 2025</p>
+    </div>
+
+    <div class="paper">
+      <p><b>Human Interaction Behavior with Generative Models</b></p>
+      <p class="meta">Ongoing research</p>
+    </div>
+
+    <div class="paper">
+      <p><b>Maritime ASR Dataset Construction for Domain Adaptation</b></p>
+      <p class="meta">Fraunhofer CML · 2023</p>
+    </div>
+
+    <!-- GOOGLE SCHOLAR -->
+    <div class="scholar-card">
+      <p><b>Google Scholar Profile</b></p>
+      <p class="meta">
+        Citations, publications, and research impact in AI and NLP.
+      </p>
+
+      <a class="btn"
+         href="https://scholar.google.com/citations?user=YOUR_ID_HERE"
+         target="_blank">
+        🔗 View Google Scholar
+      </a>
+    </div>
+
   </section>
 
+  <!-- FOOTER -->
   <footer>
     © 2026 Sophia Lichtenberg
   </footer>
 
 </div>
 
-<!-- THEME SCRIPT -->
+<!-- SCRIPT -->
 <script>
 function toggleTheme(){
   document.body.classList.toggle("light");
