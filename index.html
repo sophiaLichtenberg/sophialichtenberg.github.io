@@ -4,160 +4,201 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sophia Lichtenberg</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- 🌌 Ambient Gradient Background -->
-<div class="ambient-bg"></div>
+  <!-- 🌌 Ambient AI Background -->
+  <div class="ambient-bg"></div>
 
-<!-- ✨ Floating Data Particles -->
-<div class="particles"></div>
+  <!-- ✨ Floating Particles -->
+  <div class="particles"></div>
 
-<!-- AI Cursor Glow -->
-<div class="cursor-glow"></div>
+  <!-- 🌌 Cursor Glow -->
+  <div class="cursor-glow"></div>
 
-<div class="container">
+  <div class="container">
 
-  <!-- HEADER -->
-  <header class="hero">
+    <!-- HERO -->
+    <header class="hero">
 
-    <img src="profile.jpg" class="avatar" alt="Profile image"/>
+      <img
+        src="profile.jpg"
+        class="avatar"
+        alt="Sophia Lichtenberg"
+      />
 
-    <div>
-      <h1>Sophia Lichtenberg</h1>
+      <div>
 
-      <div class="subtitle">
-        PhD Candidate · Human-Centered Computing · AI & Text-to-Image Models<br/>
-        Utrecht University
+        <h1>Sophia Lichtenberg</h1>
+
+        <div class="subtitle">
+          PhD Candidate · Human-Centered Computing ·
+          AI & Text-to-Image Models
+          <br/>
+          Utrecht University
+        </div>
+
+        <div class="buttons">
+
+          <a class="btn"
+             href="cv.pdf"
+             download>
+            📄 Download CV
+          </a>
+
+          <button
+            class="btn ghost"
+            onclick="copyEmail()">
+            📧 Copy Email
+          </button>
+
+          <button
+            class="btn ghost"
+            onclick="toggleTheme()">
+            🌙 Toggle Theme
+          </button>
+
+        </div>
+
       </div>
 
-      <div class="buttons">
+    </header>
 
-        <a class="btn" href="cv.pdf" download>
-          📄 Download CV
-        </a>
+    <!-- ABOUT -->
+    <section>
 
-        <button class="btn ghost" onclick="copyEmail()">
-          📧 Copy Email
-        </button>
+      <h2>About</h2>
 
-        <button class="btn ghost" onclick="toggleTheme()">
-          🌙 Toggle Theme
-        </button>
-
-      </div>
-    </div>
-
-  </header>
-
-  <!-- ABOUT -->
-  <section>
-    <h2>About</h2>
-
-    <p>
-      I work on human-centered evaluation of generative AI systems,
-      focusing on text-to-image models, interaction behavior,
-      and responsible AI.
-    </p>
-
-    <p>
-      Contact:
-      <a href="mailto:s.lichtenberg@uu.nl">
-        s.lichtenberg@uu.nl
-      </a>
-    </p>
-
-    <p>
-      <a href="https://www.uu.nl/staff/SLichtenberg" target="_blank">
-        Utrecht University Profile
-      </a>
-    </p>
-
-  </section>
-
-  <!-- SUPERVISORS -->
-  <section>
-    <h2>Supervisors</h2>
-
-    <p><b>Prof. Albert Gatt</b></p>
-    <p class="meta">
-      Utrecht University · NLP Group · ICS Department
-    </p>
-
-    <p><b>Prof. Judith Masthoff</b></p>
-    <p class="meta">
-      Utrecht University · Human-Centered Computing Group
-    </p>
-
-  </section>
-
-  <!-- RESEARCH -->
-  <section>
-    <h2>Research Interests</h2>
-
-    <span class="tag">Text-to-Image Models</span>
-    <span class="tag">Human-AI Interaction</span>
-    <span class="tag">Fairness</span>
-    <span class="tag">Responsible AI</span>
-    <span class="tag">Model Evaluation</span>
-
-  </section>
-
-  <!-- PUBLICATIONS -->
-  <section>
-    <h2>Publications</h2>
-
-    <p class="meta">
-      Selected work and ongoing research.
-    </p>
-
-    <!-- GOOGLE SCHOLAR -->
-    <div class="scholar-card">
-
-      <p><b>Google Scholar</b></p>
-
-      <p class="meta">
-        Publications and citation profile
+      <p>
+        I work on human-centered evaluation of generative AI systems,
+        focusing on text-to-image models, interaction behavior,
+        and responsible AI.
       </p>
 
-      <a class="btn"
-         href="https://scholar.google.com/citations?user=fwOtPDYAAAAJ"
-         target="_blank">
-        🔗 View Profile
-      </a>
+      <p>
+        Contact:
+        <a href="mailto:s.lichtenberg@uu.nl">
+          s.lichtenberg@uu.nl
+        </a>
+      </p>
 
-    </div>
+      <p>
+        <a
+          href="https://www.uu.nl/staff/SLichtenberg"
+          target="_blank">
+          Utrecht University Profile
+        </a>
+      </p>
 
-  </section>
+    </section>
 
-  <footer>
-    © 2026 Sophia Lichtenberg
-  </footer>
+    <!-- SUPERVISORS -->
+    <section>
 
-</div>
+      <h2>Supervisors</h2>
 
-<script>
-function toggleTheme(){
-  document.body.classList.toggle("light");
-}
+      <p><b>Prof. Albert Gatt</b></p>
 
-function copyEmail(){
-  navigator.clipboard.writeText("s.lichtenberg@uu.nl");
-  alert("Email copied 📋");
-}
+      <p class="meta">
+        Utrecht University · NLP Group · ICS Department
+      </p>
 
-/* smoother cursor glow */
-const glow = document.querySelector(".cursor-glow");
+      <p><b>Prof. Judith Masthoff</b></p>
 
-document.addEventListener("mousemove", (e) => {
-  requestAnimationFrame(() => {
-    glow.style.left = e.clientX + "px";
-    glow.style.top = e.clientY + "px";
-  });
-});
-</script>
+      <p class="meta">
+        Utrecht University · Human-Centered Computing Group
+      </p>
+
+    </section>
+
+    <!-- RESEARCH -->
+    <section>
+
+      <h2>Research Interests</h2>
+
+      <span class="tag">Text-to-Image Models</span>
+      <span class="tag">Human-AI Interaction</span>
+      <span class="tag">Fairness</span>
+      <span class="tag">Responsible AI</span>
+      <span class="tag">Model Evaluation</span>
+
+    </section>
+
+    <!-- PUBLICATIONS -->
+    <section>
+
+      <h2>Publications</h2>
+
+      <p class="meta">
+        Selected work and ongoing research.
+      </p>
+
+      <div class="scholar-card">
+
+        <p><b>Google Scholar</b></p>
+
+        <p class="meta">
+          Publications and citation profile
+        </p>
+
+        <a
+          class="btn"
+          href="https://scholar.google.com/citations?user=fwOtPDYAAAAJ"
+          target="_blank">
+          🔗 View Profile
+        </a>
+
+      </div>
+
+    </section>
+
+    <footer>
+      © 2026 Sophia Lichtenberg
+    </footer>
+
+  </div>
+
+  <script>
+
+    function toggleTheme(){
+      document.body.classList.toggle("light");
+    }
+
+    function copyEmail(){
+
+      navigator.clipboard.writeText(
+        "s.lichtenberg@uu.nl"
+      );
+
+      alert("Email copied 📋");
+    }
+
+    /* 🌌 Smooth cursor glow */
+
+    const glow =
+      document.querySelector(".cursor-glow");
+
+    document.addEventListener(
+      "mousemove",
+      (e) => {
+
+        requestAnimationFrame(() => {
+
+          glow.style.left =
+            e.clientX + "px";
+
+          glow.style.top =
+            e.clientY + "px";
+
+        });
+
+      }
+    );
+
+  </script>
 
 </body>
 </html>
