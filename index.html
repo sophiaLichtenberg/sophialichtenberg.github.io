@@ -9,6 +9,9 @@
 
 <body>
 
+<!-- AI glow cursor -->
+<div class="cursor-glow"></div>
+
 <div class="container">
 
   <!-- HEADER -->
@@ -28,9 +31,9 @@
 
         <a class="btn" href="cv.pdf" download>📄 Download CV</a>
 
-        <button class="btn ghost" onclick="toggleTheme()">
-          🌙 Toggle Theme
-        </button>
+        <button class="btn ghost" onclick="copyEmail()">📧 Copy Email</button>
+
+        <button class="btn ghost" onclick="toggleTheme()">🌙 Toggle Theme</button>
 
       </div>
     </div>
@@ -52,14 +55,10 @@
     <h2>Supervisors</h2>
 
     <p><b>Prof. Albert Gatt</b></p>
-    <p class="meta">
-      Utrecht University · Natural Language Processing Group · Department of Information and Computing Sciences
-    </p>
+    <p class="meta">Utrecht University · NLP Group · ICS Department</p>
 
     <p><b>Prof. Judith Masthoff</b></p>
-    <p class="meta">
-      Utrecht University · Human-Centered Computing Group · Department of Information and Computing Sciences
-    </p>
+    <p class="meta">Utrecht University · Human-Centered Computing Group</p>
   </section>
 
   <!-- RESEARCH -->
@@ -77,53 +76,46 @@
   <section>
     <h2>Publications</h2>
 
-    <p class="meta">
-      Selected publications and ongoing work. Full list available below.
-    </p>
+    <p class="meta">Selected work and ongoing research.</p>
 
-    <div class="paper">
-      <p><b>Computational and Empirical Evaluation of Text-to-Image Models</b></p>
-      <p class="meta">Utrecht University · 2025</p>
-    </div>
-
-    <div class="paper">
-      <p><b>Human Interaction Behavior with Generative Models</b></p>
-      <p class="meta">Ongoing research</p>
-    </div>
-
-    <div class="paper">
-      <p><b>Maritime ASR Dataset Construction for Domain Adaptation</b></p>
-      <p class="meta">Fraunhofer CML · 2023</p>
     </div>
 
     <!-- GOOGLE SCHOLAR -->
     <div class="scholar-card">
-      <p><b>Google Scholar Profile</b></p>
-      <p class="meta">
-        Citations, publications, and research impact in AI and NLP.
-      </p>
+      <p><b>Google Scholar</b></p>
+      <p class="meta">Publications and citation profile</p>
 
       <a class="btn"
          href="https://scholar.google.com/citations?user=YOUR_ID_HERE"
          target="_blank">
-        🔗 View Google Scholar
+        🔗 View Profile
       </a>
     </div>
 
   </section>
 
-  <!-- FOOTER -->
   <footer>
     © 2026 Sophia Lichtenberg
   </footer>
 
 </div>
 
-<!-- SCRIPT -->
 <script>
 function toggleTheme(){
   document.body.classList.toggle("light");
 }
+
+function copyEmail(){
+  navigator.clipboard.writeText("s.lichtenberg@uu.nl");
+  alert("Email copied 📋");
+}
+
+/* cursor glow */
+document.addEventListener("mousemove", (e) => {
+  const glow = document.querySelector(".cursor-glow");
+  glow.style.left = e.clientX + "px";
+  glow.style.top = e.clientY + "px";
+});
 </script>
 
 </body>
