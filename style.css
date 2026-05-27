@@ -6,6 +6,17 @@ body{
   transition: background 0.4s ease, color 0.4s ease;
 }
 
+/* ✨ FLOATING DATA PARTICLES BACKGROUND */
+.particles{
+  position:fixed;
+  inset:0;
+  background-image: radial-gradient(rgba(56,189,248,0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: drift 35s linear infinite;
+  z-index:0;
+  pointer-events:none;
+}
+
 /* CURSOR GLOW */
 .cursor-glow{
   position:fixed;
@@ -126,6 +137,12 @@ p{
   border-radius:12px;
   border:1px solid rgba(148,163,184,0.15);
   background:rgba(17,24,39,0.5);
+}
+
+/* ANIMATIONS */
+@keyframes drift{
+  from { transform: translateY(0); }
+  to { transform: translateY(-120px); }
 }
 
 /* LIGHT MODE */
