@@ -9,10 +9,13 @@
 
 <body>
 
-<!-- ✨ FLOATING DATA PARTICLES BACKGROUND -->
+<!-- 🌌 Ambient Gradient Background -->
+<div class="ambient-bg"></div>
+
+<!-- ✨ Floating Data Particles -->
 <div class="particles"></div>
 
-<!-- AI glow cursor -->
+<!-- AI Cursor Glow -->
 <div class="cursor-glow"></div>
 
 <div class="container">
@@ -32,11 +35,17 @@
 
       <div class="buttons">
 
-        <a class="btn" href="cv.pdf" download>📄 Download CV</a>
+        <a class="btn" href="cv.pdf" download>
+          📄 Download CV
+        </a>
 
-        <button class="btn ghost" onclick="copyEmail()">📧 Copy Email</button>
+        <button class="btn ghost" onclick="copyEmail()">
+          📧 Copy Email
+        </button>
 
-        <button class="btn ghost" onclick="toggleTheme()">🌙 Toggle Theme</button>
+        <button class="btn ghost" onclick="toggleTheme()">
+          🌙 Toggle Theme
+        </button>
 
       </div>
     </div>
@@ -46,12 +55,26 @@
   <!-- ABOUT -->
   <section>
     <h2>About</h2>
+
     <p>
-      I work on human-centered evaluation of generative AI systems, focusing on
-      text-to-image models, interaction behavior, and responsible AI.<br/><br/>
-      Contact: s.lichtenberg@uu.nl<br/>
-      https://www.uu.nl/staff/SLichtenberg
+      I work on human-centered evaluation of generative AI systems,
+      focusing on text-to-image models, interaction behavior,
+      and responsible AI.
     </p>
+
+    <p>
+      Contact:
+      <a href="mailto:s.lichtenberg@uu.nl">
+        s.lichtenberg@uu.nl
+      </a>
+    </p>
+
+    <p>
+      <a href="https://www.uu.nl/staff/SLichtenberg" target="_blank">
+        Utrecht University Profile
+      </a>
+    </p>
+
   </section>
 
   <!-- SUPERVISORS -->
@@ -59,10 +82,15 @@
     <h2>Supervisors</h2>
 
     <p><b>Prof. Albert Gatt</b></p>
-    <p class="meta">Utrecht University · NLP Group · ICS Department</p>
+    <p class="meta">
+      Utrecht University · NLP Group · ICS Department
+    </p>
 
     <p><b>Prof. Judith Masthoff</b></p>
-    <p class="meta">Utrecht University · Human-Centered Computing Group</p>
+    <p class="meta">
+      Utrecht University · Human-Centered Computing Group
+    </p>
+
   </section>
 
   <!-- RESEARCH -->
@@ -74,24 +102,32 @@
     <span class="tag">Fairness</span>
     <span class="tag">Responsible AI</span>
     <span class="tag">Model Evaluation</span>
+
   </section>
 
   <!-- PUBLICATIONS -->
   <section>
     <h2>Publications</h2>
 
-    <p class="meta">Selected work and ongoing research.</p>
+    <p class="meta">
+      Selected work and ongoing research.
+    </p>
 
     <!-- GOOGLE SCHOLAR -->
     <div class="scholar-card">
+
       <p><b>Google Scholar</b></p>
-      <p class="meta">Publications and citation profile</p>
+
+      <p class="meta">
+        Publications and citation profile
+      </p>
 
       <a class="btn"
          href="https://scholar.google.com/citations?user=fwOtPDYAAAAJ"
          target="_blank">
         🔗 View Profile
       </a>
+
     </div>
 
   </section>
@@ -112,11 +148,14 @@ function copyEmail(){
   alert("Email copied 📋");
 }
 
-/* cursor glow */
+/* smoother cursor glow */
+const glow = document.querySelector(".cursor-glow");
+
 document.addEventListener("mousemove", (e) => {
-  const glow = document.querySelector(".cursor-glow");
-  glow.style.left = e.clientX + "px";
-  glow.style.top = e.clientY + "px";
+  requestAnimationFrame(() => {
+    glow.style.left = e.clientX + "px";
+    glow.style.top = e.clientY + "px";
+  });
 });
 </script>
 
