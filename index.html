@@ -1,76 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sophia | Website</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      color: #222;
-    }
-
-    header {
-      background: #111;
-      color: white;
-      padding: 70px 20px;
-      text-align: center;
-    }
-
-    section {
-      max-width: 800px;
-      margin: 40px auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 42px;
-    }
-
-    h2 {
-      border-bottom: 2px solid #eee;
-      padding-bottom: 5px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #666;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sophia Lichtenberg</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <header>
-    <h1>Hi, I'm Sophia 👋</h1>
-    <p>This is my personal website</p>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="hero">
+
+    <img src="profile.jpg" class="avatar" alt="Profile image"/>
+
+    <div>
+      <h1>Sophia Lichtenberg</h1>
+      <div class="subtitle">
+        PhD Candidate · Human-Centered Computing · AI & Text-to-Image Models<br/>
+        Utrecht University
+      </div>
+
+      <div class="buttons">
+
+        <!-- CV DOWNLOAD -->
+        <a class="btn" href="cv.pdf" download>📄 Download CV</a>
+
+        <!-- THEME TOGGLE -->
+        <button class="btn ghost" onclick="toggleTheme()">
+          🌙 Toggle Theme
+        </button>
+
+      </div>
+    </div>
+
   </header>
 
+  <!-- ABOUT -->
   <section>
-    <h2>About Me</h2>
-    <p>I am learning how to build websites using GitHub Pages.</p>
+    <h2>About</h2>
+    <p>
+      I work on human-centered evaluation of generative AI systems, focusing on
+      text-to-image models, and responsible AI.
+    </p>
   </section>
 
+  <!-- SUPERVISOR -->
   <section>
-    <h2>Projects</h2>
-    <p>Coming soon 🚀</p>
+    <h2>Supervisor</h2>
+    <p><b>Prof. Albert Gatt</b></p>
+    <p class="meta">Utrecht University · Natural Language Processing group, Department of Information and Computing Sciences.</p>
+    <h2>Supervisor</h2>
+    <p><b>Prof. Judith Masthoff</b></p>
+    <p class="meta">Utrecht University · Human-Centered Computing group, Department of Information and Computing Sciences.</p>
   </section>
 
+  <!-- RESEARCH -->
   <section>
-    <h2>Contact</h2>
-    <p>Email: yourname@email.com</p>
+    <h2>Research Interests</h2>
+    <span class="tag">Text-to-Image Models</span>
+    <span class="tag">Fairness</span>
+    <span class="tag">Responsible AI</span>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section>
+    <h2>Publications</h2>
+
   </section>
 
   <footer>
-    © 2026 Sophia
+    © 2026 Sophia Lichtenberg
   </footer>
+
+</div>
+
+<!-- THEME SCRIPT -->
+<script>
+function toggleTheme(){
+  document.body.classList.toggle("light");
+}
+</script>
 
 </body>
 </html>
