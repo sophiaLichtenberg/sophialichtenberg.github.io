@@ -2,144 +2,76 @@ const base =
   "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
 
 let DATA = [];
-let VIEW = [];
 
 const $ = (id) => document.getElementById(id);
 
-let search, modelFilter, datasetFilter, impairmentFilter;
-let gridView, table, tableView;
+let searchA, searchB;
+let gridA, gridB;
+
 let previewImg, meta, loader;
-let searchBtn;
 
-window.addEventListener("DOMContentLoaded", () => {
+/* INIT */
+window.addEventListener("DOMContentLoaded", async () => {
 
-  search = $("search");
-  modelFilter = $("modelFilter");
-  datasetFilter = $("datasetFilter");
-  biasFilter = $("biasFilter");
-  contextFilter = $("contextFilter");
-  impairmentFilter = $("impairmentFilter");
+  searchA = $("searchA");
+  searchB = $("searchB");
 
-  gridView = $("gridView");
-  table = $("table");
-  tableView = $("tableView");
+  gridA = $("gridA");
+  gridB = $("gridB");
 
   previewImg = $("previewImg");
   meta = $("meta");
   loader = $("loader");
-  searchBtn = $("searchBtn");
 
-  if (!gridView || !table || !previewImg) {
-    console.error("Missing DOM elements");
-    return;
-  }
+  $("btnA").onclick = () => runSearch("A");
+  $("btnB").onclick = () => runSearch("B");
 
-  searchBtn?.addEventListener("click", applyFilters);
-
-  loadCSV();
-  setView("grid");
+  await loadCSV();
 });
 
 /* CSV */
 async function loadCSV(){
-  try {
-    const res = await fetch("hashed_metadata_df.csv");
-    const text = await res.text();
+  const res = await fetch("hashed_metadata_df.csv");
+  const text = await res.text();
 
-    const lines = text.trim().split("\n");
-    const headers = lines[0].split(",");
+  const lines = text.trim().split("\n");
+  const headers = lines[0].split(",");
 
-    DATA = lines.slice(1).map(line => {
-      const cols = line.split(",");
-      const obj = {};
-      headers.forEach((h,i)=> obj[h.trim()] = (cols[i]||"").trim());
-      return obj;
-    });
-
-    buildFilters();
-
-  } catch(e){
-    console.error("CSV error", e);
-  }
-}
-
-/* FILTERS */
-function buildFilters(){
-  fill(modelFilter, uniq("model"));
-  fill(datasetFilter, uniq("dataset_type"));
-  fill(biasFilter, uniq("bias_subtype"));
-  fill(contextFilter, uniq("context_value"));
-  fill(impairmentFilter, uniq("impairment").filter(Boolean));
-}
-
-function uniq(k){
-  return [...new Set(DATA.map(d=>d[k]))];
-}
-
-function fill(select, values){
-  if(!select) return;
-  select.innerHTML = `<option value="">All</option>`;
-  values.forEach(v=>{
-    const o=document.createElement("option");
-    o.value=v;
-    o.textContent=v;
-    select.appendChild(o);
+  DATA = lines.slice(1).map(line => {
+    const cols = line.split(",");
+    const obj = {};
+    headers.forEach((h,i)=> obj[h.trim()] = (cols[i]||"").trim());
+    return obj;
   });
 }
 
 /* SEARCH */
-function applyFilters(){
+function runSearch(side){
 
-  const s = (search?.value || "").toLowerCase();
-  const m = modelFilter?.value;
-  const d = datasetFilter?.value;
-  const b = biasFilter?.value;
-  const c = contextFilter?.value;
-  const i = impairmentFilter?.value;
+  const q = (side === "A" ? searchA : searchB)?.value?.toLowerCase();
+  const grid = side === "A" ? gridA : gridB;
 
-  VIEW = DATA.filter(x => {
+  const results = DATA.filter(x =>
+    !q || (x.prompt || "").toLowerCase().includes(q)
+  );
 
-    const prompt = (x.prompt || "").toLowerCase();
-
-    return (
-      (!s || prompt.includes(s)) &&
-      (!m || x.model === m) &&
-      (!d || x.dataset_type === d) &&
-      (!b || x.bias_subtype === b) &&
-      (!c || x.context_value === c) &&
-      (!i || x.impairment === i)
-    );
-  });
-
-  renderGrid();
-  renderTable();
-
-  // optional: auto preview first result
-  if (VIEW.length) show(VIEW[0]);
+  renderGrid(grid, results);
 }
 
-/* FIXED IMAGE URL */
+/* IMAGE URL */
 function imgUrl(hash){
-  if(!hash) return "";
   return base + encodeURIComponent(hash + ".png");
 }
 
-/* GRID */
-function renderGrid() {
+/* GRID RENDER */
+function renderGrid(container, items){
 
-  if (!gridView) return;
+  container.innerHTML = "";
 
-  gridView.innerHTML = "";
-
-  if (!VIEW.length) {
-    gridView.innerHTML = `<div style="padding:10px;opacity:0.7;">No results</div>`;
-    return;
-  }
-
-  VIEW.forEach(item => {
+  items.slice(0, 200).forEach(item => {
 
     const hash = item.hash_name;
-    if (!hash) return;
+    if(!hash) return;
 
     const card = document.createElement("div");
     card.className = "card";
@@ -147,85 +79,48 @@ function renderGrid() {
     const thumb = document.createElement("div");
     thumb.className = "thumb";
 
-    const loader = document.createElement("div");
-    loader.className = "img-loader";
-    loader.textContent = "⏳";
+    const loaderEl = document.createElement("div");
+    loaderEl.className = "img-loader";
+    loaderEl.textContent = "⏳";
 
     const img = new Image();
-
-    // IMPORTANT: correct URL only once
     const url = imgUrl(hash);
 
-    // prevent flicker / broken decode issues
     img.style.opacity = "0";
-    img.style.width = "100%";
-    img.style.height = "100%";
-    img.style.objectFit = "cover";
-    img.decoding = "async";
 
-    let resolved = false;
+    let done = false;
 
     img.onload = () => {
-      if (resolved) return;
-      resolved = true;
-
-      loader.remove();
+      if(done) return;
+      done = true;
+      loaderEl.remove();
       img.style.opacity = "1";
     };
 
     img.onerror = () => {
-      if (resolved) return;
-      resolved = true;
-
-      loader.textContent = "⚠️";
-      img.style.display = "none";
+      if(done) return;
+      done = true;
+      loaderEl.textContent = "❌";
     };
 
-    // attach BEFORE setting src (important for consistency)
-    thumb.appendChild(loader);
+    thumb.appendChild(loaderEl);
     thumb.appendChild(img);
 
-    // trigger load AFTER DOM insert (prevents race conditions)
     requestAnimationFrame(() => {
       img.src = url;
     });
 
     const label = document.createElement("div");
     label.className = "label";
-
-    label.innerHTML = `
-      <div>${item.model || "unknown"}</div>
-      <div>${item.impairment || ""}</div>
-      <div>${item.bias_subtype || ""}</div>
-      <div>${item.context_value || ""}</div>
-    `;
+    label.textContent =
+      `${item.model || ""} | ${item.bias_subtype || ""}`;
 
     card.appendChild(thumb);
     card.appendChild(label);
 
     card.onclick = () => show(item);
 
-    gridView.appendChild(card);
-  });
-}
-
-/* TABLE */
-function renderTable(){
-  table.innerHTML = "";
-
-  VIEW.forEach(item=>{
-    const row=document.createElement("div");
-    row.className="row";
-
-    row.innerHTML=`
-      <div>${item.model||""}</div>
-      <div>${item.prompt||""}</div>
-      <div>${item.dataset_type||""}</div>
-      <div>${item.bias_subtype||""}</div>
-    `;
-
-    row.onclick=()=>show(item);
-    table.appendChild(row);
+    container.appendChild(card);
   });
 }
 
@@ -234,33 +129,19 @@ function show(item){
 
   const url = imgUrl(item.hash_name);
 
-  loader?.classList.remove("hidden");
+  loader.classList.remove("hidden");
 
-  previewImg.onload = () => loader?.classList.add("hidden");
-  previewImg.onerror = () => loader?.classList.add("hidden");
+  previewImg.onload = () => loader.classList.add("hidden");
+  previewImg.onerror = () => loader.classList.add("hidden");
 
   previewImg.src = url;
 
-  if(meta){
-    meta.innerHTML = `
-      <b>Model:</b> ${item.model || "-"}<br>
-      <b>Prompt:</b> ${item.prompt || "-"}<br>
-      <b>Dataset:</b> ${item.dataset_type || "-"}<br>
-      <b>Context:</b> ${item.context_value || "-"}<br>
-      <b>Bias:</b> ${item.bias_subtype || "-"}<br>
-      <b>Hash:</b> ${item.hash_name || "-"}
-    `;
-  }
-}
-
-/* VIEW SWITCH */
-function setView(type){
-
-  if(type==="grid"){
-    gridView.style.display="grid";
-    tableView.style.display="none";
-  } else {
-    gridView.style.display="none";
-    tableView.style.display="block";
-  }
+  meta.innerHTML = `
+    <b>Model:</b> ${item.model || "-"}<br>
+    <b>Prompt:</b> ${item.prompt || "-"}<br>
+    <b>Dataset:</b> ${item.dataset_type || "-"}<br>
+    <b>Bias:</b> ${item.bias_subtype || "-"}<br>
+    <b>Context:</b> ${item.context_value || "-"}<br>
+    <b>Hash:</b> ${item.hash_name || "-"}
+  `;
 }
