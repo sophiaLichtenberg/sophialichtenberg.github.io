@@ -19,15 +19,16 @@
 
     <p id="stats">Loading...</p>
 
-    <input id="search"
-           class="search"
-           placeholder="Search prompt..." />
+    <!-- SEARCH (IMPORTANT: id MUST match JS) -->
+    <input id="search" class="search" placeholder="Search prompt..." />
 
+    <!-- MODEL DROPDOWN -->
     <label>Model</label>
     <select id="modelFilter" class="select">
       <option value="">All models</option>
     </select>
 
+    <!-- DATASET DROPDOWN -->
     <label>Dataset</label>
     <select id="datasetFilter" class="select">
       <option value="">All datasets</option>
@@ -37,7 +38,6 @@
 
   <!-- TABLE -->
   <div class="table-wrap">
-
     <div class="header-row">
       <div>Model</div>
       <div>Prompt</div>
@@ -45,18 +45,12 @@
     </div>
 
     <div id="table"></div>
-
   </div>
 
   <!-- PREVIEW -->
   <div class="preview">
-
     <img id="preview" />
-
-    <div id="meta">
-      Select an item
-    </div>
-
+    <div id="meta">Select an item</div>
   </div>
 
 </div>

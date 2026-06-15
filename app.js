@@ -1,37 +1,39 @@
-// =====================================================
+document.addEventListener("DOMContentLoaded", () => {
+
+// =====================
 // CONFIG
-// =====================================================
+// =====================
 
 const base =
   "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
 
 const PAGE_SIZE = 200;
 
-// =====================================================
+// =====================
 // STATE
-// =====================================================
+// =====================
 
 let DATA = [];
 let VIEW = [];
 let index = 0;
 
-// =====================================================
-// DOM
-// =====================================================
+// =====================
+// DOM (SAFE: now guaranteed to exist)
+// =====================
 
 const table = document.getElementById("table");
 const preview = document.getElementById("preview");
 const meta = document.getElementById("meta");
 
-const search = document.getElementById("search");
+const searchInput = document.getElementById("search");
 const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
 
 const stats = document.getElementById("stats");
 
-// =====================================================
-// LOAD CSV (GitHub Pages safe)
-// =====================================================
+// =====================
+// LOAD CSV
+// =====================
 
 async function loadCSV(){
 
@@ -61,17 +63,18 @@ async function loadCSV(){
   if (DATA.length) show(DATA[0]);
 }
 
-// =====================================================
+// =====================
 // DROPDOWNS
-// =====================================================
+// =====================
 
 function buildDropdowns(){
 
   const models = [...new Set(DATA.map(d => d.model))].sort();
   const datasets = [...new Set(DATA.map(d => d.dataset_type))].sort();
 
-  // MODEL DROPDOWN
   modelFilter.innerHTML = `<option value="">All models</option>`;
+  datasetFilter.innerHTML = `<option value="">All datasets</option>`;
+
   models.forEach(m => {
     const opt = document.createElement("option");
     opt.value = m;
@@ -79,8 +82,6 @@ function buildDropdowns(){
     modelFilter.appendChild(opt);
   });
 
-  // DATASET DROPDOWN
-  datasetFilter.innerHTML = `<option value="">All datasets</option>`;
   datasets.forEach(d => {
     const opt = document.createElement("option");
     opt.value = d;
@@ -89,13 +90,13 @@ function buildDropdowns(){
   });
 }
 
-// =====================================================
+// =====================
 // FILTERING
-// =====================================================
+// =====================
 
 function applyFilters(){
 
-  const s = search.value.toLowerCase();
+  const s = searchInput.value.toLowerCase();
   const m = modelFilter.value;
   const d = datasetFilter.value;
 
@@ -114,9 +115,9 @@ function applyFilters(){
   updateStats();
 }
 
-// =====================================================
+// =====================
 // RENDER (VIRTUAL SCROLL)
-// =====================================================
+// =====================
 
 function render(){
 
@@ -141,7 +142,7 @@ function render(){
   index += PAGE_SIZE;
 }
 
-// reset table
+// reset
 function resetRender(){
   table.innerHTML = "";
   index = 0;
@@ -159,16 +160,14 @@ document.querySelector(".table-wrap")
 
 });
 
-// =====================================================
-// PREVIEW PANEL
-// =====================================================
+// =====================
+// PREVIEW
+// =====================
 
 function show(item){
 
-  const imgUrl =
+  preview.src =
     base + item.hash_name + ".png";
-
-  preview.src = imgUrl;
 
   meta.innerHTML = `
     <b>Model:</b> ${item.model || "-"}<br>
@@ -179,25 +178,27 @@ function show(item){
   `;
 }
 
-// =====================================================
+// =====================
 // STATS
-// =====================================================
+// =====================
 
 function updateStats(){
   stats.textContent =
     `Showing ${VIEW.length} / ${DATA.length}`;
 }
 
-// =====================================================
+// =====================
 // EVENTS
-// =====================================================
+// =====================
 
-search.addEventListener("input", applyFilters);
+searchInput.addEventListener("input", applyFilters);
 modelFilter.addEventListener("change", applyFilters);
 datasetFilter.addEventListener("change", applyFilters);
 
-// =====================================================
-// INIT
-// =====================================================
+// =====================
+// START
+// =====================
 
 loadCSV();
+
+});
