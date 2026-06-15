@@ -13,12 +13,6 @@ const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
 const impairmentFilter = document.getElementById("impairmentFilter");
 
-/* TAB */
-window.openTab = function(tab){
-  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-  document.getElementById(tab).classList.add("active");
-};
-
 /* LOAD CSV */
 async function loadCSV(){
 
@@ -43,18 +37,19 @@ async function loadCSV(){
 
 /* FILTERS */
 function buildFilters(){
+
   fill(modelFilter, [...new Set(DATA.map(d=>d.model))]);
   fill(datasetFilter, [...new Set(DATA.map(d=>d.dataset_type))]);
   fill(impairmentFilter, [...new Set(DATA.map(d=>d.impairment).filter(Boolean))]);
 }
 
-function fill(sel, vals){
-  sel.innerHTML = `<option value="">All</option>`;
-  vals.forEach(v=>{
-    const o = document.createElement("option");
-    o.value = v;
-    o.textContent = v;
-    sel.appendChild(o);
+function fill(select, values){
+  select.innerHTML = `<option value="">All</option>`;
+  values.forEach(v=>{
+    const opt = document.createElement("option");
+    opt.value = v;
+    opt.textContent = v;
+    select.appendChild(opt);
   });
 }
 
@@ -76,7 +71,7 @@ function applyFilters(){
   renderGrid();
 }
 
-/* GRID RENDER */
+/* GRID */
 function renderGrid(){
 
   grid.innerHTML = "";
@@ -86,8 +81,7 @@ function renderGrid(){
     const div = document.createElement("div");
     div.className = "tile";
 
-    const url =
-      base + item.hash_name + ".png";   // IMPORTANT FIX
+    const url = base + item.hash_name + ".png";
 
     div.innerHTML = `
       <img src="${url}">
@@ -108,8 +102,7 @@ function renderGrid(){
 /* PREVIEW */
 function show(item){
 
-  const url =
-    base + item.hash_name + ".png";
+  const url = base + item.hash_name + ".png";
 
   preview.src = url;
 
@@ -122,10 +115,10 @@ function show(item){
 }
 
 /* EVENTS */
-search.oninput = applyFilters;
-modelFilter.onchange = applyFilters;
-datasetFilter.onchange = applyFilters;
-impairmentFilter.onchange = applyFilters;
+search.addEventListener("input", applyFilters);
+modelFilter.addEventListener("change", applyFilters);
+datasetFilter.addEventListener("change", applyFilters);
+impairmentFilter.addEventListener("change", applyFilters);
 
 /* START */
 loadCSV();

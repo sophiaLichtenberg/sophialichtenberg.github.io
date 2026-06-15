@@ -15,7 +15,7 @@
   <!-- SIDEBAR -->
   <div class="sidebar">
 
-    <h2>Filters</h2>
+    <h2>Dataset Explorer</h2>
 
     <input id="search" class="search" placeholder="Search prompt..." />
 
@@ -23,32 +23,16 @@
     <select id="datasetFilter" class="select"></select>
     <select id="impairmentFilter" class="select"></select>
 
-    <button class="btn ghost" onclick="openTab('home')">Home</button>
-    <button class="btn" onclick="openTab('dataset')">Dataset</button>
-
   </div>
 
-  <!-- MAIN -->
+  <!-- MAIN GRID -->
   <div class="main">
 
-    <!-- HOME -->
-    <div id="home" class="tab active">
-      <div class="container">
-        <h1>Sophia Lichtenberg</h1>
-        <p>Human-centered AI research.</p>
-      </div>
-    </div>
-
-    <!-- GRID TAB -->
-    <div id="dataset" class="tab">
-
-      <div class="grid-wrap" id="grid"></div>
-
-    </div>
+    <div class="grid" id="grid"></div>
 
   </div>
 
-  <!-- RIGHT PANEL -->
+  <!-- RIGHT PREVIEW -->
   <div class="preview">
 
     <img id="preview" />
