@@ -4,7 +4,6 @@ const base =
 let DATA = [];
 let VIEW = [];
 
-/* SAFE DOM ACCESS */
 const $ = (id) => document.getElementById(id);
 
 let search, modelFilter, datasetFilter, impairmentFilter;
@@ -12,7 +11,6 @@ let gridView, table, tableView;
 let previewImg, meta, loader;
 let searchBtn;
 
-/* INIT */
 window.addEventListener("DOMContentLoaded", () => {
 
   search = $("search");
@@ -30,7 +28,7 @@ window.addEventListener("DOMContentLoaded", () => {
   searchBtn = $("searchBtn");
 
   if (!gridView || !table || !previewImg) {
-    console.error("Missing DOM elements. Check HTML IDs.");
+    console.error("Missing DOM elements");
     return;
   }
 
@@ -40,10 +38,8 @@ window.addEventListener("DOMContentLoaded", () => {
   setView("grid");
 });
 
-/* =========================
-   CSV LOAD
-========================= */
-async function loadCSV() {
+/* CSV */
+async function loadCSV(){
   try {
     const res = await fetch("hashed_metadata_df.csv");
     const text = await res.text();
@@ -54,101 +50,78 @@ async function loadCSV() {
     DATA = lines.slice(1).map(line => {
       const cols = line.split(",");
       const obj = {};
-      headers.forEach((h, i) => {
-        obj[h.trim()] = (cols[i] || "").trim();
-      });
+      headers.forEach((h,i)=> obj[h.trim()] = (cols[i]||"").trim());
       return obj;
     });
 
     buildFilters();
 
-  } catch (e) {
-    console.error("CSV load error:", e);
+  } catch(e){
+    console.error("CSV error", e);
   }
 }
 
-/* =========================
-   FILTERS
-========================= */
-function buildFilters() {
+/* FILTERS */
+function buildFilters(){
   fill(modelFilter, uniq("model"));
   fill(datasetFilter, uniq("dataset_type"));
   fill(impairmentFilter, uniq("impairment").filter(Boolean));
 }
 
-function uniq(key) {
-  return [...new Set(DATA.map(d => d[key]))];
+function uniq(k){
+  return [...new Set(DATA.map(d=>d[k]))];
 }
 
-function fill(select, values) {
-  if (!select) return;
-
+function fill(select, values){
+  if(!select) return;
   select.innerHTML = `<option value="">All</option>`;
-  values.forEach(v => {
-    const opt = document.createElement("option");
-    opt.value = v;
-    opt.textContent = v;
-    select.appendChild(opt);
+  values.forEach(v=>{
+    const o=document.createElement("option");
+    o.value=v;
+    o.textContent=v;
+    select.appendChild(o);
   });
 }
 
-/* =========================
-   SEARCH (ONLY ON BUTTON)
-========================= */
-function applyFilters() {
+/* SEARCH */
+function applyFilters(){
 
-  const s = (search?.value || "").toLowerCase();
-  const m = modelFilter?.value;
-  const d = datasetFilter?.value;
-  const i = impairmentFilter?.value;
+  const s = (search?.value||"").toLowerCase();
 
   VIEW = DATA.filter(x =>
-    (!s || (x.prompt || "").toLowerCase().includes(s)) &&
-    (!m || x.model === m) &&
-    (!d || x.dataset_type === d) &&
-    (!i || x.impairment === i)
+    (!s || (x.prompt||"").toLowerCase().includes(s))
   );
 
   renderGrid();
   renderTable();
-
-  if (VIEW.length) show(VIEW[0]);
 }
 
-/* =========================
-   BUILD IMAGE URL (IMPORTANT FIX)
-========================= */
-function buildUrl(hash) {
-  if (!hash) return "";
-  return base + encodeURIComponent(`${hash}.png`);
+/* FIXED IMAGE URL */
+function imgUrl(hash){
+  if(!hash) return "";
+  return base + encodeURIComponent(hash + ".png");
 }
 
-/* =========================
-   GRID VIEW (NO BROKEN PATHS)
-========================= */
-function renderGrid() {
+/* GRID */
+function renderGrid(){
 
-  if (!gridView) return;
+  if(!gridView) return;
 
   gridView.innerHTML = "";
 
   VIEW.forEach(item => {
 
     const hash = item.hash_name;
-    if (!hash) return;
-
-    const imgUrl = buildUrl(hash);
+    if(!hash) return;
 
     const card = document.createElement("div");
     card.className = "card";
 
     card.innerHTML = `
       <div class="thumb">
-        <img loading="lazy" src="${imgUrl}" />
+        <img loading="lazy" src="${imgUrl(hash)}" />
       </div>
-      <div class="label">
-        ${item.model || "unknown"}
-      </div>
+      <div class="label">${item.model || ""}</div>
     `;
 
     card.onclick = () => show(item);
@@ -157,55 +130,38 @@ function renderGrid() {
   });
 }
 
-/* =========================
-   TABLE VIEW
-========================= */
-function renderTable() {
-
-  if (!table) return;
-
+/* TABLE */
+function renderTable(){
   table.innerHTML = "";
 
-  VIEW.forEach(item => {
+  VIEW.forEach(item=>{
+    const row=document.createElement("div");
+    row.className="row";
 
-    const row = document.createElement("div");
-    row.className = "row";
-
-    row.innerHTML = `
-      <div>${item.model || ""}</div>
-      <div>${item.prompt || ""}</div>
-      <div>${item.dataset_type || ""}</div>
+    row.innerHTML=`
+      <div>${item.model||""}</div>
+      <div>${item.prompt||""}</div>
+      <div>${item.dataset_type||""}</div>
     `;
 
-    row.onclick = () => show(item);
-
+    row.onclick=()=>show(item);
     table.appendChild(row);
   });
 }
 
-/* =========================
-   IMAGE PREVIEW (SAFE + LOADER)
-========================= */
-function show(item) {
+/* PREVIEW */
+function show(item){
 
-  if (!item?.hash_name) return;
+  const url = imgUrl(item.hash_name);
 
-  const url = buildUrl(item.hash_name);
+  loader?.classList.remove("hidden");
 
-  if (loader) loader.classList.remove("hidden");
-
-  previewImg.onload = () => {
-    loader?.classList.add("hidden");
-  };
-
-  previewImg.onerror = () => {
-    loader?.classList.add("hidden");
-    console.warn("Image failed:", url);
-  };
+  previewImg.onload = () => loader?.classList.add("hidden");
+  previewImg.onerror = () => loader?.classList.add("hidden");
 
   previewImg.src = url;
 
-  if (meta) {
+  if(meta){
     meta.innerHTML = `
       <b>Model:</b> ${item.model || "-"}<br>
       <b>Prompt:</b> ${item.prompt || "-"}<br>
@@ -215,18 +171,14 @@ function show(item) {
   }
 }
 
-/* =========================
-   VIEW SWITCH
-========================= */
-function setView(type) {
+/* VIEW SWITCH */
+function setView(type){
 
-  if (!gridView || !tableView) return;
-
-  if (type === "grid") {
-    gridView.style.display = "grid";
-    tableView.style.display = "none";
+  if(type==="grid"){
+    gridView.style.display="grid";
+    tableView.style.display="none";
   } else {
-    gridView.style.display = "none";
-    tableView.style.display = "block";
+    gridView.style.display="none";
+    tableView.style.display="block";
   }
 }
