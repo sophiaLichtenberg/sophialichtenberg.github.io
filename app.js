@@ -154,10 +154,11 @@ function renderGrid() {
   VIEW.forEach(item => {
 
     const hash = item.hash_name;
+    const file_name = item.file_name;
     if (!hash) return;
 
     /* OPTIONAL: collapse duplicates */
-    const key = hash.replace(/_\d+$/, "");
+    const key = file_name.replace(/_\d+$/, "");
     if (seen.has(key)) return;
     seen.add(key);
 
