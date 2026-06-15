@@ -1,3 +1,7 @@
+/* =====================================================
+   BASE
+===================================================== */
+
 body{
   margin:0;
   font-family:system-ui, Arial, sans-serif;
@@ -5,141 +9,247 @@ body{
   color:#e5e7eb;
 }
 
-/* BACKGROUND */
-.ambient-bg,
-.particles,
-.cursor-glow{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-}
+/* =====================================================
+   APP LAYOUT
+===================================================== */
 
-.ambient-bg::before{
-  content:"";
-  position:absolute;
-  inset:-20%;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(56,189,248,.12), transparent 30%),
-    radial-gradient(circle at 80% 30%, rgba(99,102,241,.10), transparent 30%),
-    radial-gradient(circle at 50% 80%, rgba(14,165,233,.08), transparent 30%);
-  filter:blur(40px);
-}
-
-/* LAYOUT */
-.container{
-  max-width:1200px;
-  margin:auto;
-  padding:50px 20px;
-}
-
-.hero h1{
-  margin:0;
-}
-
-/* TABS */
-.tabs{
-  display:flex;
-  gap:10px;
-  margin:20px 0 30px;
-}
-
-.tab-btn{
-  padding:10px 14px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.05);
-  color:#fff;
-  cursor:pointer;
-}
-
-.tab-btn.active{
-  background:rgba(56,189,248,.2);
-  border-color:rgba(56,189,248,.4);
-}
-
-/* DATASET LAYOUT */
-.dataset-layout{
+.app{
   display:grid;
-  grid-template-columns:300px 1fr 380px;
-  gap:16px;
+  grid-template-columns:260px 1fr 420px;
+  height:100vh;
+  overflow:hidden;
 }
 
-/* FILTERS */
-.dataset-filters{
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar{
   padding:16px;
-  border-radius:12px;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.1);
+
+  border-right:1px solid rgba(255,255,255,0.08);
+
+  background:rgba(17,24,39,0.6);
+  backdrop-filter:blur(12px);
 }
 
-.filter{
-  margin-bottom:12px;
+.sidebar h2{
+  margin:0 0 10px 0;
+  font-size:18px;
+  color:#38bdf8;
 }
 
-.filter label{
-  font-size:12px;
-  color:#94a3b8;
-  display:block;
-  margin-bottom:6px;
-}
-
-.filter input{
+.search{
   width:100%;
-  padding:10px;
-  border-radius:8px;
+  padding:10px 12px;
 
-  background:rgba(0,0,0,.3);
-  color:#fff;
+  margin-bottom:10px;
 
-  border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;
+
+  border:1px solid rgba(255,255,255,0.1);
+
+  background:#111827;
+  color:#e5e7eb;
+
   outline:none;
 }
 
-/* GRID */
-.dataset-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:10px;
-
-  max-height:750px;
-  overflow:auto;
+.search:focus{
+  border-color:#38bdf8;
+  box-shadow:0 0 0 2px rgba(56,189,248,0.15);
 }
 
-.dataset-card{
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:12px;
-  padding:8px;
-  cursor:pointer;
-}
-
-.dataset-card img{
-  width:100%;
-  border-radius:8px;
-}
-
-.dataset-card small{
-  display:block;
-  margin-top:6px;
-  font-size:11px;
-  color:#94a3b8;
-}
-
-/* PREVIEW */
-.dataset-preview{
-  border-radius:12px;
-  overflow:hidden;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.1);
-}
-
-.dataset-preview img{
-  width:100%;
-  display:block;
-}
-
-.dataset-info{
-  padding:12px;
+/* stats */
+#stats{
   font-size:12px;
-  color:#cbd5e1;
+  color:#94a3b8;
+  margin-bottom:12px;
+}
+
+/* =====================================================
+   TABLE AREA (VIRTUAL SCROLL)
+===================================================== */
+
+.table-wrap{
+  overflow:auto;
+  height:100vh;
+
+  background:#0b0f19;
+}
+
+/* header row */
+.header-row{
+  display:grid;
+  grid-template-columns:140px 1fr 140px;
+
+  padding:12px 10px;
+
+  position:sticky;
+  top:0;
+  z-index:2;
+
+  background:rgba(11,15,25,0.95);
+  backdrop-filter:blur(10px);
+
+  border-bottom:1px solid rgba(255,255,255,0.08);
+
+  font-size:12px;
+  color:#38bdf8;
+}
+
+/* dataset rows */
+.row{
+  display:grid;
+  grid-template-columns:140px 1fr 140px;
+
+  padding:10px;
+
+  border-bottom:1px solid rgba(255,255,255,0.05);
+
+  cursor:pointer;
+
+  transition:background 0.15s ease;
+}
+
+.row:hover{
+  background:rgba(56,189,248,0.08);
+}
+
+/* =====================================================
+   PREVIEW PANEL
+===================================================== */
+
+.preview{
+  border-left:1px solid rgba(255,255,255,0.08);
+
+  background:rgba(17,24,39,0.6);
+  backdrop-filter:blur(12px);
+
+  padding:16px;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:12px;
+}
+
+.preview img{
+  width:100%;
+  border-radius:12px;
+
+  background:#111827;
+
+  object-fit:contain;
+  min-height:200px;
+}
+
+#meta{
+  font-size:13px;
+  color:#94a3b8;
+  line-height:1.5;
+}
+
+/* =====================================================
+   DROPDOWNS (datalist styling fallback)
+===================================================== */
+
+input[list]{
+  appearance:none;
+}
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+.table-wrap::-webkit-scrollbar{
+  width:10px;
+}
+
+.table-wrap::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.table-wrap::-webkit-scrollbar-thumb{
+  background:rgba(56,189,248,0.2);
+  border-radius:10px;
+}
+
+.table-wrap::-webkit-scrollbar-thumb:hover{
+  background:rgba(56,189,248,0.35);
+}
+
+/* =====================================================
+   LIGHT MODE (optional toggle support)
+===================================================== */
+
+body.light{
+  background:#f6f7fb;
+  color:#111827;
+}
+
+body.light .sidebar{
+  background:white;
+  border-color:#e5e7eb;
+}
+
+body.light .search{
+  background:white;
+  color:#111827;
+  border-color:#e5e7eb;
+}
+
+body.light .table-wrap{
+  background:white;
+}
+
+body.light .header-row{
+  background:white;
+  border-color:#e5e7eb;
+}
+
+body.light .row{
+  border-color:#e5e7eb;
+}
+
+body.light .preview{
+  background:white;
+  border-color:#e5e7eb;
+}
+
+body.light #meta{
+  color:#374151;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1100px){
+
+  .app{
+    grid-template-columns:240px 1fr;
+  }
+
+  .preview{
+    display:none;
+  }
+}
+
+@media (max-width: 700px){
+
+  .app{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+
+  .header-row,
+  .row{
+    grid-template-columns:120px 1fr;
+  }
 }

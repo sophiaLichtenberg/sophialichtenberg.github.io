@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 <title>Dataset Explorer</title>
 
 <link rel="stylesheet" href="style.css">
@@ -10,87 +12,79 @@
 
 <body>
 
-<div class="ambient-bg"></div>
-<div class="particles"></div>
-<div class="cursor-glow"></div>
+<!-- =========================
+  APP LAYOUT
+========================= -->
 
-<div class="container">
+<div class="app">
 
-<!-- HERO -->
-<header class="hero">
-  <div>
-    <h1>Dataset Explorer</h1>
-    <div class="subtitle">Interactive image dataset viewer</div>
-  </div>
-</header>
+  <!-- =========================
+    SIDEBAR (FILTERS)
+  ========================== -->
+  <div class="sidebar">
 
-<!-- TABS -->
-<nav class="tabs">
-  <button class="tab-btn active" data-tab="home">Home</button>
-  <button class="tab-btn" data-tab="dataset">Dataset</button>
-</nav>
+    <h2>Dataset Explorer</h2>
 
-<!-- HOME -->
-<div id="home" class="tab-content active">
-  <section>
-    <h2>Home</h2>
-    <p>Welcome to the dataset viewer.</p>
-  </section>
-</div>
+    <p id="stats">Loading...</p>
 
-<!-- DATASET -->
-<div id="dataset" class="tab-content">
+    <input
+      id="search"
+      class="search"
+      type="text"
+      placeholder="Search prompt..."
+    />
 
-<section>
+    <input
+      id="modelFilter"
+      class="search"
+      list="models"
+      placeholder="Filter by model"
+    />
+    <datalist id="models"></datalist>
 
-<h2>Dataset Viewer</h2>
-
-<div class="dataset-layout">
-
-  <!-- FILTER PANEL -->
-  <div class="dataset-filters">
-
-    <div class="filter">
-      <label>Search prompt</label>
-      <input id="searchInput" placeholder="type prompt..." />
-    </div>
-
-    <div class="filter">
-      <label>Model</label>
-      <input id="modelFilter" list="modelList" placeholder="type or select..." />
-      <datalist id="modelList"></datalist>
-    </div>
-
-    <div class="filter">
-      <label>Dataset</label>
-      <input id="datasetFilter" list="datasetList" placeholder="type or select..." />
-      <datalist id="datasetList"></datalist>
-    </div>
+    <input
+      id="datasetFilter"
+      class="search"
+      list="datasets"
+      placeholder="Filter by dataset"
+    />
+    <datalist id="datasets"></datalist>
 
   </div>
 
-  <!-- GRID -->
-  <div class="dataset-grid" id="grid"></div>
+  <!-- =========================
+    TABLE VIEW (VIRTUAL LIST)
+  ========================== -->
+  <div class="table-wrap">
 
-  <!-- PREVIEW -->
-  <div class="dataset-preview">
+    <div class="header-row">
+      <div><b>Model</b></div>
+      <div><b>Prompt</b></div>
+      <div><b>Dataset</b></div>
+    </div>
 
-    <img id="preview" />
+    <div id="table"></div>
 
-    <div class="dataset-info" id="info">
-      Click an image
+  </div>
+
+  <!-- =========================
+    PREVIEW PANEL
+  ========================== -->
+  <div class="preview">
+
+    <img id="preview" alt="preview image"/>
+
+    <div id="meta">
+      <b>No selection</b>
     </div>
 
   </div>
 
 </div>
 
-</section>
-
-</div>
-
-</div>
-
+<!-- =========================
+  SCRIPT
+========================= -->
 <script src="app.js"></script>
 
 </body>

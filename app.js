@@ -1,154 +1,207 @@
-// =====================
-// TAB SYSTEM
-// =====================
-
-document.querySelectorAll(".tab-btn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    const tab = btn.dataset.tab;
-
-    document.querySelectorAll(".tab-content")
-      .forEach(t=>t.classList.remove("active"));
-
-    document.querySelectorAll(".tab-btn")
-      .forEach(b=>b.classList.remove("active"));
-
-    document.getElementById(tab).classList.add("active");
-    btn.classList.add("active");
-  });
-});
-
-// =====================
-// DATA
-// =====================
+// =====================================================
+// CONFIG
+// =====================================================
 
 const base =
-"https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
+  "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
 
-const data = [
-{
-  hash:"11208126882101814974",
-  model:"FLUX_schnell",
-  prompt:"Photo of a Person",
-  dataset:"No_Context_no_Bias"
-},
-{
-  hash:"14082437164622650326",
-  model:"FLUX_schnell",
-  prompt:"Photo of a Person",
-  dataset:"No_Context_no_Bias"
-},
-{
-  hash:"10797990572701187062",
-  model:"FLUX_schnell",
-  prompt:"Photo of a Person",
-  dataset:"No_Context_no_Bias"
-}
-];
+const PAGE_SIZE = 200;
 
-// =====================
+// =====================================================
+// STATE
+// =====================================================
+
+let DATA = [];
+let VIEW = [];
+let RENDER_INDEX = 0;
+
+// =====================================================
 // DOM
-// =====================
+// =====================================================
 
-const grid = document.getElementById("grid");
+const table = document.getElementById("table");
 const preview = document.getElementById("preview");
-const info = document.getElementById("info");
+const meta = document.getElementById("meta");
 
-const searchInput = document.getElementById("searchInput");
+const search = document.getElementById("search");
 const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
 
-// =====================
-// DROPDOWNS (TYPEABLE)
-// =====================
+const stats = document.getElementById("stats");
 
-function setupDropdowns(){
+const modelDatalist = document.getElementById("models");
+const datasetDatalist = document.getElementById("datasets");
 
-  const models = [...new Set(data.map(d=>d.model))];
-  const datasets = [...new Set(data.map(d=>d.dataset))];
+// =====================================================
+// LOAD CSV (GitHub Pages SAFE)
+// =====================================================
 
-  const modelList = document.getElementById("modelList");
-  const datasetList = document.getElementById("datasetList");
+async function loadCSV() {
 
-  models.forEach(m=>{
-    const opt = document.createElement("option");
-    opt.value = m;
-    modelList.appendChild(opt);
+  const res = await fetch("./hashed_metadata_df.csv");
+  const text = await res.text();
+
+  const lines = text.trim().split("\n");
+  const headers = lines[0].split(",");
+
+  DATA = lines.slice(1).map(line => {
+    const cols = line.split(",");
+    let obj = {};
+    headers.forEach((h, i) => {
+      obj[h.trim()] = (cols[i] || "").trim();
+    });
+    return obj;
   });
 
-  datasets.forEach(d=>{
-    const opt = document.createElement("option");
-    opt.value = d;
-    datasetList.appendChild(opt);
-  });
+  VIEW = DATA;
+
+  buildFilters();
+  resetRender();
+  renderNext();
+
+  updateStats();
+
+  if (DATA.length > 0) show(DATA[0]);
 }
 
-// =====================
-// RENDER
-// =====================
+// =====================================================
+// FILTER SYSTEM
+// =====================================================
 
-function render(list){
+function applyFilters() {
 
-  grid.innerHTML = "";
-
-  list.forEach(item=>{
-
-    const div = document.createElement("div");
-    div.className = "dataset-card";
-
-    div.innerHTML = `
-      <img src="${base + item.hash + ".png"}">
-      <small>${item.model}</small>
-    `;
-
-    div.onclick = ()=>{
-
-      preview.src = base + item.hash + ".png";
-
-      info.innerHTML = `
-        <b>${item.model}</b><br>
-        ${item.prompt}<br>
-        ${item.dataset}
-      `;
-    };
-
-    grid.appendChild(div);
-
-  });
-}
-
-// =====================
-// FILTER
-// =====================
-
-function applyFilters(){
-
-  const s = searchInput.value.toLowerCase();
+  const s = search.value.toLowerCase();
   const m = modelFilter.value.toLowerCase();
   const d = datasetFilter.value.toLowerCase();
 
-  const filtered = data.filter(x=>
-    x.prompt.toLowerCase().includes(s) &&
-    x.model.toLowerCase().includes(m) &&
-    x.dataset.toLowerCase().includes(d)
-  );
+  VIEW = DATA.filter(x => {
 
-  render(filtered);
+    return (
+      (x.prompt || "").toLowerCase().includes(s) &&
+      (x.model || "").toLowerCase().includes(m) &&
+      (x.dataset_type || "").toLowerCase().includes(d)
+    );
+  });
+
+  resetRender();
+  renderNext();
+  updateStats();
 }
 
-// =====================
+// =====================================================
+// RENDER (VIRTUAL SCROLL)
+// =====================================================
+
+function resetRender() {
+  table.innerHTML = "";
+  RENDER_INDEX = 0;
+}
+
+function renderNext() {
+
+  const slice = VIEW.slice(RENDER_INDEX, RENDER_INDEX + PAGE_SIZE);
+
+  slice.forEach(item => {
+
+    const row = document.createElement("div");
+    row.className = "row";
+
+    row.innerHTML = `
+      <div>${item.model}</div>
+      <div>${item.prompt}</div>
+      <div>${item.dataset_type}</div>
+    `;
+
+    row.addEventListener("click", () => show(item));
+
+    table.appendChild(row);
+  });
+
+  RENDER_INDEX += PAGE_SIZE;
+}
+
+// Infinite scroll
+document.querySelector(".table-wrap")
+  .addEventListener("scroll", (e) => {
+
+    const el = e.target;
+
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) {
+      renderNext();
+    }
+  });
+
+// =====================================================
+// PREVIEW PANEL
+// =====================================================
+
+function show(item) {
+
+  const imgUrl = base + item.hash_name + ".png";
+
+  preview.src = imgUrl;
+
+  meta.innerHTML = `
+    <b>${item.model}</b><br>
+    ${item.prompt}<br>
+    ${item.dataset_type}<br><br>
+    <small>seed: ${item.seed || "—"}</small>
+  `;
+}
+
+// =====================================================
+// FILTER DROPDOWNS
+// =====================================================
+
+function buildFilters() {
+
+  const models = [...new Set(DATA.map(d => d.model))];
+  const datasets = [...new Set(DATA.map(d => d.dataset_type))];
+
+  modelDatalist.innerHTML =
+    models.map(m => `<option value="${m}">`).join("");
+
+  datasetDatalist.innerHTML =
+    datasets.map(d => `<option value="${d}">`).join("");
+}
+
+// =====================================================
+// STATS
+// =====================================================
+
+function updateStats() {
+
+  stats.innerHTML = `
+    Showing <b>${VIEW.length}</b> / ${DATA.length}
+  `;
+}
+
+// =====================================================
+// DEBOUNCE (IMPORTANT FOR PERFORMANCE)
+// =====================================================
+
+function debounce(fn, delay = 200) {
+
+  let t;
+
+  return (...args) => {
+
+    clearTimeout(t);
+
+    t = setTimeout(() => fn(...args), delay);
+  };
+}
+
+// =====================================================
 // EVENTS
-// =====================
+// =====================================================
 
-searchInput.addEventListener("input", applyFilters);
-modelFilter.addEventListener("input", applyFilters);
-datasetFilter.addEventListener("input", applyFilters);
+search.addEventListener("input", debounce(applyFilters));
+modelFilter.addEventListener("input", debounce(applyFilters));
+datasetFilter.addEventListener("input", debounce(applyFilters));
 
-// =====================
-// INIT
-// =====================
+// =====================================================
+// START
+// =====================================================
 
-setupDropdowns();
-render(data);
-
-preview.src = base + data[0].hash + ".png";
-info.innerHTML = data[0].model;
+loadCSV();
