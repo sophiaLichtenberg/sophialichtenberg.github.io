@@ -36,122 +36,14 @@ body{
   animation:breathe 16s ease-in-out infinite alternate;
 }
 
-.particles{
-  position:fixed;
-  inset:0;
-  background-image: radial-gradient(rgba(56,189,248,.08) 1px, transparent 1px);
-  background-size:40px 40px;
-  animation: drift 35s linear infinite;
-  z-index:-1;
-  pointer-events:none;
-}
-
-.cursor-glow{
-  position:fixed;
-  width:260px;
-  height:260px;
-
-  background: radial-gradient(
-    circle,
-    rgba(56,189,248,.22) 0%,
-    rgba(56,189,248,.10) 35%,
-    transparent 70%
-  );
-
-  transform:translate(-50%,-50%);
-  pointer-events:none;
-  filter:blur(30px);
-  z-index:1;
-
-  transition:left .08s ease-out, top .08s ease-out;
-}
-
 /* =====================================================
    LAYOUT
 ===================================================== */
 
 .container{
-  max-width:1000px;
+  max-width:1200px;
   margin:auto;
   padding:60px 20px;
-  position:relative;
-  z-index:2;
-}
-
-/* =====================================================
-   HERO
-===================================================== */
-
-.hero{
-  display:flex;
-  align-items:center;
-  gap:22px;
-  margin-bottom:30px;
-}
-
-.avatar{
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  object-fit:cover;
-
-  border:2px solid #38bdf8;
-  box-shadow:0 0 30px rgba(56,189,248,.18);
-}
-
-h1{
-  margin:0;
-  font-size:38px;
-}
-
-.subtitle{
-  margin-top:8px;
-  color:#94a3b8;
-  line-height:1.6;
-}
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
-.buttons{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
-
-.btn{
-  border:none;
-  padding:10px 15px;
-  border-radius:10px;
-  cursor:pointer;
-
-  background:#38bdf8;
-  color:#0b0f19;
-  font-weight:600;
-
-  transition:.2s;
-}
-
-.btn:hover{
-  transform:translateY(-2px);
-}
-
-.btn.ghost{
-  background:transparent;
-  border:1px solid #38bdf8;
-  color:#38bdf8;
-}
-
-/* =====================================================
-   SECTIONS
-===================================================== */
-
-section{
-  margin-top:34px;
-  padding-top:22px;
-  border-top:1px solid rgba(148,163,184,.14);
 }
 
 /* =====================================================
@@ -162,7 +54,6 @@ section{
   display:flex;
   gap:10px;
   margin:20px 0 30px;
-  flex-wrap:wrap;
 }
 
 .tab-btn{
@@ -177,88 +68,137 @@ section{
   transition:.2s;
 }
 
-.tab-btn:hover{
-  transform:translateY(-2px);
-  border-color:rgba(56,189,248,.3);
-}
-
 .tab-btn.active{
   background:rgba(56,189,248,.12);
   border-color:rgba(56,189,248,.35);
   color:#38bdf8;
 }
 
-.tab-content{
-  display:none;
-}
-
-.tab-content.active{
-  display:block;
-}
-
 /* =====================================================
-   DATASET LAYOUT
+   DATASET FULL INTERACTIVE LAYOUT
 ===================================================== */
 
 .dataset-layout{
   display:grid;
-  grid-template-columns:1fr 420px;
+  grid-template-columns:260px 1fr 420px;
   gap:18px;
-  align-items:start;
 }
 
 /* =====================================================
-   TABLE
+   LEFT SIDEBAR (FILTERS + DROPDOWNS)
 ===================================================== */
 
-.table-container{
-  max-height:700px;
-  overflow:auto;
+.dataset-sidebar{
+  position:sticky;
+  top:20px;
 
+  padding:16px;
   border-radius:16px;
+
   background:rgba(17,24,39,.55);
   border:1px solid rgba(148,163,184,.12);
+
+  backdrop-filter:blur(12px);
 }
 
-#dataTable{
-  width:100%;
-  border-collapse:collapse;
+.dataset-sidebar h3{
+  margin:0 0 12px 0;
   font-size:13px;
-}
-
-#dataTable thead{
-  position:sticky;
-  top:0;
-  background:rgba(11,15,25,.95);
-}
-
-#dataTable th{
-  text-align:left;
-  padding:12px;
   color:#38bdf8;
 }
 
-#dataTable td{
-  padding:10px 12px;
-  border-top:1px solid rgba(148,163,184,.08);
-  color:#cbd5e1;
-  white-space:nowrap;
+/* DROPDOWNS (THIS IS WHAT YOU WERE MISSING) */
+
+.filter-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-bottom:12px;
 }
 
-#dataTable tbody tr{
+.filter-group label{
+  font-size:11px;
+  color:#94a3b8;
+}
+
+/* SELECT DROPDOWN */
+.dataset-sidebar select{
+  width:100%;
+  padding:10px;
+
+  border-radius:10px;
+
+  background:rgba(0,0,0,.25);
+  color:#e5e7eb;
+
+  border:1px solid rgba(148,163,184,.15);
+
+  outline:none;
+  cursor:pointer;
+}
+
+/* INPUT SEARCH */
+.dataset-sidebar input{
+  width:100%;
+  padding:10px;
+
+  border-radius:10px;
+
+  background:rgba(0,0,0,.25);
+  color:#e5e7eb;
+
+  border:1px solid rgba(148,163,184,.15);
+  outline:none;
+}
+
+/* =====================================================
+   CENTER GRID (IMAGE RESULTS)
+===================================================== */
+
+.dataset-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
+  gap:12px;
+
+  max-height:750px;
+  overflow:auto;
+  padding-right:6px;
+}
+
+/* IMAGE CARD */
+.dataset-card{
+  padding:10px;
+  border-radius:14px;
+
+  background:rgba(17,24,39,.45);
+  border:1px solid rgba(148,163,184,.12);
+
   cursor:pointer;
   transition:.2s;
 }
 
-#dataTable tbody tr:hover{
-  background:rgba(56,189,248,.08);
+.dataset-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(56,189,248,.3);
+}
+
+.dataset-card img{
+  width:100%;
+  border-radius:10px;
+}
+
+.dataset-card small{
+  display:block;
+  margin-top:6px;
+  font-size:11px;
+  color:#94a3b8;
 }
 
 /* =====================================================
-   IMAGE PANEL
+   RIGHT INSPECTOR (PREVIEW)
 ===================================================== */
 
-.image-panel{
+.dataset-inspector{
   position:sticky;
   top:20px;
 
@@ -272,9 +212,8 @@ section{
   flex-direction:column;
 }
 
-#preview{
+.dataset-inspector img{
   width:100%;
-  display:block;
 }
 
 .dataset-meta{
@@ -292,11 +231,6 @@ section{
    ANIMATIONS
 ===================================================== */
 
-@keyframes drift{
-  from{transform:translateY(0);}
-  to{transform:translateY(-120px);}
-}
-
 @keyframes breathe{
   from{transform:scale(1);}
   to{transform:scale(1.08) translateY(-20px);}
@@ -311,27 +245,16 @@ body.light{
   color:#111827;
 }
 
-body.light .tab-btn{
-  background:#fff;
-  border-color:#e5e7eb;
-  color:#374151;
-}
-
-body.light .tab-btn.active{
-  background:#e0f2fe;
-  color:#0284c7;
-}
-
-body.light .table-container,
-body.light .image-panel{
+body.light .dataset-sidebar,
+body.light .dataset-card,
+body.light .dataset-inspector{
   background:#fff;
   border-color:#e5e7eb;
 }
 
-body.light #dataTable td{
-  color:#374151;
-}
-
-body.light .dataset-meta{
-  color:#374151;
+body.light .dataset-sidebar select,
+body.light .dataset-sidebar input{
+  background:#f9fafb;
+  color:#111827;
+  border-color:#e5e7eb;
 }
