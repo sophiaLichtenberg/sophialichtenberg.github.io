@@ -191,3 +191,18 @@ body{
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 10px;
 }
+
+.group-title.collapsible {
+  cursor: pointer;
+  user-select: none;
+}
+
+.group-title.collapsible::after {
+  content: " ▾";
+  float: right;
+  transition: transform 0.2s ease;
+}
+
+.group-title.collapsible.collapsed::after {
+  transform: rotate(-90deg);
+}

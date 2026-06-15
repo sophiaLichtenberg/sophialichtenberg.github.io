@@ -174,16 +174,26 @@ function renderGrid() {
 
   Object.entries(groups).forEach(([groupKey, items]) => {
 
-    // SECTION WRAPPER
+    // SECTION
     const section = document.createElement("div");
     section.className = "group-section";
 
-    const title = document.createElement("div");
-    title.className = "group-title";
-    title.textContent = groupKey;
+    // HEADER (CLICKABLE)
+    const header = document.createElement("div");
+    header.className = "group-title collapsible";
+    header.textContent = `${groupKey} (${items.length})`;
 
+    // CONTENT WRAPPER
     const grid = document.createElement("div");
     grid.className = "grid-inner";
+
+    let collapsed = false;
+
+    header.onclick = () => {
+      collapsed = !collapsed;
+      grid.style.display = collapsed ? "none" : "grid";
+      header.classList.toggle("collapsed", collapsed);
+    };
 
     items.forEach(item => {
 
@@ -241,18 +251,18 @@ function renderGrid() {
 
       card.appendChild(thumb);
       card.appendChild(label);
+
       card.onclick = () => show(item);
 
       grid.appendChild(card);
     });
 
-    section.appendChild(title);
+    section.appendChild(header);
     section.appendChild(grid);
 
     gridView.appendChild(section);
   });
 }
-
 /* =========================
    TABLE (CLEAN FIX)
 ========================= */
