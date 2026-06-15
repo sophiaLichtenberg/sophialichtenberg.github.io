@@ -1,28 +1,28 @@
-/* =====================================================
-   BASE
-===================================================== */
+/* =========================
+   BASE THEME (RESTORED DARK)
+========================= */
 
 body{
   margin:0;
   font-family:system-ui, Arial;
   background:#0b0f19;
   color:#e5e7eb;
+  overflow:hidden;
 }
 
-/* =====================================================
-   APP LAYOUT (3 COLUMNS)
-===================================================== */
+/* =========================
+   APP LAYOUT
+========================= */
 
 .app{
   display:grid;
   grid-template-columns:260px 1fr 420px;
   height:100vh;
-  overflow:hidden;
 }
 
-/* =====================================================
+/* =========================
    SIDEBAR
-===================================================== */
+========================= */
 
 .sidebar{
   padding:16px;
@@ -33,8 +33,7 @@ body{
 
 .sidebar h2{
   color:#38bdf8;
-  margin-bottom:14px;
-  font-size:16px;
+  margin-bottom:12px;
 }
 
 .search,
@@ -48,36 +47,28 @@ body{
 
   background:#111827;
   color:#e5e7eb;
-
   outline:none;
 }
 
-.search:focus,
-.select:focus{
-  border-color:#38bdf8;
-  box-shadow:0 0 0 3px rgba(56,189,248,0.15);
-}
-
-/* =====================================================
-   CENTER TABLE
-===================================================== */
+/* =========================
+   TABLE
+========================= */
 
 .table-wrap{
   overflow:auto;
   height:100vh;
 }
 
-/* HEADER */
 .header-row{
   display:grid;
   grid-template-columns:140px 1fr 140px;
 
   position:sticky;
   top:0;
-  z-index:5;
+  z-index:10;
 
   background:#0b0f19;
-  padding:10px 12px;
+  padding:10px;
 
   border-bottom:1px solid rgba(255,255,255,0.1);
 
@@ -86,39 +77,31 @@ body{
   font-weight:600;
 }
 
-/* ROWS */
 #table .row{
   display:grid;
   grid-template-columns:140px 1fr 140px;
 
-  padding:10px 12px;
+  padding:10px;
+  cursor:pointer;
 
   border-bottom:1px solid rgba(255,255,255,0.05);
 
-  cursor:pointer;
-
-  transition:0.15s ease;
+  transition:0.15s;
 }
 
 #table .row:hover{
   background:rgba(56,189,248,0.08);
 }
 
-#table .row.active{
-  background:rgba(56,189,248,0.15);
-  border-left:3px solid #38bdf8;
-}
-
-/* truncate long prompts */
 #table .row div:nth-child(2){
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
 }
 
-/* =====================================================
-   PREVIEW PANEL (RIGHT)
-===================================================== */
+/* =========================
+   PREVIEW PANEL
+========================= */
 
 .preview{
   padding:16px;
@@ -133,71 +116,54 @@ body{
 .preview img{
   width:100%;
   border-radius:14px;
-  margin-bottom:12px;
   border:1px solid rgba(255,255,255,0.08);
+  margin-bottom:10px;
 }
 
-/* metadata */
 #meta{
   font-size:13px;
   color:#94a3b8;
   line-height:1.6;
 }
 
-/* =====================================================
-   EMPTY STATE
-===================================================== */
+/* =========================
+   AMBIENT EFFECTS (RESTORED)
+========================= */
 
-.preview:empty::before{
-  content:"Click a row to preview image";
-  color:#64748b;
+.ambient-bg{
+  position:fixed;
+  inset:0;
+  z-index:-2;
 }
 
-/* =====================================================
-   SCROLLBAR
-===================================================== */
+.ambient-bg::before{
+  content:"";
+  position:absolute;
+  inset:-20%;
 
-.table-wrap::-webkit-scrollbar{
-  width:10px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(56,189,248,0.12), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(99,102,241,0.10), transparent 30%),
+    radial-gradient(circle at 50% 80%, rgba(14,165,233,0.08), transparent 30%);
+
+  filter:blur(40px);
 }
 
-.table-wrap::-webkit-scrollbar-thumb{
-  background:rgba(56,189,248,0.25);
-  border-radius:999px;
+.particles{
+  position:fixed;
+  inset:0;
+  background-image:radial-gradient(rgba(56,189,248,0.08) 1px, transparent 1px);
+  background-size:40px 40px;
+  z-index:-1;
 }
 
-.table-wrap::-webkit-scrollbar-track{
-  background:transparent;
-}
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-@media(max-width:1000px){
-  .app{
-    grid-template-columns:240px 1fr;
-  }
-
-  .preview{
-    display:none;
-  }
-}
-
-@media(max-width:700px){
-  .app{
-    grid-template-columns:1fr;
-  }
-
-  .sidebar{
-    position:sticky;
-    top:0;
-    z-index:10;
-  }
-
-  .header-row,
-  #table .row{
-    grid-template-columns:120px 1fr 120px;
-    font-size:12px;
-  }
+.cursor-glow{
+  position:fixed;
+  width:240px;
+  height:240px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(56,189,248,0.22), transparent 70%);
+  pointer-events:none;
+  filter:blur(30px);
+  z-index:2;
 }

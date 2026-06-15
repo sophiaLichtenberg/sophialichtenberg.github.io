@@ -4,7 +4,6 @@ const base =
 let DATA = [];
 let VIEW = [];
 
-// DOM (ONLY ONCE PAGE IS READY)
 document.addEventListener("DOMContentLoaded", () => {
 
   const table = document.getElementById("table");
@@ -22,12 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadCSV() {
 
     const res = await fetch("hashed_metadata_df.csv");
-
-    if (!res.ok) {
-      console.error("CSV not found. Check GitHub Pages path.");
-      return;
-    }
-
     const text = await res.text();
 
     const lines = text.trim().split("\n");
@@ -51,13 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   function buildFilters() {
 
-    const models = [...new Set(DATA.map(d => d.model))];
-    const datasets = [...new Set(DATA.map(d => d.dataset_type))];
-    const impairments = [...new Set(DATA.map(d => d.impairment || ""))].filter(Boolean);
-
-    fill(modelFilter, models);
-    fill(datasetFilter, datasets);
-    fill(impairmentFilter, impairments);
+    fill(modelFilter, [...new Set(DATA.map(d => d.model))]);
+    fill(datasetFilter, [...new Set(DATA.map(d => d.dataset_type))]);
+    fill(impairmentFilter, [...new Set(DATA.map(d => d.impairment || ""))].filter(Boolean));
   }
 
   function fill(select, arr) {
@@ -70,6 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // =========================
+  // FILTER LOGIC
+  // =========================
   function applyFilters() {
 
     const s = search.value.toLowerCase();
@@ -110,17 +102,16 @@ document.addEventListener("DOMContentLoaded", () => {
       table.appendChild(row);
     });
 
-    // auto preview first item
     if (VIEW.length) show(VIEW[0]);
   }
 
   // =========================
-  // PREVIEW
+  // IMAGE PREVIEW (FIXED)
   // =========================
   function show(item) {
 
     const url =
-      base + encodeURIComponent(item.hash_name) + ".png";
+      base + item.hash_name + ".png";
 
     gallery.src = url;
 
