@@ -17,6 +17,7 @@ window.addEventListener("DOMContentLoaded", () => {
   modelFilter = $("modelFilter");
   datasetFilter = $("datasetFilter");
   biasFilter = $("biasFilter");
+  contextFilter = $("contextFilter");
   impairmentFilter = $("impairmentFilter");
 
   gridView = $("gridView");
@@ -67,6 +68,7 @@ function buildFilters(){
   fill(modelFilter, uniq("model"));
   fill(datasetFilter, uniq("dataset_type"));
   fill(biasFilter, uniq("bias_subtype"));
+  fill(contextFilter, uniq("context_value"));
   fill(impairmentFilter, uniq("impairment").filter(Boolean));
 }
 
@@ -92,6 +94,7 @@ function applyFilters(){
   const m = modelFilter?.value;
   const d = datasetFilter?.value;
   const b = biasFilter?.value;
+  const c = contextFilter?.value;
   const i = impairmentFilter?.value;
 
   VIEW = DATA.filter(x => {
@@ -103,6 +106,7 @@ function applyFilters(){
       (!m || x.model === m) &&
       (!d || x.dataset_type === d) &&
       (!b || x.bias_subtype === b) &&
+      (!c || x.context_value === c) &&
       (!i || x.impairment === i)
     );
   });
