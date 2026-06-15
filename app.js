@@ -102,22 +102,22 @@ function fill(select, values){
 function applyFilters(){
 
   const s = (search?.value || "").toLowerCase();
-  const m = modelFilter?.value;
-  const d = datasetFilter?.value;
-  const b = biasFilter?.value;
-  const c = contextFilter?.value;
-  const i = impairmentFilter?.value;
+  const m = selectedValues(modelFilter);
+  const d = selectedValues(datasetFilter);
+  const b = selectedValues(biasFilter);
+  const c = selectedValues(contextFilter);
+  const i = selectedValues(impairmentFilter);
 
   VIEW = DATA.filter(x => {
     const prompt = (x.prompt || "").toLowerCase();
 
     return (
-      (!s || prompt.includes(s)) &&
-      (!m || x.model === m) &&
-      (!d || x.dataset_type === d) &&
-      (!b || x.bias_subtype === b) &&
-      (!c || x.context_value === c) &&
-      (!i || x.impairment === i)
+        (!s || prompt.includes(s)) &&
+        (!m.length || m.includes(x.model)) &&
+        (!d.length || d.includes(x.dataset_type)) &&
+        (!b.length || b.includes(x.bias_subtype)) &&
+        (!c.length || c.includes(x.context_value)) &&
+        (!i.length || i.includes(x.impairment))
     );
   });
 
@@ -248,6 +248,10 @@ function renderGrid() {
 
     gridView.appendChild(section);
   });
+}
+
+function selectedValues(select){
+  return [...select.selectedOptions].map(o => o.value);
 }
 
 
