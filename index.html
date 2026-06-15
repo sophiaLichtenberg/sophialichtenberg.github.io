@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
 <title>Dataset Explorer</title>
 
 <link rel="stylesheet" href="style.css">
@@ -12,79 +10,57 @@
 
 <body>
 
-<!-- =========================
-  APP LAYOUT
-========================= -->
-
 <div class="app">
 
-  <!-- =========================
-    SIDEBAR (FILTERS)
-  ========================== -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
 
     <h2>Dataset Explorer</h2>
 
     <p id="stats">Loading...</p>
 
-    <input
-      id="search"
-      class="search"
-      type="text"
-      placeholder="Search prompt..."
-    />
+    <input id="search"
+           class="search"
+           placeholder="Search prompt..." />
 
-    <input
-      id="modelFilter"
-      class="search"
-      list="models"
-      placeholder="Filter by model"
-    />
-    <datalist id="models"></datalist>
+    <label>Model</label>
+    <select id="modelFilter" class="select">
+      <option value="">All models</option>
+    </select>
 
-    <input
-      id="datasetFilter"
-      class="search"
-      list="datasets"
-      placeholder="Filter by dataset"
-    />
-    <datalist id="datasets"></datalist>
+    <label>Dataset</label>
+    <select id="datasetFilter" class="select">
+      <option value="">All datasets</option>
+    </select>
 
   </div>
 
-  <!-- =========================
-    TABLE VIEW (VIRTUAL LIST)
-  ========================== -->
+  <!-- TABLE -->
   <div class="table-wrap">
 
     <div class="header-row">
-      <div><b>Model</b></div>
-      <div><b>Prompt</b></div>
-      <div><b>Dataset</b></div>
+      <div>Model</div>
+      <div>Prompt</div>
+      <div>Dataset</div>
     </div>
 
     <div id="table"></div>
 
   </div>
 
-  <!-- =========================
-    PREVIEW PANEL
-  ========================== -->
+  <!-- PREVIEW -->
   <div class="preview">
 
-    <img id="preview" alt="preview image"/>
+    <img id="preview" />
 
     <div id="meta">
-      <b>No selection</b>
+      Select an item
     </div>
 
   </div>
 
 </div>
 
-<!-- =========================
-  SCRIPT
-========================= -->
 <script src="app.js"></script>
 
 </body>

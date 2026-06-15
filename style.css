@@ -1,18 +1,11 @@
-/* =====================================================
-   BASE
-===================================================== */
-
 body{
   margin:0;
-  font-family:system-ui, Arial, sans-serif;
+  font-family:system-ui, Arial;
   background:#0b0f19;
   color:#e5e7eb;
 }
 
-/* =====================================================
-   APP LAYOUT
-===================================================== */
-
+/* APP LAYOUT */
 .app{
   display:grid;
   grid-template-columns:260px 1fr 420px;
@@ -20,85 +13,57 @@ body{
   overflow:hidden;
 }
 
-/* =====================================================
-   SIDEBAR
-===================================================== */
-
+/* SIDEBAR */
 .sidebar{
   padding:16px;
-
-  border-right:1px solid rgba(255,255,255,0.08);
-
   background:rgba(17,24,39,0.6);
-  backdrop-filter:blur(12px);
+  border-right:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(10px);
 }
 
 .sidebar h2{
-  margin:0 0 10px 0;
-  font-size:18px;
   color:#38bdf8;
+  margin-bottom:10px;
 }
 
-.search{
+.search, .select{
   width:100%;
-  padding:10px 12px;
-
+  padding:10px;
   margin-bottom:10px;
 
   border-radius:10px;
-
   border:1px solid rgba(255,255,255,0.1);
 
   background:#111827;
   color:#e5e7eb;
-
-  outline:none;
 }
 
-.search:focus{
-  border-color:#38bdf8;
-  box-shadow:0 0 0 2px rgba(56,189,248,0.15);
+.select{
+  cursor:pointer;
 }
 
-/* stats */
-#stats{
-  font-size:12px;
-  color:#94a3b8;
-  margin-bottom:12px;
-}
-
-/* =====================================================
-   TABLE AREA (VIRTUAL SCROLL)
-===================================================== */
-
+/* TABLE */
 .table-wrap{
   overflow:auto;
   height:100vh;
-
-  background:#0b0f19;
 }
 
-/* header row */
 .header-row{
   display:grid;
   grid-template-columns:140px 1fr 140px;
 
-  padding:12px 10px;
-
   position:sticky;
   top:0;
-  z-index:2;
 
-  background:rgba(11,15,25,0.95);
-  backdrop-filter:blur(10px);
+  background:#0b0f19;
+  padding:10px;
 
-  border-bottom:1px solid rgba(255,255,255,0.08);
+  border-bottom:1px solid rgba(255,255,255,0.1);
 
-  font-size:12px;
   color:#38bdf8;
+  font-size:12px;
 }
 
-/* dataset rows */
 .row{
   display:grid;
   grid-template-columns:140px 1fr 140px;
@@ -108,148 +73,43 @@ body{
   border-bottom:1px solid rgba(255,255,255,0.05);
 
   cursor:pointer;
-
-  transition:background 0.15s ease;
 }
 
 .row:hover{
   background:rgba(56,189,248,0.08);
 }
 
-/* =====================================================
-   PREVIEW PANEL
-===================================================== */
-
+/* PREVIEW */
 .preview{
-  border-left:1px solid rgba(255,255,255,0.08);
-
-  background:rgba(17,24,39,0.6);
-  backdrop-filter:blur(12px);
-
   padding:16px;
-
-  display:flex;
-  flex-direction:column;
-
-  gap:12px;
+  border-left:1px solid rgba(255,255,255,0.08);
+  background:rgba(17,24,39,0.6);
+  backdrop-filter:blur(10px);
 }
 
 .preview img{
   width:100%;
   border-radius:12px;
-
-  background:#111827;
-
-  object-fit:contain;
-  min-height:200px;
 }
 
 #meta{
+  margin-top:10px;
   font-size:13px;
   color:#94a3b8;
-  line-height:1.5;
 }
 
-/* =====================================================
-   DROPDOWNS (datalist styling fallback)
-===================================================== */
-
-input[list]{
-  appearance:none;
-}
-
-/* =====================================================
-   SCROLLBAR
-===================================================== */
-
-.table-wrap::-webkit-scrollbar{
-  width:10px;
-}
-
-.table-wrap::-webkit-scrollbar-track{
-  background:transparent;
-}
-
-.table-wrap::-webkit-scrollbar-thumb{
-  background:rgba(56,189,248,0.2);
-  border-radius:10px;
-}
-
-.table-wrap::-webkit-scrollbar-thumb:hover{
-  background:rgba(56,189,248,0.35);
-}
-
-/* =====================================================
-   LIGHT MODE (optional toggle support)
-===================================================== */
-
-body.light{
-  background:#f6f7fb;
-  color:#111827;
-}
-
-body.light .sidebar{
-  background:white;
-  border-color:#e5e7eb;
-}
-
-body.light .search{
-  background:white;
-  color:#111827;
-  border-color:#e5e7eb;
-}
-
-body.light .table-wrap{
-  background:white;
-}
-
-body.light .header-row{
-  background:white;
-  border-color:#e5e7eb;
-}
-
-body.light .row{
-  border-color:#e5e7eb;
-}
-
-body.light .preview{
-  background:white;
-  border-color:#e5e7eb;
-}
-
-body.light #meta{
-  color:#374151;
-}
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-@media (max-width: 1100px){
-
+/* RESPONSIVE */
+@media(max-width:1000px){
   .app{
     grid-template-columns:240px 1fr;
   }
-
   .preview{
     display:none;
   }
 }
 
-@media (max-width: 700px){
-
+@media(max-width:700px){
   .app{
     grid-template-columns:1fr;
-  }
-
-  .sidebar{
-    position:sticky;
-    top:0;
-    z-index:10;
-  }
-
-  .header-row,
-  .row{
-    grid-template-columns:120px 1fr;
   }
 }
