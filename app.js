@@ -95,13 +95,13 @@ function buildMulti(id, title, values){
       <div class="options">
 
         <label class="all-option">
-          <input type="checkbox" value="__all__" checked>
+          <input type="checkbox" value="__all__">
           <b>All</b>
         </label>
 
         ${values.map(v => `
           <label>
-            <input type="checkbox" value="${escapeHtml(v)}" checked>
+            <input type="checkbox" value="${escapeHtml(v)}">
             ${v}
           </label>
         `).join("")}
