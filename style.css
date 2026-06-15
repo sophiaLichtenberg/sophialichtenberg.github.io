@@ -12,7 +12,7 @@ body{
 }
 
 /* =====================================================
-   BACKGROUND EFFECTS
+   BACKGROUND
 ===================================================== */
 
 .ambient-bg{
@@ -33,7 +33,6 @@ body{
     radial-gradient(circle at 50% 80%, rgba(14,165,233,.08), transparent 30%);
 
   filter:blur(40px);
-  animation:breathe 16s ease-in-out infinite alternate;
 }
 
 /* =====================================================
@@ -43,7 +42,7 @@ body{
 .container{
   max-width:1200px;
   margin:auto;
-  padding:60px 20px;
+  padding:50px 20px;
 }
 
 /* =====================================================
@@ -65,7 +64,6 @@ body{
   color:#cbd5e1;
 
   cursor:pointer;
-  transition:.2s;
 }
 
 .tab-btn.active{
@@ -75,54 +73,41 @@ body{
 }
 
 /* =====================================================
-   DATASET FULL INTERACTIVE LAYOUT
+   DATASET LAYOUT (NO DROPDOWNS VERSION)
 ===================================================== */
 
 .dataset-layout{
   display:grid;
-  grid-template-columns:260px 1fr 420px;
+  grid-template-columns:320px 1fr 420px;
   gap:18px;
 }
 
 /* =====================================================
-   LEFT SIDEBAR (FILTERS + DROPDOWNS)
+   LEFT PANEL = ALWAYS VISIBLE FILTER CONTROLS
 ===================================================== */
 
-.dataset-sidebar{
-  position:sticky;
-  top:20px;
-
+.dataset-filters{
   padding:16px;
   border-radius:16px;
 
   background:rgba(17,24,39,.55);
   border:1px solid rgba(148,163,184,.12);
-
-  backdrop-filter:blur(12px);
 }
 
-.dataset-sidebar h3{
-  margin:0 0 12px 0;
-  font-size:13px;
-  color:#38bdf8;
+/* each filter is ALWAYS visible */
+.filter{
+  margin-bottom:14px;
 }
 
-/* DROPDOWNS (THIS IS WHAT YOU WERE MISSING) */
-
-.filter-group{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  margin-bottom:12px;
-}
-
-.filter-group label{
-  font-size:11px;
+.filter label{
+  display:block;
+  font-size:12px;
   color:#94a3b8;
+  margin-bottom:6px;
 }
 
-/* SELECT DROPDOWN */
-.dataset-sidebar select{
+.filter input,
+.filter select{
   width:100%;
   padding:10px;
 
@@ -133,39 +118,23 @@ body{
 
   border:1px solid rgba(148,163,184,.15);
 
-  outline:none;
-  cursor:pointer;
-}
-
-/* INPUT SEARCH */
-.dataset-sidebar input{
-  width:100%;
-  padding:10px;
-
-  border-radius:10px;
-
-  background:rgba(0,0,0,.25);
-  color:#e5e7eb;
-
-  border:1px solid rgba(148,163,184,.15);
   outline:none;
 }
 
 /* =====================================================
-   CENTER GRID (IMAGE RESULTS)
+   CENTER GRID
 ===================================================== */
 
 .dataset-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));
   gap:12px;
 
   max-height:750px;
   overflow:auto;
-  padding-right:6px;
 }
 
-/* IMAGE CARD */
+/* card */
 .dataset-card{
   padding:10px;
   border-radius:14px;
@@ -174,12 +143,11 @@ body{
   border:1px solid rgba(148,163,184,.12);
 
   cursor:pointer;
-  transition:.2s;
 }
 
 .dataset-card:hover{
-  transform:translateY(-3px);
   border-color:rgba(56,189,248,.3);
+  transform:translateY(-2px);
 }
 
 .dataset-card img{
@@ -195,10 +163,10 @@ body{
 }
 
 /* =====================================================
-   RIGHT INSPECTOR (PREVIEW)
+   RIGHT PANEL (PREVIEW)
 ===================================================== */
 
-.dataset-inspector{
+.dataset-preview{
   position:sticky;
   top:20px;
 
@@ -207,33 +175,22 @@ body{
 
   background:rgba(17,24,39,.55);
   border:1px solid rgba(148,163,184,.12);
-
-  display:flex;
-  flex-direction:column;
 }
 
-.dataset-inspector img{
+.dataset-preview img{
   width:100%;
+  display:block;
 }
 
-.dataset-meta{
+.dataset-info{
   padding:14px;
   font-size:12px;
   color:#cbd5e1;
   border-top:1px solid rgba(148,163,184,.1);
 }
 
-.dataset-meta b{
+.dataset-info b{
   color:#38bdf8;
-}
-
-/* =====================================================
-   ANIMATIONS
-===================================================== */
-
-@keyframes breathe{
-  from{transform:scale(1);}
-  to{transform:scale(1.08) translateY(-20px);}
 }
 
 /* =====================================================
@@ -245,16 +202,15 @@ body.light{
   color:#111827;
 }
 
-body.light .dataset-sidebar,
+body.light .dataset-filters,
 body.light .dataset-card,
-body.light .dataset-inspector{
+body.light .dataset-preview{
   background:#fff;
   border-color:#e5e7eb;
 }
 
-body.light .dataset-sidebar select,
-body.light .dataset-sidebar input{
+body.light .filter input,
+body.light .filter select{
   background:#f9fafb;
   color:#111827;
-  border-color:#e5e7eb;
 }

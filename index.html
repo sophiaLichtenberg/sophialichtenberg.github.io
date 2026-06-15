@@ -16,7 +16,7 @@
 
 <div class="container">
 
-<!-- HERO -->
+<!-- ================= HERO ================= -->
 <header class="hero">
 
   <img src="profile.jpg" class="avatar" />
@@ -24,162 +24,198 @@
   <div>
     <h1>Sophia Lichtenberg</h1>
 
+    <div class="subtitle">
+      PhD Candidate · Human-Centered Computing · AI & Text-to-Image Models
+    </div>
+
     <div class="buttons">
-      <a class="btn" href="cv.pdf" download>📄 CV</a>
+      <a class="btn" href="cv.pdf" download>📄 Download CV</a>
       <button class="btn ghost" onclick="toggleTheme()">🌙 Theme</button>
     </div>
   </div>
 
 </header>
 
-<!-- TABS -->
+<!-- ================= TABS ================= -->
 <nav class="tabs">
-  <button class="tab-btn active" onclick="openTab('home', event)">
-    Home
-  </button>
-
-  <button class="tab-btn" onclick="openTab('dataset', event)">
-    Dataset Viewer
-  </button>
+  <button class="tab-btn active" onclick="openTab(event,'home')">Home</button>
+  <button class="tab-btn" onclick="openTab(event,'dataset')">Dataset</button>
 </nav>
 
-<!-- HOME TAB -->
+<!-- ================= HOME ================= -->
 <div id="home" class="tab-content active">
 
   <section>
     <h2>About</h2>
-    <p>Human-centered AI research on text-to-image models.</p>
+    <p>Human-centered evaluation of generative AI systems.</p>
   </section>
 
 </div>
 
-<!-- DATASET TAB -->
+<!-- ================= DATASET ================= -->
 <div id="dataset" class="tab-content">
 
-  <section>
-    <h2>Dataset Viewer</h2>
+<section>
 
-    <div class="dataset-layout">
+<h2>Dataset Viewer</h2>
 
-      <!-- TABLE -->
-      <div class="table-container">
-        <table id="dataTable">
-          <thead>
-            <tr>
-              <th>Model</th>
-              <th>Prompt</th>
-              <th>Dataset</th>
-              <th>Hash</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+<div class="dataset-layout">
 
-      <!-- PREVIEW -->
-      <div class="image-panel">
+  <!-- LEFT: FILTERS -->
+  <div class="dataset-filters">
 
-        <img id="preview" />
-
-        <div class="dataset-meta" id="meta">
-          Click a row to preview image
-        </div>
-
-      </div>
-
+    <div class="filter">
+      <label>Search prompt</label>
+      <input id="searchInput" placeholder="type prompt..." />
     </div>
 
-  </section>
+    <div class="filter">
+      <label>Model</label>
+      <input id="modelFilter" placeholder="FLUX_schnell..." />
+    </div>
+
+    <div class="filter">
+      <label>Dataset type</label>
+      <input id="datasetFilter" placeholder="No_Context..." />
+    </div>
+
+  </div>
+
+  <!-- CENTER: GRID -->
+  <div class="dataset-grid" id="grid"></div>
+
+  <!-- RIGHT: PREVIEW -->
+  <div class="dataset-preview">
+
+    <img id="preview" />
+
+    <div class="dataset-info" id="info">
+      Click an image
+    </div>
+
+  </div>
+
+</div>
+
+</section>
 
 </div>
 
 </div>
 
+<!-- ================= JS ================= -->
 <script>
 
-/* =========================
-   TABS
-========================= */
-
-function openTab(id, event){
+function openTab(e,id){
 
   document.querySelectorAll(".tab-content")
-    .forEach(t => t.classList.remove("active"));
+    .forEach(t=>t.classList.remove("active"));
 
   document.querySelectorAll(".tab-btn")
-    .forEach(b => b.classList.remove("active"));
+    .forEach(b=>b.classList.remove("active"));
 
   document.getElementById(id).classList.add("active");
-
-  event.currentTarget.classList.add("active");
+  e.target.classList.add("active");
 }
 
-/* =========================
-   DATASET
-========================= */
+function toggleTheme(){
+  document.body.classList.toggle("light");
+}
 
-const surfdriveBase =
-  "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
+/* ================= DATA ================= */
+
+const base =
+"https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
 
 const data = [
 {
+  file:"image_0",
   model:"FLUX_schnell",
   prompt:"Photo of a Person",
-  dataset_type:"No_Context_no_Bias",
-  hash_name:"11208126882101814974"
+  dataset:"No_Context_no_Bias",
+  hash:"11208126882101814974"
 },
 {
+  file:"image_1",
   model:"FLUX_schnell",
   prompt:"Photo of a Person",
-  dataset_type:"No_Context_no_Bias",
-  hash_name:"14082437164622650326"
+  dataset:"No_Context_no_Bias",
+  hash:"14082437164622650326"
 },
 {
+  file:"image_2",
   model:"FLUX_schnell",
   prompt:"Photo of a Person",
-  dataset_type:"No_Context_no_Bias",
-  hash_name:"10797990572701187062"
+  dataset:"No_Context_no_Bias",
+  hash:"10797990572701187062"
 }
 ];
 
-const tbody = document.querySelector("#dataTable tbody");
+const grid = document.getElementById("grid");
+const preview = document.getElementById("preview");
+const info = document.getElementById("info");
 
-data.forEach(row => {
+/* ================= RENDER ================= */
 
-  const tr = document.createElement("tr");
+function render(list){
 
-  tr.innerHTML = `
-    <td>${row.model}</td>
-    <td>${row.prompt}</td>
-    <td>${row.dataset_type}</td>
-    <td>${row.hash_name}</td>
-  `;
+  grid.innerHTML = "";
 
-  tr.onclick = () => {
+  list.forEach(item=>{
 
-    document.getElementById("preview").src =
-      surfdriveBase + row.hash_name + ".png";
+    const div = document.createElement("div");
+    div.className = "dataset-card";
 
-    document.getElementById("meta").innerHTML = `
-      <b>Model:</b> ${row.model}<br>
-      <b>Dataset:</b> ${row.dataset_type}<br>
-      <b>Hash:</b> ${row.hash_name}
+    div.innerHTML = `
+      <img src="${base + item.hash + ".png"}">
+      <small>${item.model}</small>
     `;
-  };
 
-  tbody.appendChild(tr);
+    div.onclick = ()=>{
 
-});
+      preview.src = base + item.hash + ".png";
 
-/* default image */
-if(data.length){
-  document.getElementById("preview").src =
-    surfdriveBase + data[0].hash_name + ".png";
+      info.innerHTML = `
+        <b>${item.model}</b><br>
+        ${item.prompt}<br>
+        ${item.dataset}
+      `;
+    };
+
+    grid.appendChild(div);
+
+  });
+
 }
 
-/* theme toggle */
-function toggleTheme(){
-  document.body.classList.toggle("light");
+/* ================= FILTER ================= */
+
+function applyFilter(){
+
+  const s = searchInput.value.toLowerCase();
+  const m = modelFilter.value.toLowerCase();
+  const d = datasetFilter.value.toLowerCase();
+
+  const filtered = data.filter(x=>
+    x.prompt.toLowerCase().includes(s) &&
+    x.model.toLowerCase().includes(m) &&
+    x.dataset.toLowerCase().includes(d)
+  );
+
+  render(filtered);
+}
+
+searchInput.oninput = applyFilter;
+modelFilter.oninput = applyFilter;
+datasetFilter.oninput = applyFilter;
+
+/* INIT */
+
+render(data);
+
+if(data.length){
+  preview.src = base + data[0].hash + ".png";
+  info.innerHTML = data[0].model;
 }
 
 </script>
