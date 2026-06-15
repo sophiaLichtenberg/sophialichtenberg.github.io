@@ -175,34 +175,44 @@ body{
 }
 
 .group-section {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .group-title {
+  padding: 10px 14px;
   font-weight: 600;
-  padding: 8px 4px;
-  opacity: 0.8;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 10px;
-}
-
-.grid-inner {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 10px;
-}
-
-.group-title.collapsible {
   cursor: pointer;
+  background: #1f1f1f;
+  border-radius: 8px;
+  margin-bottom: 10px;
   user-select: none;
 }
 
-.group-title.collapsible::after {
-  content: " ▾";
-  float: right;
-  transition: transform 0.2s ease;
+.group-title:hover {
+  background: #2a2a2a;
 }
 
-.group-title.collapsible.collapsed::after {
-  transform: rotate(-90deg);
+.group-row {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.group-row .card {
+  flex: 0 0 auto;
+  width: 180px;
+}
+
+.group-row::-webkit-scrollbar {
+  height: 8px;
+}
+
+.group-row::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+
+.card img {
+  transition: opacity .25s ease;
 }

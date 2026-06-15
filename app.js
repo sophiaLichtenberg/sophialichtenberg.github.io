@@ -174,25 +174,26 @@ function renderGrid() {
 
   Object.entries(groups).forEach(([groupKey, items]) => {
 
-    // SECTION
     const section = document.createElement("div");
     section.className = "group-section";
 
-    // HEADER (CLICKABLE)
     const header = document.createElement("div");
-    header.className = "group-title collapsible";
-    header.textContent = `${groupKey} (${items.length})`;
+    header.className = "group-title";
+    header.textContent = `▼ ${groupKey} (${items.length})`;
 
-    // CONTENT WRAPPER
-    const grid = document.createElement("div");
-    grid.className = "grid-inner";
+    const row = document.createElement("div");
+    row.className = "group-row";
 
     let collapsed = false;
 
     header.onclick = () => {
+
       collapsed = !collapsed;
-      grid.style.display = collapsed ? "none" : "grid";
-      header.classList.toggle("collapsed", collapsed);
+
+      row.style.display = collapsed ? "none" : "flex";
+
+      header.textContent =
+        `${collapsed ? "▶" : "▼"} ${groupKey} (${items.length})`;
     };
 
     items.forEach(item => {
@@ -211,24 +212,16 @@ function renderGrid() {
       loaderEl.textContent = "⏳";
 
       const img = new Image();
-      const url = imgUrl(hash);
-
-      img.style.opacity = "0";
-      img.decoding = "async";
       img.loading = "lazy";
-
-      let done = false;
+      img.decoding = "async";
+      img.style.opacity = "0";
 
       img.onload = () => {
-        if (done) return;
-        done = true;
         loaderEl.remove();
         img.style.opacity = "1";
       };
 
       img.onerror = () => {
-        if (done) return;
-        done = true;
         loaderEl.textContent = "❌";
       };
 
@@ -236,7 +229,7 @@ function renderGrid() {
       thumb.appendChild(img);
 
       requestAnimationFrame(() => {
-        img.src = url;
+        img.src = imgUrl(hash);
       });
 
       const label = document.createElement("div");
@@ -254,15 +247,17 @@ function renderGrid() {
 
       card.onclick = () => show(item);
 
-      grid.appendChild(card);
+      row.appendChild(card);
     });
 
     section.appendChild(header);
-    section.appendChild(grid);
+    section.appendChild(row);
 
     gridView.appendChild(section);
   });
 }
+
+
 /* =========================
    TABLE (CLEAN FIX)
 ========================= */
