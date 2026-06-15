@@ -142,6 +142,19 @@ function getGroupKey(path) {
   return clean;
 }
 
+function groupData(data) {
+  const groups = {};
+
+  data.forEach(item => {
+    const key = getGroupKey(item.file_name);
+
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(item);
+  });
+
+  return groups;
+}
+
 
 /* =========================
    GRID (FAST + LOADER + SAFE)
@@ -157,76 +170,86 @@ function renderGrid() {
     return;
   }
 
-  const seen = new Set();
+  const groups = groupData(VIEW);
 
-  VIEW.forEach(item => {
+  Object.entries(groups).forEach(([groupKey, items]) => {
 
-    const hash = item.hash_name;
-    if (!hash) return;
+    // SECTION WRAPPER
+    const section = document.createElement("div");
+    section.className = "group-section";
 
-    // ✅ stable grouping key (fallback-safe)
-    const key = getGroupKey(item.file_name);
+    const title = document.createElement("div");
+    title.className = "group-title";
+    title.textContent = groupKey;
 
-    // ❌ THIS is what was missing
-    if (seen.has(key)) return;
-    seen.add(key);
+    const grid = document.createElement("div");
+    grid.className = "grid-inner";
 
-    const card = document.createElement("div");
-    card.className = "card";
+    items.forEach(item => {
 
-    const thumb = document.createElement("div");
-    thumb.className = "thumb";
+      const hash = item.hash_name;
+      if (!hash) return;
 
-    const loaderEl = document.createElement("div");
-    loaderEl.className = "img-loader";
-    loaderEl.textContent = "⏳";
+      const card = document.createElement("div");
+      card.className = "card";
 
-    const img = new Image();
-    const url = imgUrl(hash);
+      const thumb = document.createElement("div");
+      thumb.className = "thumb";
 
-    img.style.opacity = "0";
-    img.decoding = "async";
-    img.loading = "lazy";
+      const loaderEl = document.createElement("div");
+      loaderEl.className = "img-loader";
+      loaderEl.textContent = "⏳";
 
-    let done = false;
+      const img = new Image();
+      const url = imgUrl(hash);
 
-    img.onload = () => {
-      if (done) return;
-      done = true;
-      loaderEl.remove();
-      img.style.opacity = "1";
-    };
+      img.style.opacity = "0";
+      img.decoding = "async";
+      img.loading = "lazy";
 
-    img.onerror = () => {
-      if (done) return;
-      done = true;
-      loaderEl.textContent = "❌";
-      img.style.display = "none";
-    };
+      let done = false;
 
-    thumb.appendChild(loaderEl);
-    thumb.appendChild(img);
+      img.onload = () => {
+        if (done) return;
+        done = true;
+        loaderEl.remove();
+        img.style.opacity = "1";
+      };
 
-    requestAnimationFrame(() => {
-      img.src = url;
+      img.onerror = () => {
+        if (done) return;
+        done = true;
+        loaderEl.textContent = "❌";
+      };
+
+      thumb.appendChild(loaderEl);
+      thumb.appendChild(img);
+
+      requestAnimationFrame(() => {
+        img.src = url;
+      });
+
+      const label = document.createElement("div");
+      label.className = "label";
+
+      label.innerHTML = `
+        <div>${item.model || "unknown"}</div>
+        <div>${item.impairment || ""}</div>
+        <div>${item.bias_subtype || ""}</div>
+        <div>${item.context_value || ""}</div>
+      `;
+
+      card.appendChild(thumb);
+      card.appendChild(label);
+      card.onclick = () => show(item);
+
+      grid.appendChild(card);
     });
 
-    const label = document.createElement("div");
-    label.className = "label";
+    section.appendChild(title);
+    section.appendChild(grid);
 
-    label.innerHTML = `
-      <div>${item.model || "unknown"}</div>
-      <div>${item.impairment || ""}</div>
-      <div>${item.bias_subtype || ""}</div>
-      <div>${item.context_value || ""}</div>
-    `;
-
-    card.appendChild(thumb);
-    card.appendChild(label);
-
-    card.onclick = () => show(item);
-
-    gridView.appendChild(card);
+    gridView.appendChild(section);
   });
 }
 
