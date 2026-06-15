@@ -10,130 +10,79 @@
 
 <body>
 
-<!-- BACKGROUND EFFECTS -->
 <div class="ambient-bg"></div>
 <div class="particles"></div>
 <div class="cursor-glow"></div>
 
 <div class="container">
 
-  <!-- HERO -->
+  <!-- HEADER -->
   <header class="hero">
-
-    <img src="profile.jpg" class="avatar" alt="Profile image"/>
+    <img src="profile.jpg" class="avatar" />
 
     <div>
       <h1>Sophia Lichtenberg</h1>
 
       <div class="subtitle">
-        PhD Candidate · Human-Centered Computing · AI & Text-to-Image Models<br/>
-        Utrecht University
+        PhD Candidate · AI & Text-to-Image Models
       </div>
 
       <div class="buttons">
-
-        <a class="btn" href="cv.pdf" download>
-          📄 Download CV
-        </a>
-
-        <button class="btn ghost" onclick="copyEmail()">
-          📧 Copy Email
-        </button>
-
-        <button class="btn ghost" onclick="toggleTheme()">
-          🌙 Toggle Theme
-        </button>
-
+        <button class="btn" onclick="openTab('home')">Home</button>
+        <button class="btn" onclick="openTab('dataset')">Dataset</button>
       </div>
     </div>
-
   </header>
 
-  <!-- ABOUT -->
-  <section>
-    <h2>About</h2>
+  <!-- ================= HOME TAB ================= -->
+  <div id="home" class="tab active">
 
-    <p>
-      I work on human-centered evaluation of generative AI systems,
-      focusing on text-to-image models and responsible AI.
-    </p>
+    <section>
+      <h2>About</h2>
+      <p>Human-centered evaluation of generative AI systems.</p>
+    </section>
 
-    <p>
-      Contact:
-      <a href="mailto:s.lichtenberg@uu.nl">s.lichtenberg@uu.nl</a>
-    </p>
+    <section>
+      <h2>Research</h2>
+      <span class="tag">Text-to-Image</span>
+      <span class="tag">Fairness</span>
+      <span class="tag">Evaluation</span>
+    </section>
 
-    <p>
-      <a href="https://www.uu.nl/staff/SLichtenberg" target="_blank">
-        Utrecht University Profile
-      </a>
-    </p>
-  </section>
+  </div>
 
-  <!-- SUPERVISORS -->
-  <section>
-    <h2>Supervisors</h2>
+  <!-- ================= DATASET TAB ================= -->
+  <div id="dataset" class="tab">
 
-    <p><b>Prof. Albert Gatt</b></p>
-    <p class="meta">Utrecht University · NLP Group</p>
+    <div class="dataset-layout">
 
-    <p><b>Prof. Judith Masthoff</b></p>
-    <p class="meta">Human-Centered Computing Group</p>
-  </section>
+      <!-- LEFT: TABLE -->
+      <div class="table">
+        <div id="tableHeader" class="row header">
+          <div>Model</div>
+          <div>Prompt</div>
+          <div>Dataset</div>
+        </div>
 
-  <!-- RESEARCH -->
-  <section>
-    <h2>Research Interests</h2>
+        <div id="tableBody"></div>
+      </div>
 
-    <span class="tag">Text-to-Image</span>
-    <span class="tag">Human-AI Interaction</span>
-    <span class="tag">Fairness</span>
-    <span class="tag">Responsible AI</span>
-    <span class="tag">Evaluation</span>
-  </section>
+      <!-- RIGHT: PREVIEW -->
+      <div class="preview">
 
-  <!-- PUBLICATIONS -->
-  <section>
-    <h2>Publications</h2>
+        <img id="previewImg" />
 
-    <div class="scholar-card">
-      <p><b>Google Scholar</b></p>
-      <p class="meta">Publications and citation profile</p>
+        <div id="meta"></div>
 
-      <a class="btn"
-         href="https://scholar.google.com/citations?user=fwOtPDYAAAAJ"
-         target="_blank">
-        🔗 View Profile
-      </a>
+      </div>
+
     </div>
-  </section>
 
-  <footer>
-    © 2026 Sophia Lichtenberg
-  </footer>
+  </div>
 
 </div>
 
-<script>
-function toggleTheme(){
-  document.body.classList.toggle("light");
-}
-
-function copyEmail(){
-  navigator.clipboard.writeText("s.lichtenberg@uu.nl");
-  alert("Email copied 📋");
-}
-
-/* cursor glow */
-const glow = document.querySelector(".cursor-glow");
-
-document.addEventListener("mousemove", (e) => {
-  requestAnimationFrame(() => {
-    glow.style.left = e.clientX + "px";
-    glow.style.top = e.clientY + "px";
-  });
-});
-</script>
+<script src="app.js"></script>
 
 </body>
 </html>
