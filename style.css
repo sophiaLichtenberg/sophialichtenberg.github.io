@@ -206,3 +206,38 @@ body{
 .group-title.collapsible.collapsed::after {
   transform: rotate(-90deg);
 }
+/* container per group */
+.group-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* each item becomes a row */
+.row-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  padding: 10px;
+
+  border: 1px solid #eee;
+  border-radius: 8px;
+
+  background: white;
+}
+
+/* image size fixed but responsive */
+.row-card .thumb {
+  width: 120px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+/* label next to image */
+.row-card .label {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.3;
+}

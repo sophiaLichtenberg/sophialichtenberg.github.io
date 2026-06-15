@@ -185,7 +185,7 @@ function renderGrid() {
 
     // CONTENT WRAPPER
     const grid = document.createElement("div");
-    grid.className = "grid-inner";
+    grid.className = "grid-rows";
 
     let collapsed = false;
 
@@ -201,7 +201,7 @@ function renderGrid() {
       if (!hash) return;
 
       const card = document.createElement("div");
-      card.className = "card";
+      card.className = "row-card";
 
       const thumb = document.createElement("div");
       thumb.className = "thumb";
