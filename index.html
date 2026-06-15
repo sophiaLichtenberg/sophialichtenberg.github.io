@@ -13,30 +13,20 @@
 
 <div class="app">
 
-  <!-- =======================
-       SIDEBAR FILTERS
-  ======================== -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
 
     <h2>Dataset Explorer</h2>
 
-    <input
-      id="search"
-      class="search"
-      placeholder="Search prompts..."
-    />
+    <input id="search" class="search" placeholder="Search prompts..." />
 
     <select id="modelFilter" class="select"></select>
-
     <select id="datasetFilter" class="select"></select>
-
     <select id="impairmentFilter" class="select"></select>
 
   </div>
 
-  <!-- =======================
-       TABLE AREA
-  ======================== -->
+  <!-- TABLE -->
   <div class="table-wrap">
 
     <div class="header-row">
@@ -49,16 +39,11 @@
 
   </div>
 
-  <!-- =======================
-       RIGHT PREVIEW PANEL
-  ======================== -->
+  <!-- PREVIEW -->
   <div class="preview">
 
-    <div id="gallery"></div>
-
-    <div id="meta">
-      Click a row to preview image
-    </div>
+    <img id="gallery" />
+    <div id="meta">Click a row</div>
 
   </div>
 

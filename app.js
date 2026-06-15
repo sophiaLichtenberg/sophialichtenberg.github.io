@@ -1,12 +1,12 @@
+const base =
+  "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
+
+let DATA = [];
+let VIEW = [];
+
+// DOM (ONLY ONCE PAGE IS READY)
 document.addEventListener("DOMContentLoaded", () => {
 
-  const base =
-    "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
-
-  let DATA = [];
-  let VIEW = [];
-
-  // 🔥 FIX: IDs MUST match HTML
   const table = document.getElementById("table");
   const gallery = document.getElementById("gallery");
   const meta = document.getElementById("meta");
@@ -16,14 +16,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const datasetFilter = document.getElementById("datasetFilter");
   const impairmentFilter = document.getElementById("impairmentFilter");
 
-  if (!table || !gallery || !meta) {
-    console.error("Missing DOM elements. Check HTML IDs.");
-    return;
-  }
-
-  async function loadCSV(){
+  // =========================
+  // LOAD CSV
+  // =========================
+  async function loadCSV() {
 
     const res = await fetch("hashed_metadata_df.csv");
+
+    if (!res.ok) {
+      console.error("CSV not found. Check GitHub Pages path.");
+      return;
+    }
+
     const text = await res.text();
 
     const lines = text.trim().split("\n");
@@ -32,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     DATA = lines.slice(1).map(line => {
       const cols = line.split(",");
       const obj = {};
-      headers.forEach((h,i)=>{
+      headers.forEach((h, i) => {
         obj[h.trim()] = (cols[i] || "").trim();
       });
       return obj;
@@ -42,20 +46,23 @@ document.addEventListener("DOMContentLoaded", () => {
     applyFilters();
   }
 
-  function buildFilters(){
+  // =========================
+  // FILTERS
+  // =========================
+  function buildFilters() {
 
-    const models = [...new Set(DATA.map(d=>d.model))];
-    const datasets = [...new Set(DATA.map(d=>d.dataset_type))];
-    const impairments = [...new Set(DATA.map(d=>d.impairment || ""))].filter(Boolean);
+    const models = [...new Set(DATA.map(d => d.model))];
+    const datasets = [...new Set(DATA.map(d => d.dataset_type))];
+    const impairments = [...new Set(DATA.map(d => d.impairment || ""))].filter(Boolean);
 
     fill(modelFilter, models);
     fill(datasetFilter, datasets);
     fill(impairmentFilter, impairments);
   }
 
-  function fill(select, arr){
+  function fill(select, arr) {
     select.innerHTML = `<option value="">All</option>`;
-    arr.forEach(v=>{
+    arr.forEach(v => {
       const opt = document.createElement("option");
       opt.value = v;
       opt.textContent = v;
@@ -63,24 +70,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function applyFilters(){
+  function applyFilters() {
 
     const s = search.value.toLowerCase();
     const m = modelFilter.value;
     const d = datasetFilter.value;
     const i = impairmentFilter.value;
 
-    VIEW = DATA.filter(x => (
-      (!s || (x.prompt||"").toLowerCase().includes(s)) &&
-      (!m || x.model===m) &&
-      (!d || x.dataset_type===d) &&
-      (!i || (x.impairment||"")===i)
-    ));
+    VIEW = DATA.filter(x =>
+      (!s || (x.prompt || "").toLowerCase().includes(s)) &&
+      (!m || x.model === m) &&
+      (!d || x.dataset_type === d) &&
+      (!i || (x.impairment || "") === i)
+    );
 
     renderTable();
   }
 
-  function renderTable(){
+  // =========================
+  // TABLE
+  // =========================
+  function renderTable() {
 
     table.innerHTML = "";
 
@@ -99,18 +109,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       table.appendChild(row);
     });
+
+    // auto preview first item
+    if (VIEW.length) show(VIEW[0]);
   }
 
-  function show(item){
+  // =========================
+  // PREVIEW
+  // =========================
+  function show(item) {
 
-    gallery.innerHTML = "";
+    const url =
+      base + encodeURIComponent(item.hash_name) + ".png";
 
-    const url = base + encodeURIComponent(item.hash_name) + ".png";
-
-    const img = document.createElement("img");
-    img.src = url;
-
-    gallery.appendChild(img);
+    gallery.src = url;
 
     meta.innerHTML = `
       <b>Model:</b> ${item.model}<br>
@@ -120,6 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  // =========================
+  // EVENTS
+  // =========================
   search.oninput = applyFilters;
   modelFilter.onchange = applyFilters;
   datasetFilter.onchange = applyFilters;
