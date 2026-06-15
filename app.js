@@ -174,7 +174,7 @@ function renderGrid(){
 
     const label = document.createElement("div");
     label.className = "label";
-    label.textContent = item.model || "unknown";
+    label.textContent = item.model + "\n" + item.impairment + "\n" + item.bias_subtype + "\n" +  item.context_value || "unknown";
 
     card.appendChild(thumb);
     card.appendChild(label);
@@ -222,6 +222,7 @@ function show(item){
       <b>Model:</b> ${item.model || "-"}<br>
       <b>Prompt:</b> ${item.prompt || "-"}<br>
       <b>Dataset:</b> ${item.dataset_type || "-"}<br>
+      <b>Context:</b> ${item.context_value || "-"}<br>
       <b>Bias:</b> ${item.bias_subtype || "-"}<br>
       <b>Hash:</b> ${item.hash_name || "-"}
     `;
