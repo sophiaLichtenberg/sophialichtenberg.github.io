@@ -16,6 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
   search = $("search");
   modelFilter = $("modelFilter");
   datasetFilter = $("datasetFilter");
+  biasFilter = $("biasFilter");
   impairmentFilter = $("impairmentFilter");
 
   gridView = $("gridView");
@@ -65,6 +66,7 @@ async function loadCSV(){
 function buildFilters(){
   fill(modelFilter, uniq("model"));
   fill(datasetFilter, uniq("dataset_type"));
+  fill(biasFilter, uniq("bias_subtype"));
   fill(impairmentFilter, uniq("impairment").filter(Boolean));
 }
 
@@ -89,6 +91,7 @@ function applyFilters(){
   const s = (search?.value || "").toLowerCase();
   const m = modelFilter?.value;
   const d = datasetFilter?.value;
+  const b = biasFilter?.value;
   const i = impairmentFilter?.value;
 
   VIEW = DATA.filter(x => {
@@ -99,6 +102,7 @@ function applyFilters(){
       (!s || prompt.includes(s)) &&
       (!m || x.model === m) &&
       (!d || x.dataset_type === d) &&
+      (!b || x.bias_subtype === d) &&
       (!i || x.impairment === i)
     );
   });
@@ -189,6 +193,7 @@ function renderTable(){
       <div>${item.model||""}</div>
       <div>${item.prompt||""}</div>
       <div>${item.dataset_type||""}</div>
+      <div>${item.bias_subtype||""}</div>
     `;
 
     row.onclick=()=>show(item);
@@ -213,6 +218,7 @@ function show(item){
       <b>Model:</b> ${item.model || "-"}<br>
       <b>Prompt:</b> ${item.prompt || "-"}<br>
       <b>Dataset:</b> ${item.dataset_type || "-"}<br>
+      <b>Bias:</b> ${item.bias_subtype || "-"}<br>
       <b>Hash:</b> ${item.hash_name || "-"}
     `;
   }
