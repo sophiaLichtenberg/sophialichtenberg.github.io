@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Bulletproof Dataset Explorer</title>
+<title>Dataset Explorer</title>
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -12,21 +12,50 @@
 
 <div class="app">
 
-  <!-- LEFT -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
-    <input id="search" placeholder="Search..." />
 
-    <select id="modelFilter"></select>
-    <select id="datasetFilter"></select>
-    <select id="impairmentFilter"></select>
+    <h2>Explorer</h2>
+
+    <input id="search" class="search" placeholder="Search prompts..." />
+
+    <select id="modelFilter" class="select"></select>
+    <select id="datasetFilter" class="select"></select>
+    <select id="impairmentFilter" class="select"></select>
+
+    <button class="btn" onclick="switchTab('grid')">Grid</button>
+    <button class="btn" onclick="switchTab('dataset')">Dataset</button>
+
   </div>
 
-  <!-- GRID -->
-  <div id="grid" class="grid"></div>
+  <!-- MAIN -->
+  <div class="main">
 
-  <!-- RIGHT -->
+    <!-- GRID TAB -->
+    <div id="gridTab" class="tab active">
+      <div id="grid" class="grid"></div>
+    </div>
+
+    <!-- TABLE TAB -->
+    <div id="datasetTab" class="tab">
+
+      <div class="table-wrap">
+        <div class="header-row">
+          <div>Model</div>
+          <div>Prompt</div>
+          <div>Dataset</div>
+        </div>
+
+        <div id="table"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- PREVIEW -->
   <div class="preview">
-    <img id="preview" />
+    <img id="previewImg" />
     <div id="meta"></div>
   </div>
 
