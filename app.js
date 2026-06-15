@@ -4,16 +4,13 @@ const base =
 let DATA = [];
 let VIEW = [];
 
-/* SAFE DOM HELPER (prevents ALL null crashes) */
+/* SAFE DOM */
 function el(id){
   const node = document.getElementById(id);
-  if(!node){
-    console.warn(`Missing DOM element: ${id}`);
-  }
+  if(!node) console.warn("Missing:", id);
   return node;
 }
 
-/* DOM */
 const table = el("table");
 const grid = el("grid");
 const previewImg = el("previewImg");
@@ -24,44 +21,36 @@ const modelFilter = el("modelFilter");
 const datasetFilter = el("datasetFilter");
 const impairmentFilter = el("impairmentFilter");
 
-/* TAB SYSTEM */
+/* TAB SWITCH */
 window.switchTab = function(tab){
-  const gridTab = el("gridTab");
-  const datasetTab = el("datasetTab");
+  const g = el("gridTab");
+  const d = el("datasetTab");
 
-  if(!gridTab || !datasetTab) return;
+  if(!g || !d) return;
 
-  gridTab.classList.remove("active");
-  datasetTab.classList.remove("active");
-
-  if(tab === "grid") gridTab.classList.add("active");
-  if(tab === "dataset") datasetTab.classList.add("active");
+  g.classList.toggle("active", tab === "grid");
+  d.classList.toggle("active", tab === "dataset");
 };
 
-/* CSV LOAD */
+/* LOAD CSV */
 async function loadCSV(){
-  try{
-    const res = await fetch("hashed_metadata_df.csv");
-    const text = await res.text();
+  const res = await fetch("hashed_metadata_df.csv");
+  const text = await res.text();
 
-    const lines = text.trim().split("\n");
-    const headers = lines[0].split(",");
+  const lines = text.trim().split("\n");
+  const headers = lines[0].split(",");
 
-    DATA = lines.slice(1).map(line => {
-      const cols = line.split(",");
-      let obj = {};
-      headers.forEach((h,i)=>{
-        obj[h.trim()] = (cols[i] || "").trim();
-      });
-      return obj;
+  DATA = lines.slice(1).map(line => {
+    const cols = line.split(",");
+    let obj = {};
+    headers.forEach((h,i)=>{
+      obj[h.trim()] = (cols[i] || "").trim();
     });
+    return obj;
+  });
 
-    buildFilters();
-    applyFilters();
-
-  } catch(e){
-    console.error("CSV load failed", e);
-  }
+  buildFilters();
+  applyFilters();
 }
 
 /* FILTERS */
@@ -73,36 +62,36 @@ function buildFilters(){
 
 function fill(select, values){
   if(!select) return;
-
   select.innerHTML = `<option value="">All</option>`;
   values.forEach(v=>{
-    const opt = document.createElement("option");
-    opt.value = v;
-    opt.textContent = v;
-    select.appendChild(opt);
+    const o = document.createElement("option");
+    o.value = v;
+    o.textContent = v;
+    select.appendChild(o);
   });
 }
 
 /* FILTER LOGIC */
 function applyFilters(){
-
   const s = (search?.value || "").toLowerCase();
   const m = modelFilter?.value;
   const d = datasetFilter?.value;
   const i = impairmentFilter?.value;
 
-  VIEW = DATA.filter(x => (
+  VIEW = DATA.filter(x =>
     (!s || (x.prompt||"").toLowerCase().includes(s)) &&
     (!m || x.model===m) &&
     (!d || x.dataset_type===d) &&
     (!i || x.impairment===i)
-  ));
+  );
 
   renderGrid();
   renderTable();
 }
 
-/* GRID VIEW (NO BROKEN TILES) */
+/* =========================
+   GRID (NO IMAGES HERE!)
+========================= */
 function renderGrid(){
   if(!grid) return;
 
@@ -112,19 +101,11 @@ function renderGrid(){
     const card = document.createElement("div");
     card.className = "card";
 
-    const img = document.createElement("img");
-
-    const url = base + encodeURIComponent(item.file_name || "");
-
-    img.src = url;
-    img.loading = "lazy";
-
-    /* prevent broken tiles */
-    img.onerror = () => {
-      img.src = "placeholder.png";
-    };
-
-    card.appendChild(img);
+    /* TEXT ONLY → NO IMAGE PRELOAD */
+    card.innerHTML = `
+      <div class="card-title">${item.model}</div>
+      <div class="card-sub">${item.dataset_type}</div>
+    `;
 
     card.onclick = () => show(item);
 
@@ -132,7 +113,9 @@ function renderGrid(){
   });
 }
 
-/* TABLE VIEW */
+/* =========================
+   TABLE
+========================= */
 function renderTable(){
   if(!table) return;
 
@@ -143,9 +126,9 @@ function renderTable(){
     row.className = "row";
 
     row.innerHTML = `
-      <div>${item.model || ""}</div>
-      <div>${item.prompt || ""}</div>
-      <div>${item.dataset_type || ""}</div>
+      <div>${item.model}</div>
+      <div>${item.prompt}</div>
+      <div>${item.dataset_type}</div>
     `;
 
     row.onclick = () => show(item);
@@ -154,13 +137,17 @@ function renderTable(){
   });
 }
 
-/* PREVIEW */
+/* =========================
+   IMAGE ONLY ON CLICK
+========================= */
 function show(item){
   if(!previewImg || !meta) return;
 
   const url = base + encodeURIComponent(item.file_name || "");
 
+  /* ONLY HERE image loads */
   previewImg.src = url;
+
   previewImg.onerror = () => {
     previewImg.src = "placeholder.png";
   };

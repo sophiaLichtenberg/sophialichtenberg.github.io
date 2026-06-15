@@ -66,3 +66,26 @@ body{
   width:100%;
   border-radius:10px;
 }
+
+.card{
+  background:#1f2937;
+  padding:10px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.card:hover{
+  background:#273244;
+}
+
+.card-title{
+  font-weight:600;
+  font-size:13px;
+}
+
+.card-sub{
+  font-size:11px;
+  opacity:0.7;
+  margin-top:4px;
+}
