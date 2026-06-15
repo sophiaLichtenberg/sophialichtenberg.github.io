@@ -125,61 +125,79 @@ function imgUrl(hash){
 }
 
 /* GRID */
-function renderGrid(){
+function renderGrid() {
 
-  if(!gridView) return;
+  if (!gridView) return;
 
   gridView.innerHTML = "";
 
-  if(!VIEW.length){
-    gridView.innerHTML = `<div style="padding:10px;">No results</div>`;
+  if (!VIEW.length) {
+    gridView.innerHTML = `<div style="padding:10px;opacity:0.7;">No results</div>`;
     return;
   }
 
   VIEW.forEach(item => {
 
     const hash = item.hash_name;
-    if(!hash) return;
+    if (!hash) return;
 
     const card = document.createElement("div");
     card.className = "card";
 
-    // WRAPPER
     const thumb = document.createElement("div");
     thumb.className = "thumb";
 
-    // LOADER (per image)
     const loader = document.createElement("div");
     loader.className = "img-loader";
+    loader.textContent = "⏳";
 
-    // IMAGE
-    const img = document.createElement("img");
-    img.src = imgUrl(hash);
-    img.loading = "lazy";
+    const img = new Image();
 
-    // start hidden until loaded
+    // IMPORTANT: correct URL only once
+    const url = imgUrl(hash);
+
+    // prevent flicker / broken decode issues
     img.style.opacity = "0";
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit = "cover";
+    img.decoding = "async";
+
+    let resolved = false;
 
     img.onload = () => {
+      if (resolved) return;
+      resolved = true;
+
       loader.remove();
       img.style.opacity = "1";
     };
 
     img.onerror = () => {
-      loader.textContent = "❌";
+      if (resolved) return;
+      resolved = true;
+
+      loader.textContent = "⚠️";
+      img.style.display = "none";
     };
 
+    // attach BEFORE setting src (important for consistency)
     thumb.appendChild(loader);
     thumb.appendChild(img);
+
+    // trigger load AFTER DOM insert (prevents race conditions)
+    requestAnimationFrame(() => {
+      img.src = url;
+    });
 
     const label = document.createElement("div");
     label.className = "label";
 
     label.innerHTML = `
-    <div>${item.model || "unknown"}</div>
-    <div>${item.impairment || ""}</div>
-    <div>${item.bias_subtype || ""}</div>
-    <div>${item.context_value || ""}</div>
+      <div>${item.model || "unknown"}</div>
+      <div>${item.impairment || ""}</div>
+      <div>${item.bias_subtype || ""}</div>
+      <div>${item.context_value || ""}</div>
     `;
 
     card.appendChild(thumb);
