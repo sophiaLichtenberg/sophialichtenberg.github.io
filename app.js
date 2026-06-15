@@ -18,7 +18,7 @@ let VIEW = [];
 let index = 0;
 
 // =====================
-// DOM (SAFE: now guaranteed to exist)
+// DOM
 // =====================
 
 const table = document.getElementById("table");
@@ -91,7 +91,7 @@ function buildDropdowns(){
 }
 
 // =====================
-// FILTERING
+// FILTERS
 // =====================
 
 function applyFilters(){
@@ -161,21 +161,24 @@ document.querySelector(".table-wrap")
 });
 
 // =====================
-// PREVIEW
+// IMAGE PREVIEW (FIXED)
 // =====================
 
 function show(item){
 
-  preview.src =
-    base + item.hash_name + ".png";
+  // 🔥 IMPORTANT FIX: use file_name (NOT hash_name)
+  const url = base + encodeURIComponent(item.file_name);
+
+  preview.src = url;
 
   meta.innerHTML = `
     <b>Model:</b> ${item.model || "-"}<br>
     <b>Prompt:</b> ${item.prompt || "-"}<br>
     <b>Dataset:</b> ${item.dataset_type || "-"}<br>
-    <b>Seed:</b> ${item.seed || "-"}<br>
-    <b>Hash:</b> ${item.hash_name || "-"}
+    <b>File:</b> ${item.file_name || "-"}
   `;
+
+  console.log("Loading image:", url);
 }
 
 // =====================
