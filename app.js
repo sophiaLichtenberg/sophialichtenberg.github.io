@@ -251,9 +251,9 @@ function renderGrid() {
 }
 
 function selectedValues(select){
-  return [...select.selectedOptions].map(o => o.value);
+  if (!select) return [];
+  return Array.from(select.selectedOptions).map(o => o.value);
 }
-
 
 /* =========================
    TABLE (CLEAN FIX)

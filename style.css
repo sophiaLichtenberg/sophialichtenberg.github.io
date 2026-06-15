@@ -237,4 +237,9 @@ body{
 
 .select[multiple]{
   height:120px;
+  padding:4px;
+}
+
+.select[multiple] option{
+  padding:4px;
 }
