@@ -14,83 +14,95 @@ const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
 const impairmentFilter = document.getElementById("impairmentFilter");
 
-// ==========================
+// ------------------------
+// CSV PARSER
+// ------------------------
+function parseCSV(text){
+
+  const lines = text.trim().split("\n");
+  const headers = lines[0].split(",");
+
+  return lines.slice(1).map(line => {
+
+    const cols = line.split(",");
+
+    const obj = {};
+
+    headers.forEach((h,i)=>{
+      obj[h.trim()] = (cols[i] || "").trim();
+    });
+
+    return obj;
+  });
+}
+
+// ------------------------
 // LOAD CSV
-// ==========================
+// ------------------------
 async function loadCSV(){
 
   const res = await fetch("hashed_metadata_df.csv");
   const text = await res.text();
 
-  const lines = text.trim().split("\n");
-  const headers = lines[0].split(",");
-
-  DATA = lines.slice(1).map(line => {
-    const cols = line.split(",");
-    const obj = {};
-    headers.forEach((h,i)=>{
-      obj[h.trim()] = (cols[i] || "").trim();
-    });
-    return obj;
-  });
+  DATA = parseCSV(text);
 
   buildFilters();
   applyFilters();
 }
 
-// ==========================
-// BUILD DROPDOWNS
-// ==========================
+// ------------------------
+// FILTERS
+// ------------------------
 function buildFilters(){
 
-  const models = [...new Set(DATA.map(d=>d.model))];
-  const datasets = [...new Set(DATA.map(d=>d.dataset_type))];
+  fill(modelFilter,
+    [...new Set(DATA.map(d => d.model))]
+  );
 
-  const impairments = [...new Set(
-    DATA.map(d => d.impairment || "")
-  )].filter(Boolean);
+  fill(datasetFilter,
+    [...new Set(DATA.map(d => d.dataset_type))]
+  );
 
-  fill(modelFilter, models);
-  fill(datasetFilter, datasets);
-  fill(impairmentFilter, impairments);
+  fill(impairmentFilter,
+    [...new Set(DATA.map(d => d.impairment).filter(Boolean))]
+  );
 }
 
-function fill(select, arr){
+function fill(select, values){
 
   select.innerHTML = `<option value="">All</option>`;
 
-  arr.forEach(v=>{
+  values.forEach(v => {
     const opt = document.createElement("option");
     opt.value = v;
     opt.textContent = v;
     select.appendChild(opt);
   });
-
 }
 
-// ==========================
-// FILTERS
-// ==========================
+// ------------------------
+// APPLY FILTERS
+// ------------------------
 function applyFilters(){
 
-  const s = search.value.toLowerCase();
+  const s = (search.value || "").toLowerCase();
   const m = modelFilter.value;
   const d = datasetFilter.value;
   const i = impairmentFilter.value;
 
   VIEW = DATA.filter(x => (
-    (!s || (x.prompt||"").toLowerCase().includes(s)) &&
-    (!m || x.model===m) &&
-    (!d || x.dataset_type===d) &&
-    (!i || (x.impairment||"")===i)
+    (!s || (x.prompt || "").toLowerCase().includes(s)) &&
+    (!m || x.model === m) &&
+    (!d || x.dataset_type === d) &&
+    (!i || x.impairment === i)
   ));
 
   renderTable();
 }
 
-// ==========================
+// ------------------------
 // TABLE
-// ==========================
+// ------------------------
 function renderTable(){
 
   table.innerHTML = "";
@@ -101,7 +113,7 @@ function renderTable(){
     row.className = "row";
 
     row.innerHTML = `
-      <div>${item.model}</div>
+      <div><b>${item.model}</b></div>
       <div>${item.prompt}</div>
       <div>${item.dataset_type}</div>
     `;
@@ -112,36 +124,37 @@ function renderTable(){
   });
 }
 
-// ==========================
-// IMAGE PREVIEW
-// ==========================
+// ------------------------
+// IMAGE PREVIEW (FIXED)
+// ------------------------
 function show(item){
 
-  gallery.innerHTML = "";
+  const file =
+    item.hash_name
+      ? item.hash_name + ".png"
+      : item.file_name.split("/").pop();
 
-  const url =
-    base + encodeURIComponent(item.file_name);
+  const url = base + file;
 
-  const img = document.createElement("img");
-  img.src = url;
-
-  gallery.appendChild(img);
+  gallery.src = url;
 
   meta.innerHTML = `
-    <b>Model:</b> ${item.model}<br>
-    <b>Prompt:</b> ${item.prompt}<br>
-    <b>Dataset:</b> ${item.dataset_type}<br>
-    <b>Impairment:</b> ${item.impairment || "None"}
+    <p><b>Model:</b> ${item.model}</p>
+    <p><b>Prompt:</b> ${item.prompt}</p>
+    <p><b>Dataset:</b> ${item.dataset_type}</p>
+    <p><b>Impairment:</b> ${item.impairment || "None"}</p>
   `;
 }
 
-// ==========================
+// ------------------------
 // EVENTS
-// ==========================
-search.oninput = applyFilters;
-modelFilter.onchange = applyFilters;
-datasetFilter.onchange = applyFilters;
-impairmentFilter.onchange = applyFilters;
+// ------------------------
+search.addEventListener("input", applyFilters);
+modelFilter.addEventListener("change", applyFilters);
+datasetFilter.addEventListener("change", applyFilters);
+impairmentFilter.addEventListener("change", applyFilters);
 
+// ------------------------
 // START
+// ------------------------
 loadCSV();

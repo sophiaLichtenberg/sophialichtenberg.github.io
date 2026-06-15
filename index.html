@@ -1,106 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Dataset Explorer</title>
 
-<style>
-body{
-  margin:0;
-  font-family:system-ui;
-  background:#0b0f19;
-  color:#e5e7eb;
-}
-
-.app{
-  display:grid;
-  grid-template-columns:260px 1fr 420px;
-  height:100vh;
-}
-
-/* SIDEBAR */
-.sidebar{
-  padding:12px;
-  border-right:1px solid rgba(255,255,255,0.1);
-}
-
-input, select{
-  width:100%;
-  margin:8px 0;
-  padding:10px;
-  background:#111827;
-  color:white;
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:8px;
-}
-
-/* TABLE */
-.table{
-  overflow:auto;
-  border-right:1px solid rgba(255,255,255,0.1);
-}
-
-.row{
-  display:grid;
-  grid-template-columns:120px 1fr 140px;
-  padding:10px;
-  border-bottom:1px solid rgba(255,255,255,0.05);
-  cursor:pointer;
-}
-
-.row:hover{
-  background:rgba(255,255,255,0.05);
-}
-
-/* PREVIEW */
-.preview{
-  padding:10px;
-  overflow:auto;
-}
-
-.preview img{
-  width:100%;
-  border-radius:10px;
-  margin-bottom:10px;
-}
-</style>
-
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="app">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
+  <h1>Dataset Explorer</h1>
 
-    <h3>Dataset</h3>
+  <!-- CONTROLS -->
+  <div class="controls">
 
-    <input id="search" placeholder="Search prompt...">
+    <input id="search" placeholder="Search prompts..." />
 
-    <select id="modelFilter">
-      <option value="">All models</option>
-    </select>
-
-    <select id="datasetFilter">
-      <option value="">All datasets</option>
-    </select>
-
-    <select id="impairmentFilter">
-      <option value="">All impairments</option>
-    </select>
+    <select id="modelFilter"></select>
+    <select id="datasetFilter"></select>
+    <select id="impairmentFilter"></select>
 
   </div>
 
-  <!-- TABLE -->
-  <div class="table" id="table"></div>
+  <!-- LAYOUT -->
+  <div class="layout">
 
-  <!-- PREVIEW -->
-  <div class="preview">
+    <!-- TABLE -->
+    <div id="table" class="table"></div>
 
-    <div id="meta">Select row</div>
-    <div id="gallery"></div>
+    <!-- PREVIEW -->
+    <div class="preview">
+
+      <img id="gallery" />
+
+      <div id="meta" class="meta"></div>
+
+    </div>
 
   </div>
 
