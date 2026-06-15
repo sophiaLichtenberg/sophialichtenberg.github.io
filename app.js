@@ -6,11 +6,14 @@ let VIEW = [];
 
 const $ = (id) => document.getElementById(id);
 
-let search, modelFilter, datasetFilter, impairmentFilter;
+let search, modelFilter, datasetFilter, biasFilter, contextFilter, impairmentFilter;
 let gridView, table, tableView;
 let previewImg, meta, loader;
 let searchBtn;
 
+/* =========================
+   INIT
+========================= */
 window.addEventListener("DOMContentLoaded", () => {
 
   search = $("search");
@@ -40,7 +43,9 @@ window.addEventListener("DOMContentLoaded", () => {
   setView("grid");
 });
 
-/* CSV */
+/* =========================
+   CSV LOAD
+========================= */
 async function loadCSV(){
   try {
     const res = await fetch("hashed_metadata_df.csv");
@@ -52,7 +57,9 @@ async function loadCSV(){
     DATA = lines.slice(1).map(line => {
       const cols = line.split(",");
       const obj = {};
-      headers.forEach((h,i)=> obj[h.trim()] = (cols[i]||"").trim());
+      headers.forEach((h,i)=>{
+        obj[h.trim()] = (cols[i] || "").trim();
+      });
       return obj;
     });
 
@@ -63,7 +70,9 @@ async function loadCSV(){
   }
 }
 
-/* FILTERS */
+/* =========================
+   FILTERS
+========================= */
 function buildFilters(){
   fill(modelFilter, uniq("model"));
   fill(datasetFilter, uniq("dataset_type"));
@@ -73,21 +82,23 @@ function buildFilters(){
 }
 
 function uniq(k){
-  return [...new Set(DATA.map(d=>d[k]))];
+  return [...new Set(DATA.map(d => d[k]))];
 }
 
 function fill(select, values){
   if(!select) return;
   select.innerHTML = `<option value="">All</option>`;
   values.forEach(v=>{
-    const o=document.createElement("option");
-    o.value=v;
-    o.textContent=v;
+    const o = document.createElement("option");
+    o.value = v;
+    o.textContent = v;
     select.appendChild(o);
   });
 }
 
-/* SEARCH */
+/* =========================
+   SEARCH
+========================= */
 function applyFilters(){
 
   const s = (search?.value || "").toLowerCase();
@@ -98,7 +109,6 @@ function applyFilters(){
   const i = impairmentFilter?.value;
 
   VIEW = DATA.filter(x => {
-
     const prompt = (x.prompt || "").toLowerCase();
 
     return (
@@ -114,17 +124,20 @@ function applyFilters(){
   renderGrid();
   renderTable();
 
-  // optional: auto preview first result
   if (VIEW.length) show(VIEW[0]);
 }
 
-/* FIXED IMAGE URL */
+/* =========================
+   IMAGE URL
+========================= */
 function imgUrl(hash){
   if(!hash) return "";
   return base + encodeURIComponent(hash + ".png");
 }
 
-/* GRID */
+/* =========================
+   GRID (FAST + LOADER + SAFE)
+========================= */
 function renderGrid() {
 
   if (!gridView) return;
@@ -132,14 +145,21 @@ function renderGrid() {
   gridView.innerHTML = "";
 
   if (!VIEW.length) {
-    gridView.innerHTML = `<div style="padding:10px;opacity:0.7;">No results</div>`;
+    gridView.innerHTML = `<div style="padding:10px;opacity:0.6;">No results</div>`;
     return;
   }
+
+  const seen = new Set();
 
   VIEW.forEach(item => {
 
     const hash = item.hash_name;
     if (!hash) return;
+
+    /* OPTIONAL: collapse duplicates */
+    const key = hash.replace(/_\d+$/, "");
+    if (seen.has(key)) return;
+    seen.add(key);
 
     const card = document.createElement("div");
     card.className = "card";
@@ -147,45 +167,36 @@ function renderGrid() {
     const thumb = document.createElement("div");
     thumb.className = "thumb";
 
-    const loader = document.createElement("div");
-    loader.className = "img-loader";
-    loader.textContent = "⏳";
+    const loaderEl = document.createElement("div");
+    loaderEl.className = "img-loader";
+    loaderEl.textContent = "⏳";
 
     const img = new Image();
-
-    // IMPORTANT: correct URL only once
     const url = imgUrl(hash);
 
-    // prevent flicker / broken decode issues
     img.style.opacity = "0";
-    img.style.width = "100%";
-    img.style.height = "100%";
-    img.style.objectFit = "cover";
     img.decoding = "async";
+    img.loading = "lazy";
 
-    let resolved = false;
+    let done = false;
 
     img.onload = () => {
-      if (resolved) return;
-      resolved = true;
-
-      loader.remove();
+      if (done) return;
+      done = true;
+      loaderEl.remove();
       img.style.opacity = "1";
     };
 
     img.onerror = () => {
-      if (resolved) return;
-      resolved = true;
-
-      loader.textContent = "⚠️";
+      if (done) return;
+      done = true;
+      loaderEl.textContent = "❌";
       img.style.display = "none";
     };
 
-    // attach BEFORE setting src (important for consistency)
-    thumb.appendChild(loader);
+    thumb.appendChild(loaderEl);
     thumb.appendChild(img);
 
-    // trigger load AFTER DOM insert (prevents race conditions)
     requestAnimationFrame(() => {
       img.src = url;
     });
@@ -209,39 +220,53 @@ function renderGrid() {
   });
 }
 
-/* TABLE */
+/* =========================
+   TABLE (CLEAN FIX)
+========================= */
 function renderTable(){
+
+  if (!table) return;
+
   table.innerHTML = "";
 
-  VIEW.forEach(item=>{
-    const row=document.createElement("div");
-    row.className="row";
+  VIEW.forEach(item => {
 
-    row.innerHTML=`
-      <div>${item.model||""}</div>
-      <div>${item.prompt||""}</div>
-      <div>${item.dataset_type||""}</div>
-      <div>${item.bias_subtype||""}</div>
+    const row = document.createElement("div");
+    row.className = "row";
+
+    row.innerHTML = `
+      <div>${item.model || ""}</div>
+      <div>${item.prompt || ""}</div>
+      <div>${item.dataset_type || ""}</div>
+      <div>${item.bias_subtype || ""}</div>
     `;
 
-    row.onclick=()=>show(item);
+    row.onclick = () => show(item);
+
     table.appendChild(row);
   });
 }
 
-/* PREVIEW */
+/* =========================
+   PREVIEW (LOADER FIXED)
+========================= */
 function show(item){
 
   const url = imgUrl(item.hash_name);
 
-  loader?.classList.remove("hidden");
+  if (loader) loader.classList.remove("hidden");
 
-  previewImg.onload = () => loader?.classList.add("hidden");
-  previewImg.onerror = () => loader?.classList.add("hidden");
+  previewImg.onload = () => {
+    loader?.classList.add("hidden");
+  };
+
+  previewImg.onerror = () => {
+    loader?.classList.add("hidden");
+  };
 
   previewImg.src = url;
 
-  if(meta){
+  if (meta) {
     meta.innerHTML = `
       <b>Model:</b> ${item.model || "-"}<br>
       <b>Prompt:</b> ${item.prompt || "-"}<br>
@@ -253,14 +278,18 @@ function show(item){
   }
 }
 
-/* VIEW SWITCH */
+/* =========================
+   VIEW SWITCH
+========================= */
 function setView(type){
 
-  if(type==="grid"){
-    gridView.style.display="grid";
-    tableView.style.display="none";
+  if (!gridView || !tableView) return;
+
+  if (type === "grid") {
+    gridView.style.display = "grid";
+    tableView.style.display = "none";
   } else {
-    gridView.style.display="none";
-    tableView.style.display="block";
+    gridView.style.display = "none";
+    tableView.style.display = "block";
   }
 }
