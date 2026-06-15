@@ -1,41 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-// =====================
-// CONFIG
-// =====================
-
 const base =
   "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
-
-const PAGE_SIZE = 200;
-
-// =====================
-// STATE
-// =====================
 
 let DATA = [];
 let VIEW = [];
 let index = 0;
+const PAGE_SIZE = 200;
 
-// =====================
 // DOM
-// =====================
-
 const table = document.getElementById("table");
 const preview = document.getElementById("preview");
 const meta = document.getElementById("meta");
 
-const searchInput = document.getElementById("search");
+const search = document.getElementById("search");
 const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
+const impairmentFilter = document.getElementById("impairmentFilter");
 
 const stats = document.getElementById("stats");
 
-// =====================
 // LOAD CSV
-// =====================
-
-async function loadCSV(){
+async function load(){
 
   const res = await fetch("./hashed_metadata_df.csv");
   const text = await res.text();
@@ -46,162 +32,126 @@ async function loadCSV(){
   DATA = lines.slice(1).map(line => {
     const cols = line.split(",");
     const obj = {};
-
-    headers.forEach((h, i) => {
-      obj[h.trim()] = (cols[i] || "").trim();
+    headers.forEach((h,i)=>{
+      obj[h.trim()] = (cols[i]||"").trim();
     });
-
     return obj;
   });
 
-  VIEW = DATA;
-
-  buildDropdowns();
-  applyFilters();
-  updateStats();
-
-  if (DATA.length) show(DATA[0]);
+  buildFilters();
+  apply();
 }
 
-// =====================
-// DROPDOWNS
-// =====================
+// FILTER OPTIONS
+function buildFilters(){
 
-function buildDropdowns(){
+  const models = [...new Set(DATA.map(d=>d.model))];
+  const datasets = [...new Set(DATA.map(d=>d.dataset_type))];
+  const impairments = [...new Set(DATA.map(d=>d.impairment || "None"))];
 
-  const models = [...new Set(DATA.map(d => d.model))].sort();
-  const datasets = [...new Set(DATA.map(d => d.dataset_type))].sort();
+  fill(modelFilter, models);
+  fill(datasetFilter, datasets);
+  fill(impairmentFilter, impairments);
+}
 
-  modelFilter.innerHTML = `<option value="">All models</option>`;
-  datasetFilter.innerHTML = `<option value="">All datasets</option>`;
-
-  models.forEach(m => {
-    const opt = document.createElement("option");
-    opt.value = m;
-    opt.textContent = m;
-    modelFilter.appendChild(opt);
-  });
-
-  datasets.forEach(d => {
-    const opt = document.createElement("option");
-    opt.value = d;
-    opt.textContent = d;
-    datasetFilter.appendChild(opt);
+function fill(select, arr){
+  select.innerHTML = `<option value="">All</option>`;
+  arr.forEach(v=>{
+    const o=document.createElement("option");
+    o.value=v;
+    o.textContent=v;
+    select.appendChild(o);
   });
 }
 
-// =====================
-// FILTERS
-// =====================
+// FILTER LOGIC
+function apply(){
 
-function applyFilters(){
-
-  const s = searchInput.value.toLowerCase();
+  const s = search.value.toLowerCase();
   const m = modelFilter.value;
   const d = datasetFilter.value;
+  const i = impairmentFilter.value;
 
-  VIEW = DATA.filter(x => {
+  VIEW = DATA.filter(x => (
+    (!s || (x.prompt||"").toLowerCase().includes(s)) &&
+    (!m || x.model===m) &&
+    (!d || x.dataset_type===d) &&
+    (!i || (x.impairment||"None")===i)
+  ));
 
-    return (
-      (!s || (x.prompt || "").toLowerCase().includes(s)) &&
-      (!m || x.model === m) &&
-      (!d || x.dataset_type === d)
-    );
-
-  });
-
-  resetRender();
+  reset();
   render();
-  updateStats();
+  stats.textContent = `${VIEW.length} / ${DATA.length}`;
 }
 
-// =====================
-// RENDER (VIRTUAL SCROLL)
-// =====================
-
+// TABLE RENDER
 function render(){
 
   const slice = VIEW.slice(index, index + PAGE_SIZE);
 
-  slice.forEach(item => {
+  slice.forEach(item=>{
+    const div = document.createElement("div");
+    div.className="row";
 
-    const row = document.createElement("div");
-    row.className = "row";
-
-    row.innerHTML = `
-      <div>${item.model || ""}</div>
-      <div>${item.prompt || ""}</div>
-      <div>${item.dataset_type || ""}</div>
+    div.innerHTML=`
+      <div>${item.model}</div>
+      <div>${item.prompt}</div>
+      <div>${item.dataset_type}</div>
     `;
 
-    row.onclick = () => show(item);
+    div.onclick=()=>show(item);
 
-    table.appendChild(row);
+    table.appendChild(div);
   });
 
   index += PAGE_SIZE;
 }
 
-// reset
-function resetRender(){
-  table.innerHTML = "";
-  index = 0;
+function reset(){
+  table.innerHTML="";
+  index=0;
 }
 
-// infinite scroll
+// SCROLL
 document.querySelector(".table-wrap")
-.addEventListener("scroll", (e) => {
+.addEventListener("scroll",(e)=>{
 
-  const el = e.target;
-
-  if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) {
+  const el=e.target;
+  if(el.scrollTop+el.clientHeight>=el.scrollHeight-50){
     render();
   }
 
 });
 
-// =====================
-// IMAGE PREVIEW (FIXED)
-// =====================
-
+// SHOW GALLERY (FIXED)
 function show(item){
 
-  // 🔥 IMPORTANT FIX: use file_name (NOT hash_name)
-  const url = base + encodeURIComponent(item.file_name);
+  preview.innerHTML="";
 
-  preview.src = url;
+  const url =
+    base + encodeURIComponent(item.file_name);
+
+  const img = document.createElement("img");
+  img.src = url;
+  img.loading = "lazy";
+
+  preview.appendChild(img);
 
   meta.innerHTML = `
-    <b>Model:</b> ${item.model || "-"}<br>
-    <b>Prompt:</b> ${item.prompt || "-"}<br>
-    <b>Dataset:</b> ${item.dataset_type || "-"}<br>
-    <b>File:</b> ${item.file_name || "-"}
+    <b>Model:</b> ${item.model}<br>
+    <b>Prompt:</b> ${item.prompt}<br>
+    <b>Dataset:</b> ${item.dataset_type}<br>
+    <b>Impairment:</b> ${item.impairment || "None"}<br>
   `;
-
-  console.log("Loading image:", url);
 }
 
-// =====================
-// STATS
-// =====================
-
-function updateStats(){
-  stats.textContent =
-    `Showing ${VIEW.length} / ${DATA.length}`;
-}
-
-// =====================
 // EVENTS
-// =====================
+search.addEventListener("input", apply);
+modelFilter.addEventListener("change", apply);
+datasetFilter.addEventListener("change", apply);
+impairmentFilter.addEventListener("change", apply);
 
-searchInput.addEventListener("input", applyFilters);
-modelFilter.addEventListener("change", applyFilters);
-datasetFilter.addEventListener("change", applyFilters);
-
-// =====================
 // START
-// =====================
-
-loadCSV();
+load();
 
 });

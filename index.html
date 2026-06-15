@@ -6,54 +6,129 @@
 <title>Dataset Explorer</title>
 
 <link rel="stylesheet" href="style.css">
+
+<style>
+body{
+  margin:0;
+  font-family:system-ui;
+  background:#0b0f19;
+  color:#e5e7eb;
+}
+
+.app{
+  display:grid;
+  grid-template-columns:280px 1fr 420px;
+  height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+  padding:16px;
+  border-right:1px solid rgba(255,255,255,0.1);
+}
+
+.search, .select{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:#111827;
+  color:white;
+}
+
+/* TABLE */
+.table-wrap{
+  overflow:auto;
+  border-right:1px solid rgba(255,255,255,0.1);
+}
+
+.header-row, .row{
+  display:grid;
+  grid-template-columns:120px 1fr 160px;
+  gap:10px;
+  padding:10px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.row:hover{
+  background:rgba(255,255,255,0.05);
+  cursor:pointer;
+}
+
+/* GALLERY */
+.preview{
+  padding:10px;
+  overflow:auto;
+}
+
+.gallery{
+  display:grid;
+  gap:10px;
+}
+
+.gallery img{
+  width:100%;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+.meta{
+  font-size:12px;
+  opacity:0.8;
+  margin-bottom:10px;
+}
+</style>
+
 </head>
 
 <body>
 
 <div class="app">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
+<!-- SIDEBAR -->
+<div class="sidebar">
 
-    <h2>Dataset Explorer</h2>
+  <h2>Dataset</h2>
 
-    <p id="stats">Loading...</p>
+  <input id="search" class="search" placeholder="Search prompt..." />
 
-    <input id="search" class="search" placeholder="Search prompt..." />
+  <select id="modelFilter" class="select">
+    <option value="">All models</option>
+  </select>
 
-    <label>Model</label>
-    <select id="modelFilter" class="select">
-      <option value="">All models</option>
-    </select>
+  <select id="datasetFilter" class="select">
+    <option value="">All datasets</option>
+  </select>
 
-    <label>Dataset</label>
-    <select id="datasetFilter" class="select">
-      <option value="">All datasets</option>
-    </select>
+  <select id="impairmentFilter" class="select">
+    <option value="">All impairments</option>
+  </select>
 
+  <p id="stats"></p>
+
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+
+  <div class="header-row">
+    <div>Model</div>
+    <div>Prompt</div>
+    <div>Dataset</div>
   </div>
 
-  <!-- TABLE -->
-  <div class="table-wrap">
+  <div id="table"></div>
 
-    <div class="header-row">
-      <div>Model</div>
-      <div>Prompt</div>
-      <div>Dataset</div>
-    </div>
+</div>
 
-    <div id="table"></div>
+<!-- PREVIEW -->
+<div class="preview">
 
-  </div>
+  <div id="meta" class="meta">Select an item</div>
+  <div id="preview" class="gallery"></div>
 
-  <!-- PREVIEW -->
-  <div class="preview">
-
-    <img id="preview" />
-
-    <div id="meta">Select an item</div>
-
-  </div>
+</div>
 
 </div>
 
