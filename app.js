@@ -135,6 +135,14 @@ function imgUrl(hash){
   return base + encodeURIComponent(hash + ".png");
 }
 
+function getGroupKey(path) {
+  if (!path) return "";
+  let clean = path.split(".png")[0];
+  clean = clean.replace(/_?\d+$/, "");
+  return clean;
+}
+
+
 /* =========================
    GRID (FAST + LOADER + SAFE)
 ========================= */
@@ -154,11 +162,12 @@ function renderGrid() {
   VIEW.forEach(item => {
 
     const hash = item.hash_name;
-    const file_name = item.file_name;
     if (!hash) return;
 
-    /* OPTIONAL: collapse duplicates */
-    const key = file_name.replace(/_\d+$/, "");
+    // ✅ stable grouping key (fallback-safe)
+    const key = getGroupKey(item.file_name);
+
+    // ❌ THIS is what was missing
     if (seen.has(key)) return;
     seen.add(key);
 
