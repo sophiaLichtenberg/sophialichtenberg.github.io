@@ -1,50 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dataset Explorer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dataset Explorer</title>
 
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
 </head>
 
 <body>
 
 <div class="app">
 
-  <h1>Dataset Explorer</h1>
+  <!-- =======================
+       SIDEBAR FILTERS
+  ======================== -->
+  <div class="sidebar">
 
-  <!-- FILTER BAR -->
-  <div class="controls">
+    <h2>Dataset Explorer</h2>
 
-    <input id="search" placeholder="Search prompts..." />
+    <input
+      id="search"
+      class="search"
+      placeholder="Search prompts..."
+    />
 
-    <select id="modelFilter"></select>
-    <select id="datasetFilter"></select>
-    <select id="impairmentFilter"></select>
+    <select id="modelFilter" class="select"></select>
+
+    <select id="datasetFilter" class="select"></select>
+
+    <select id="impairmentFilter" class="select"></select>
 
   </div>
 
-  <!-- MAIN LAYOUT -->
-  <div class="layout">
+  <!-- =======================
+       TABLE AREA
+  ======================== -->
+  <div class="table-wrap">
 
-    <!-- LEFT: GRID -->
-    <div id="grid" class="grid"></div>
+    <div class="header-row">
+      <div>Model</div>
+      <div>Prompt</div>
+      <div>Dataset</div>
+    </div>
 
-    <!-- RIGHT: DETAILS -->
-    <div class="panel">
+    <div id="table"></div>
 
-      <img id="preview" />
+  </div>
 
-      <div id="meta" class="meta"></div>
+  <!-- =======================
+       RIGHT PREVIEW PANEL
+  ======================== -->
+  <div class="preview">
 
+    <div id="gallery"></div>
+
+    <div id="meta">
+      Click a row to preview image
     </div>
 
   </div>
 
 </div>
-
-<script src="app.js"></script>
 
 </body>
 </html>

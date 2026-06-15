@@ -1,144 +1,130 @@
-const base =
-  "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
+document.addEventListener("DOMContentLoaded", () => {
 
-let DATA = [];
-let VIEW = [];
+  const base =
+    "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
 
-// DOM
-const grid = document.getElementById("grid");
-const preview = document.getElementById("preview");
-const meta = document.getElementById("meta");
+  let DATA = [];
+  let VIEW = [];
 
-const search = document.getElementById("search");
-const modelFilter = document.getElementById("modelFilter");
-const datasetFilter = document.getElementById("datasetFilter");
-const impairmentFilter = document.getElementById("impairmentFilter");
+  // 🔥 FIX: IDs MUST match HTML
+  const table = document.getElementById("table");
+  const gallery = document.getElementById("gallery");
+  const meta = document.getElementById("meta");
 
-// -------------------- CSV --------------------
-function parseCSV(text){
-  const lines = text.trim().split("\n");
-  const headers = lines[0].split(",");
+  const search = document.getElementById("search");
+  const modelFilter = document.getElementById("modelFilter");
+  const datasetFilter = document.getElementById("datasetFilter");
+  const impairmentFilter = document.getElementById("impairmentFilter");
 
-  return lines.slice(1).map(line => {
-    const cols = line.split(",");
-    const obj = {};
-    headers.forEach((h,i)=>{
-      obj[h.trim()] = (cols[i] || "").trim();
+  if (!table || !gallery || !meta) {
+    console.error("Missing DOM elements. Check HTML IDs.");
+    return;
+  }
+
+  async function loadCSV(){
+
+    const res = await fetch("hashed_metadata_df.csv");
+    const text = await res.text();
+
+    const lines = text.trim().split("\n");
+    const headers = lines[0].split(",");
+
+    DATA = lines.slice(1).map(line => {
+      const cols = line.split(",");
+      const obj = {};
+      headers.forEach((h,i)=>{
+        obj[h.trim()] = (cols[i] || "").trim();
+      });
+      return obj;
     });
-    return obj;
-  });
-}
 
-// -------------------- LOAD --------------------
-async function load(){
+    buildFilters();
+    applyFilters();
+  }
 
-  const res = await fetch("hashed_metadata_df.csv");
-  const text = await res.text();
+  function buildFilters(){
 
-  DATA = parseCSV(text);
+    const models = [...new Set(DATA.map(d=>d.model))];
+    const datasets = [...new Set(DATA.map(d=>d.dataset_type))];
+    const impairments = [...new Set(DATA.map(d=>d.impairment || ""))].filter(Boolean);
 
-  buildFilters();
-  apply();
-}
+    fill(modelFilter, models);
+    fill(datasetFilter, datasets);
+    fill(impairmentFilter, impairments);
+  }
 
-// -------------------- FILTERS --------------------
-function buildFilters(){
+  function fill(select, arr){
+    select.innerHTML = `<option value="">All</option>`;
+    arr.forEach(v=>{
+      const opt = document.createElement("option");
+      opt.value = v;
+      opt.textContent = v;
+      select.appendChild(opt);
+    });
+  }
 
-  fill(modelFilter, [...new Set(DATA.map(d=>d.model))]);
-  fill(datasetFilter, [...new Set(DATA.map(d=>d.dataset_type))]);
-  fill(impairmentFilter,
-    [...new Set(DATA.map(d=>d.impairment).filter(Boolean))]
-  );
-}
+  function applyFilters(){
 
-function fill(sel, arr){
+    const s = search.value.toLowerCase();
+    const m = modelFilter.value;
+    const d = datasetFilter.value;
+    const i = impairmentFilter.value;
 
-  sel.innerHTML = `<option value="">All</option>`;
+    VIEW = DATA.filter(x => (
+      (!s || (x.prompt||"").toLowerCase().includes(s)) &&
+      (!m || x.model===m) &&
+      (!d || x.dataset_type===d) &&
+      (!i || (x.impairment||"")===i)
+    ));
 
-  arr.forEach(v=>{
-    const o = document.createElement("option");
-    o.value = v;
-    o.textContent = v;
-    sel.appendChild(o);
-  });
-}
+    renderTable();
+  }
 
-// -------------------- FILTER LOGIC --------------------
-function apply(){
+  function renderTable(){
 
-  const s = search.value?.toLowerCase() || "";
-  const m = modelFilter.value;
-  const d = datasetFilter.value;
-  const i = impairmentFilter.value;
+    table.innerHTML = "";
 
-  VIEW = DATA.filter(x =>
-    (!s || (x.prompt||"").toLowerCase().includes(s)) &&
-    (!m || x.model===m) &&
-    (!d || x.dataset_type===d) &&
-    (!i || x.impairment===i)
-  );
+    VIEW.forEach(item => {
 
-  renderGrid();
-}
+      const row = document.createElement("div");
+      row.className = "row";
 
-// -------------------- GRID --------------------
-function renderGrid(){
+      row.innerHTML = `
+        <div>${item.model}</div>
+        <div>${item.prompt}</div>
+        <div>${item.dataset_type}</div>
+      `;
 
-  grid.innerHTML = "";
+      row.onclick = () => show(item);
 
-  VIEW.forEach(item => {
+      table.appendChild(row);
+    });
+  }
 
-    const file =
-      (item.hash_name ? item.hash_name + ".png"
-                      : item.file_name.split("/").pop());
+  function show(item){
 
-    const url = base + file;
+    gallery.innerHTML = "";
 
-    const div = document.createElement("div");
-    div.className = "card";
+    const url = base + encodeURIComponent(item.hash_name) + ".png";
 
-    div.innerHTML = `
-      <img src="${url}" loading="lazy"/>
-      <div class="cardText">
-        <b>${item.model}</b><br>
-        <span>${item.dataset_type}</span>
-      </div>
+    const img = document.createElement("img");
+    img.src = url;
+
+    gallery.appendChild(img);
+
+    meta.innerHTML = `
+      <b>Model:</b> ${item.model}<br>
+      <b>Prompt:</b> ${item.prompt}<br>
+      <b>Dataset:</b> ${item.dataset_type}<br>
+      <b>Impairment:</b> ${item.impairment || "None"}
     `;
+  }
 
-    div.onclick = () => show(item);
+  search.oninput = applyFilters;
+  modelFilter.onchange = applyFilters;
+  datasetFilter.onchange = applyFilters;
+  impairmentFilter.onchange = applyFilters;
 
-    grid.appendChild(div);
-  });
-}
+  loadCSV();
 
-// -------------------- DETAILS PANEL --------------------
-function show(item){
-
-  const file =
-    item.hash_name
-      ? item.hash_name + ".png"
-      : item.file_name.split("/").pop();
-
-  const url = base + file;
-
-  preview.src = url;
-
-  meta.innerHTML = `
-    <h3>Details</h3>
-
-    <p><b>Model:</b> ${item.model}</p>
-    <p><b>Prompt:</b> ${item.prompt}</p>
-    <p><b>Dataset:</b> ${item.dataset_type}</p>
-    <p><b>Impairment:</b> ${item.impairment || "None"}</p>
-    <p><b>File:</b> ${file}</p>
-  `;
-}
-
-// -------------------- EVENTS --------------------
-search.addEventListener("input", apply);
-modelFilter.addEventListener("change", apply);
-datasetFilter.addEventListener("change", apply);
-impairmentFilter.addEventListener("change", apply);
-
-// START
-load();
+});
