@@ -151,7 +151,7 @@ function renderTable(){
 /* IMAGE PREVIEW (SAFE LAZY LOAD) */
 function show(item){
 
-  const url = base + encodeURIComponent(item.file_name || "");
+  const url = base + encodeURIComponent(item.hash_name || "");
 
   if(loader) loader.classList.remove("hidden");
 
