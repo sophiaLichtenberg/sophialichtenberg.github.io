@@ -167,13 +167,14 @@ function applyFilters(){
   VIEW = DATA.filter(x => {
     const prompt = (x.prompt || "").toLowerCase();
 
-    return (
+     return (
         (!s || prompt.includes(s)) &&
-        (!m.length || m.includes(x.model)) &&
-        (!d.length || d.includes(x.dataset_type)) &&
-        (!b.length || b.includes(x.bias_subtype)) &&
-        (!c.length || c.includes(x.context_value)) &&
-        (!i.length || i.includes(x.impairment))
+
+        (m.length === 0 || m.includes(x.model)) &&
+        (d.length === 0 || d.includes(x.dataset_type)) &&
+        (b.length === 0 || b.includes(x.bias_subtype)) &&
+        (c.length === 0 || c.includes(x.context_value)) &&
+        (i.length === 0 || i.includes(x.impairment))
     );
   });
 
