@@ -164,3 +164,12 @@ body{
   object-fit:cover;
   transition:opacity 0.2s ease;
 }
+.tag{
+  display:inline-block;
+  font-size:11px;
+  padding:2px 6px;
+  margin:2px;
+  border-radius:6px;
+  background:#1f2937;
+  color:#e5e7eb;
+}

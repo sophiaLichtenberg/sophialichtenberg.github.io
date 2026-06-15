@@ -174,7 +174,13 @@ function renderGrid(){
 
     const label = document.createElement("div");
     label.className = "label";
-    label.textContent = item.model + "\n" + item.impairment + "\n" + item.bias_subtype + "\n" +  item.context_value || "unknown";
+
+    label.innerHTML = `
+    <div>${item.model || "unknown"}</div>
+    <div>${item.impairment || ""}</div>
+    <div>${item.bias_subtype || ""}</div>
+    <div>${item.context_value || ""}</div>
+    `;
 
     card.appendChild(thumb);
     card.appendChild(label);
