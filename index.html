@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Sophia Lichtenberg</title>
+<title>Dataset Grid Viewer</title>
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -12,19 +12,19 @@
 
 <div class="app">
 
-  <!-- LEFT SIDEBAR -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
 
-    <h2>Dataset Explorer</h2>
-
-    <button class="btn" onclick="openTab('home')">Home</button>
-    <button class="btn ghost" onclick="openTab('dataset')">Dataset</button>
+    <h2>Filters</h2>
 
     <input id="search" class="search" placeholder="Search prompt..." />
 
     <select id="modelFilter" class="select"></select>
     <select id="datasetFilter" class="select"></select>
     <select id="impairmentFilter" class="select"></select>
+
+    <button class="btn ghost" onclick="openTab('home')">Home</button>
+    <button class="btn" onclick="openTab('dataset')">Dataset</button>
 
   </div>
 
@@ -33,36 +33,16 @@
 
     <!-- HOME -->
     <div id="home" class="tab active">
-
       <div class="container">
-
-        <header class="hero">
-          <img src="profile.jpg" class="avatar"/>
-          <div>
-            <h1>Sophia Lichtenberg</h1>
-            <div class="subtitle">
-              PhD Candidate · AI & Text-to-Image Models
-            </div>
-          </div>
-        </header>
-
+        <h1>Sophia Lichtenberg</h1>
+        <p>Human-centered AI research.</p>
       </div>
     </div>
 
-    <!-- DATASET -->
+    <!-- GRID TAB -->
     <div id="dataset" class="tab">
 
-      <div class="table-wrap">
-
-        <div class="header-row">
-          <div>Model</div>
-          <div>Prompt</div>
-          <div>Dataset</div>
-        </div>
-
-        <div id="table"></div>
-
-      </div>
+      <div class="grid-wrap" id="grid"></div>
 
     </div>
 

@@ -4,8 +4,7 @@ const base =
 let DATA = [];
 let VIEW = [];
 
-/* DOM (SAFE) */
-const table = document.getElementById("table");
+const grid = document.getElementById("grid");
 const preview = document.getElementById("preview");
 const meta = document.getElementById("meta");
 
@@ -14,7 +13,7 @@ const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
 const impairmentFilter = document.getElementById("impairmentFilter");
 
-/* TAB SWITCH */
+/* TAB */
 window.openTab = function(tab){
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   document.getElementById(tab).classList.add("active");
@@ -44,19 +43,18 @@ async function loadCSV(){
 
 /* FILTERS */
 function buildFilters(){
-
   fill(modelFilter, [...new Set(DATA.map(d=>d.model))]);
   fill(datasetFilter, [...new Set(DATA.map(d=>d.dataset_type))]);
   fill(impairmentFilter, [...new Set(DATA.map(d=>d.impairment).filter(Boolean))]);
 }
 
-function fill(select, values){
-  select.innerHTML = `<option value="">All</option>`;
-  values.forEach(v=>{
-    const opt = document.createElement("option");
-    opt.value = v;
-    opt.textContent = v;
-    select.appendChild(opt);
+function fill(sel, vals){
+  sel.innerHTML = `<option value="">All</option>`;
+  vals.forEach(v=>{
+    const o = document.createElement("option");
+    o.value = v;
+    o.textContent = v;
+    sel.appendChild(o);
   });
 }
 
@@ -75,38 +73,43 @@ function applyFilters(){
     (!i || x.impairment===i)
   );
 
-  renderTable();
+  renderGrid();
 }
 
-/* TABLE */
-function renderTable(){
+/* GRID RENDER */
+function renderGrid(){
 
-  table.innerHTML = "";
+  grid.innerHTML = "";
 
   VIEW.forEach(item => {
 
-    const row = document.createElement("div");
-    row.className = "row";
+    const div = document.createElement("div");
+    div.className = "tile";
 
-    row.innerHTML = `
-      <div>${item.model}</div>
-      <div>${item.prompt}</div>
-      <div>${item.dataset_type}</div>
+    const url =
+      base + item.hash_name + ".png";   // IMPORTANT FIX
+
+    div.innerHTML = `
+      <img src="${url}">
+      <div class="info">
+        ${item.model}<br>
+        ${item.dataset_type}
+      </div>
     `;
 
-    row.onclick = () => show(item);
+    div.onclick = () => show(item);
 
-    table.appendChild(row);
+    grid.appendChild(div);
   });
 
   if(VIEW.length) show(VIEW[0]);
 }
 
-/* IMAGE PREVIEW */
+/* PREVIEW */
 function show(item){
 
   const url =
-    base + encodeURIComponent(item.hash_name + ".png");
+    base + item.hash_name + ".png";
 
   preview.src = url;
 
@@ -119,10 +122,10 @@ function show(item){
 }
 
 /* EVENTS */
-search?.addEventListener("input", applyFilters);
-modelFilter?.addEventListener("change", applyFilters);
-datasetFilter?.addEventListener("change", applyFilters);
-impairmentFilter?.addEventListener("change", applyFilters);
+search.oninput = applyFilters;
+modelFilter.onchange = applyFilters;
+datasetFilter.onchange = applyFilters;
+impairmentFilter.onchange = applyFilters;
 
 /* START */
 loadCSV();
