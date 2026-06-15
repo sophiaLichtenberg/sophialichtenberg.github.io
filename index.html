@@ -3,79 +3,78 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dataset Explorer</title>
+<title>Sophia Lichtenberg</title>
 
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- TOP NAV -->
-<nav class="topbar">
-  <button class="tab-btn active" onclick="openTab('home', this)">Home</button>
-  <button class="tab-btn" onclick="openTab('dataset', this)">Dataset</button>
-</nav>
+<div class="app">
 
-<!-- BACKGROUND -->
-<div class="ambient-bg"></div>
-<div class="particles"></div>
-<div class="cursor-glow"></div>
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar">
 
-<div class="container">
+    <h2>Dataset Explorer</h2>
 
-<!-- ================= HOME ================= -->
-<div id="home" class="tab active">
+    <button class="btn" onclick="openTab('home')">Home</button>
+    <button class="btn ghost" onclick="openTab('dataset')">Dataset</button>
 
-  <header class="hero">
-    <img src="profile.jpg" class="avatar" />
+    <input id="search" class="search" placeholder="Search prompt..." />
 
-    <div>
-      <h1>Sophia Lichtenberg</h1>
-      <div class="subtitle">
-        PhD Candidate · AI & Text-to-Image Models
+    <select id="modelFilter" class="select"></select>
+    <select id="datasetFilter" class="select"></select>
+    <select id="impairmentFilter" class="select"></select>
+
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- HOME -->
+    <div id="home" class="tab active">
+
+      <div class="container">
+
+        <header class="hero">
+          <img src="profile.jpg" class="avatar"/>
+          <div>
+            <h1>Sophia Lichtenberg</h1>
+            <div class="subtitle">
+              PhD Candidate · AI & Text-to-Image Models
+            </div>
+          </div>
+        </header>
+
       </div>
     </div>
-  </header>
 
-  <section>
-    <h2>About</h2>
-    <p>Human-centered evaluation of generative AI systems.</p>
-  </section>
+    <!-- DATASET -->
+    <div id="dataset" class="tab">
 
-</div>
+      <div class="table-wrap">
 
-<!-- ================= DATASET ================= -->
-<div id="dataset" class="tab">
+        <div class="header-row">
+          <div>Model</div>
+          <div>Prompt</div>
+          <div>Dataset</div>
+        </div>
 
-  <div class="dataset-layout">
+        <div id="table"></div>
 
-    <!-- LEFT -->
-    <div class="sidebar">
-
-      <input id="search" class="search" placeholder="Search prompts..." />
-
-      <select id="modelFilter"></select>
-      <select id="datasetFilter"></select>
-      <select id="impairmentFilter"></select>
-
-      <div class="header-row">
-        <div>Model</div>
-        <div>Prompt</div>
-        <div>Dataset</div>
       </div>
 
-      <div id="table"></div>
-    </div>
-
-    <!-- RIGHT -->
-    <div class="preview">
-      <img id="preview" />
-      <div id="meta"></div>
     </div>
 
   </div>
 
-</div>
+  <!-- RIGHT PANEL -->
+  <div class="preview">
+
+    <img id="preview" />
+    <div id="meta"></div>
+
+  </div>
 
 </div>
 

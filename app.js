@@ -4,7 +4,7 @@ const base =
 let DATA = [];
 let VIEW = [];
 
-/* DOM */
+/* DOM (SAFE) */
 const table = document.getElementById("table");
 const preview = document.getElementById("preview");
 const meta = document.getElementById("meta");
@@ -14,19 +14,11 @@ const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
 const impairmentFilter = document.getElementById("impairmentFilter");
 
-/* TAB SYSTEM */
-function openTab(id, btn){
-
-  document.querySelectorAll(".tab")
-    .forEach(t => t.classList.remove("active"));
-
-  document.getElementById(id).classList.add("active");
-
-  document.querySelectorAll(".tab-btn")
-    .forEach(b => b.classList.remove("active"));
-
-  btn.classList.add("active");
-}
+/* TAB SWITCH */
+window.openTab = function(tab){
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.getElementById(tab).classList.add("active");
+};
 
 /* LOAD CSV */
 async function loadCSV(){
@@ -61,10 +53,10 @@ function buildFilters(){
 function fill(select, values){
   select.innerHTML = `<option value="">All</option>`;
   values.forEach(v=>{
-    const o = document.createElement("option");
-    o.value = v;
-    o.textContent = v;
-    select.appendChild(o);
+    const opt = document.createElement("option");
+    opt.value = v;
+    opt.textContent = v;
+    select.appendChild(opt);
   });
 }
 
@@ -110,10 +102,11 @@ function renderTable(){
   if(VIEW.length) show(VIEW[0]);
 }
 
-/* PREVIEW */
+/* IMAGE PREVIEW */
 function show(item){
 
-  const url = base + item.hash_name + ".png";
+  const url =
+    base + encodeURIComponent(item.hash_name + ".png");
 
   preview.src = url;
 
@@ -126,10 +119,10 @@ function show(item){
 }
 
 /* EVENTS */
-search.oninput = applyFilters;
-modelFilter.onchange = applyFilters;
-datasetFilter.onchange = applyFilters;
-impairmentFilter.onchange = applyFilters;
+search?.addEventListener("input", applyFilters);
+modelFilter?.addEventListener("change", applyFilters);
+datasetFilter?.addEventListener("change", applyFilters);
+impairmentFilter?.addEventListener("change", applyFilters);
 
 /* START */
 loadCSV();
