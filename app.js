@@ -5,8 +5,8 @@ let DATA = [];
 let VIEW = [];
 
 // DOM
-const table = document.getElementById("table");
-const gallery = document.getElementById("gallery");
+const grid = document.getElementById("grid");
+const preview = document.getElementById("preview");
 const meta = document.getElementById("meta");
 
 const search = document.getElementById("search");
@@ -14,32 +14,23 @@ const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
 const impairmentFilter = document.getElementById("impairmentFilter");
 
-// ------------------------
-// CSV PARSER
-// ------------------------
+// -------------------- CSV --------------------
 function parseCSV(text){
-
   const lines = text.trim().split("\n");
   const headers = lines[0].split(",");
 
   return lines.slice(1).map(line => {
-
     const cols = line.split(",");
-
     const obj = {};
-
     headers.forEach((h,i)=>{
       obj[h.trim()] = (cols[i] || "").trim();
     });
-
     return obj;
   });
 }
 
-// ------------------------
-// LOAD CSV
-// ------------------------
-async function loadCSV(){
+// -------------------- LOAD --------------------
+async function load(){
 
   const res = await fetch("hashed_metadata_df.csv");
   const text = await res.text();
@@ -47,86 +38,80 @@ async function loadCSV(){
   DATA = parseCSV(text);
 
   buildFilters();
-  applyFilters();
+  apply();
 }
 
-// ------------------------
-// FILTERS
-// ------------------------
+// -------------------- FILTERS --------------------
 function buildFilters(){
 
-  fill(modelFilter,
-    [...new Set(DATA.map(d => d.model))]
-  );
-
-  fill(datasetFilter,
-    [...new Set(DATA.map(d => d.dataset_type))]
-  );
-
+  fill(modelFilter, [...new Set(DATA.map(d=>d.model))]);
+  fill(datasetFilter, [...new Set(DATA.map(d=>d.dataset_type))]);
   fill(impairmentFilter,
-    [...new Set(DATA.map(d => d.impairment).filter(Boolean))]
+    [...new Set(DATA.map(d=>d.impairment).filter(Boolean))]
   );
 }
 
-function fill(select, values){
+function fill(sel, arr){
 
-  select.innerHTML = `<option value="">All</option>`;
+  sel.innerHTML = `<option value="">All</option>`;
 
-  values.forEach(v => {
-    const opt = document.createElement("option");
-    opt.value = v;
-    opt.textContent = v;
-    select.appendChild(opt);
+  arr.forEach(v=>{
+    const o = document.createElement("option");
+    o.value = v;
+    o.textContent = v;
+    sel.appendChild(o);
   });
 }
 
-// ------------------------
-// APPLY FILTERS
-// ------------------------
-function applyFilters(){
+// -------------------- FILTER LOGIC --------------------
+function apply(){
 
-  const s = (search.value || "").toLowerCase();
+  const s = search.value?.toLowerCase() || "";
   const m = modelFilter.value;
   const d = datasetFilter.value;
   const i = impairmentFilter.value;
 
-  VIEW = DATA.filter(x => (
-    (!s || (x.prompt || "").toLowerCase().includes(s)) &&
-    (!m || x.model === m) &&
-    (!d || x.dataset_type === d) &&
-    (!i || x.impairment === i)
-  ));
+  VIEW = DATA.filter(x =>
+    (!s || (x.prompt||"").toLowerCase().includes(s)) &&
+    (!m || x.model===m) &&
+    (!d || x.dataset_type===d) &&
+    (!i || x.impairment===i)
+  );
 
-  renderTable();
+  renderGrid();
 }
 
-// ------------------------
-// TABLE
-// ------------------------
-function renderTable(){
+// -------------------- GRID --------------------
+function renderGrid(){
 
-  table.innerHTML = "";
+  grid.innerHTML = "";
 
   VIEW.forEach(item => {
 
-    const row = document.createElement("div");
-    row.className = "row";
+    const file =
+      (item.hash_name ? item.hash_name + ".png"
+                      : item.file_name.split("/").pop());
 
-    row.innerHTML = `
-      <div><b>${item.model}</b></div>
-      <div>${item.prompt}</div>
-      <div>${item.dataset_type}</div>
+    const url = base + file;
+
+    const div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+      <img src="${url}" loading="lazy"/>
+      <div class="cardText">
+        <b>${item.model}</b><br>
+        <span>${item.dataset_type}</span>
+      </div>
     `;
 
-    row.onclick = () => show(item);
+    div.onclick = () => show(item);
 
-    table.appendChild(row);
+    grid.appendChild(div);
   });
 }
 
-// ------------------------
-// IMAGE PREVIEW (FIXED)
-// ------------------------
+// -------------------- DETAILS PANEL --------------------
 function show(item){
 
   const file =
@@ -136,25 +121,24 @@ function show(item){
 
   const url = base + file;
 
-  gallery.src = url;
+  preview.src = url;
 
   meta.innerHTML = `
+    <h3>Details</h3>
+
     <p><b>Model:</b> ${item.model}</p>
     <p><b>Prompt:</b> ${item.prompt}</p>
     <p><b>Dataset:</b> ${item.dataset_type}</p>
     <p><b>Impairment:</b> ${item.impairment || "None"}</p>
+    <p><b>File:</b> ${file}</p>
   `;
 }
 
-// ------------------------
-// EVENTS
-// ------------------------
-search.addEventListener("input", applyFilters);
-modelFilter.addEventListener("change", applyFilters);
-datasetFilter.addEventListener("change", applyFilters);
-impairmentFilter.addEventListener("change", applyFilters);
+// -------------------- EVENTS --------------------
+search.addEventListener("input", apply);
+modelFilter.addEventListener("change", apply);
+datasetFilter.addEventListener("change", apply);
+impairmentFilter.addEventListener("change", apply);
 
-// ------------------------
 // START
-// ------------------------
-loadCSV();
+load();

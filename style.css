@@ -1,115 +1,104 @@
-body{
-  margin:0;
-  font-family:system-ui, Arial;
-  background:#0b0f19;
-  color:#e5e7eb;
-}
+/* =========================
+   MAIN CENTER PANEL (TABLE AREA FIX)
+========================= */
 
-/* APP LAYOUT */
-.app{
-  display:grid;
-  grid-template-columns:260px 1fr 420px;
-  height:100vh;
-  overflow:hidden;
-}
-
-/* SIDEBAR */
-.sidebar{
-  padding:16px;
-  background:rgba(17,24,39,0.6);
-  border-right:1px solid rgba(255,255,255,0.08);
-  backdrop-filter:blur(10px);
-}
-
-.sidebar h2{
-  color:#38bdf8;
-  margin-bottom:10px;
-}
-
-.search, .select{
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.1);
-
-  background:#111827;
-  color:#e5e7eb;
-}
-
-.select{
-  cursor:pointer;
-}
-
-/* TABLE */
 .table-wrap{
   overflow:auto;
   height:100vh;
+  padding-bottom:40px;
 }
 
-.header-row{
-  display:grid;
-  grid-template-columns:140px 1fr 140px;
+/* optional: nicer scrollbar */
+.table-wrap::-webkit-scrollbar{
+  width:10px;
+}
 
+.table-wrap::-webkit-scrollbar-thumb{
+  background:rgba(56,189,248,0.25);
+  border-radius:999px;
+}
+
+.table-wrap::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+/* =========================
+   ACTIVE ROW STATE
+========================= */
+
+.row.active{
+  background:rgba(56,189,248,0.15);
+  border-left:2px solid #38bdf8;
+}
+
+/* =========================
+   IMAGE GRID PREVIEW MODE (optional upgrade)
+   (if you later switch from table → grid)
+========================= */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
+  gap:12px;
+  padding:12px;
+}
+
+.card{
+  background:#111827;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+  border-color:#38bdf8;
+}
+
+.card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+}
+
+.card .label{
+  padding:8px;
+  font-size:12px;
+  color:#cbd5e1;
+}
+
+/* =========================
+   RIGHT PANEL FIX (STICKY DETAIL VIEW)
+========================= */
+
+.preview{
   position:sticky;
   top:0;
-
-  background:#0b0f19;
-  padding:10px;
-
-  border-bottom:1px solid rgba(255,255,255,0.1);
-
-  color:#38bdf8;
-  font-size:12px;
+  height:100vh;
+  overflow:auto;
 }
 
+/* =========================
+   SMALL UI POLISH
+========================= */
+
+.search:focus,
+.select:focus{
+  outline:none;
+  border-color:#38bdf8;
+  box-shadow:0 0 0 3px rgba(56,189,248,0.15);
+}
+
+/* nicer hover feel */
 .row{
-  display:grid;
-  grid-template-columns:140px 1fr 140px;
-
-  padding:10px;
-
-  border-bottom:1px solid rgba(255,255,255,0.05);
-
-  cursor:pointer;
+  transition:background 0.15s ease;
 }
 
-.row:hover{
-  background:rgba(56,189,248,0.08);
-}
-
-/* PREVIEW */
-.preview{
-  padding:16px;
-  border-left:1px solid rgba(255,255,255,0.08);
-  background:rgba(17,24,39,0.6);
-  backdrop-filter:blur(10px);
-}
-
-.preview img{
-  width:100%;
-  border-radius:12px;
-}
-
-#meta{
-  margin-top:10px;
-  font-size:13px;
-  color:#94a3b8;
-}
-
-/* RESPONSIVE */
-@media(max-width:1000px){
-  .app{
-    grid-template-columns:240px 1fr;
-  }
-  .preview{
-    display:none;
-  }
-}
-
-@media(max-width:700px){
-  .app{
-    grid-template-columns:1fr;
-  }
+/* make long prompts readable */
+.row div:nth-child(2){
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
