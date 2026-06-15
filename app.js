@@ -170,6 +170,7 @@ function show(item, el){
     + encodeURIComponent(item.hash_name + ".png");
 
   el.preview.src = url;
+  el.crossOrigin = "anonymous";
 
   el.meta.innerHTML = `
     <b>Model:</b> ${item.model || "-"}<br>
