@@ -3,20 +3,29 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Sophia Lichtenberg</title>
+<title>Dataset Explorer</title>
 
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<!-- TOP NAV -->
+<nav class="topbar">
+  <button class="tab-btn active" onclick="openTab('home', this)">Home</button>
+  <button class="tab-btn" onclick="openTab('dataset', this)">Dataset</button>
+</nav>
+
+<!-- BACKGROUND -->
 <div class="ambient-bg"></div>
 <div class="particles"></div>
 <div class="cursor-glow"></div>
 
 <div class="container">
 
-  <!-- HEADER -->
+<!-- ================= HOME ================= -->
+<div id="home" class="tab active">
+
   <header class="hero">
     <img src="profile.jpg" class="avatar" />
 
@@ -25,62 +34,48 @@
       <div class="subtitle">
         PhD Candidate · AI & Text-to-Image Models
       </div>
-
-      <div class="buttons">
-        <button class="btn" onclick="openTab('home')">Home</button>
-        <button class="btn" onclick="openTab('dataset')">Dataset</button>
-      </div>
     </div>
   </header>
 
-  <!-- HOME -->
-  <div id="home" class="tab active">
+  <section>
+    <h2>About</h2>
+    <p>Human-centered evaluation of generative AI systems.</p>
+  </section>
 
-    <section>
-      <h2>About</h2>
-      <p>Human-centered evaluation of generative AI systems.</p>
-    </section>
+</div>
 
-    <section>
-      <h2>Research</h2>
-      <span class="tag">Text-to-Image</span>
-      <span class="tag">Fairness</span>
-      <span class="tag">Evaluation</span>
-    </section>
+<!-- ================= DATASET ================= -->
+<div id="dataset" class="tab">
 
-  </div>
+  <div class="dataset-layout">
 
-  <!-- DATASET -->
-  <div id="dataset" class="tab">
+    <!-- LEFT -->
+    <div class="sidebar">
 
-    <div class="dataset-layout">
+      <input id="search" class="search" placeholder="Search prompts..." />
 
-      <!-- LEFT -->
-      <div class="table-panel">
+      <select id="modelFilter"></select>
+      <select id="datasetFilter"></select>
+      <select id="impairmentFilter"></select>
 
-        <input id="search" class="search" placeholder="Search prompts..." />
-
-        <select id="modelFilter"></select>
-        <select id="datasetFilter"></select>
-        <select id="impairmentFilter"></select>
-
-        <div class="header-row">
-          <div>Model</div>
-          <div>Prompt</div>
-          <div>Dataset</div>
-        </div>
-
-        <div id="table"></div>
+      <div class="header-row">
+        <div>Model</div>
+        <div>Prompt</div>
+        <div>Dataset</div>
       </div>
 
-      <!-- RIGHT -->
-      <div class="preview">
-        <img id="preview" />
-        <div id="meta"></div>
-      </div>
-
+      <div id="table"></div>
     </div>
+
+    <!-- RIGHT -->
+    <div class="preview">
+      <img id="preview" />
+      <div id="meta"></div>
+    </div>
+
   </div>
+
+</div>
 
 </div>
 

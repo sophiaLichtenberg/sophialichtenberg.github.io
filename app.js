@@ -15,11 +15,17 @@ const datasetFilter = document.getElementById("datasetFilter");
 const impairmentFilter = document.getElementById("impairmentFilter");
 
 /* TAB SYSTEM */
-function openTab(id){
+function openTab(id, btn){
+
   document.querySelectorAll(".tab")
     .forEach(t => t.classList.remove("active"));
 
   document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".tab-btn")
+    .forEach(b => b.classList.remove("active"));
+
+  btn.classList.add("active");
 }
 
 /* LOAD CSV */
@@ -104,7 +110,7 @@ function renderTable(){
   if(VIEW.length) show(VIEW[0]);
 }
 
-/* IMAGE */
+/* PREVIEW */
 function show(item){
 
   const url = base + item.hash_name + ".png";
