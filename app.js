@@ -1,16 +1,12 @@
-document.addEventListener("DOMContentLoaded", () => {
-
 const base =
   "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
 
 let DATA = [];
 let VIEW = [];
-let index = 0;
-const PAGE_SIZE = 200;
 
 // DOM
 const table = document.getElementById("table");
-const preview = document.getElementById("preview");
+const gallery = document.getElementById("gallery");
 const meta = document.getElementById("meta");
 
 const search = document.getElementById("search");
@@ -18,12 +14,12 @@ const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
 const impairmentFilter = document.getElementById("impairmentFilter");
 
-const stats = document.getElementById("stats");
-
+// ==========================
 // LOAD CSV
-async function load(){
+// ==========================
+async function loadCSV(){
 
-  const res = await fetch("./hashed_metadata_df.csv");
+  const res = await fetch("hashed_metadata_df.csv");
   const text = await res.text();
 
   const lines = text.trim().split("\n");
@@ -33,21 +29,26 @@ async function load(){
     const cols = line.split(",");
     const obj = {};
     headers.forEach((h,i)=>{
-      obj[h.trim()] = (cols[i]||"").trim();
+      obj[h.trim()] = (cols[i] || "").trim();
     });
     return obj;
   });
 
   buildFilters();
-  apply();
+  applyFilters();
 }
 
-// FILTER OPTIONS
+// ==========================
+// BUILD DROPDOWNS
+// ==========================
 function buildFilters(){
 
   const models = [...new Set(DATA.map(d=>d.model))];
   const datasets = [...new Set(DATA.map(d=>d.dataset_type))];
-  const impairments = [...new Set(DATA.map(d=>d.impairment || "None"))];
+
+  const impairments = [...new Set(
+    DATA.map(d => d.impairment || "")
+  )].filter(Boolean);
 
   fill(modelFilter, models);
   fill(datasetFilter, datasets);
@@ -55,17 +56,22 @@ function buildFilters(){
 }
 
 function fill(select, arr){
+
   select.innerHTML = `<option value="">All</option>`;
+
   arr.forEach(v=>{
-    const o=document.createElement("option");
-    o.value=v;
-    o.textContent=v;
-    select.appendChild(o);
+    const opt = document.createElement("option");
+    opt.value = v;
+    opt.textContent = v;
+    select.appendChild(opt);
   });
+
 }
 
-// FILTER LOGIC
-function apply(){
+// ==========================
+// FILTERS
+// ==========================
+function applyFilters(){
 
   const s = search.value.toLowerCase();
   const m = modelFilter.value;
@@ -76,82 +82,66 @@ function apply(){
     (!s || (x.prompt||"").toLowerCase().includes(s)) &&
     (!m || x.model===m) &&
     (!d || x.dataset_type===d) &&
-    (!i || (x.impairment||"None")===i)
+    (!i || (x.impairment||"")===i)
   ));
 
-  reset();
-  render();
-  stats.textContent = `${VIEW.length} / ${DATA.length}`;
+  renderTable();
 }
 
-// TABLE RENDER
-function render(){
+// ==========================
+// TABLE
+// ==========================
+function renderTable(){
 
-  const slice = VIEW.slice(index, index + PAGE_SIZE);
+  table.innerHTML = "";
 
-  slice.forEach(item=>{
-    const div = document.createElement("div");
-    div.className="row";
+  VIEW.forEach(item => {
 
-    div.innerHTML=`
+    const row = document.createElement("div");
+    row.className = "row";
+
+    row.innerHTML = `
       <div>${item.model}</div>
       <div>${item.prompt}</div>
       <div>${item.dataset_type}</div>
     `;
 
-    div.onclick=()=>show(item);
+    row.onclick = () => show(item);
 
-    table.appendChild(div);
+    table.appendChild(row);
   });
-
-  index += PAGE_SIZE;
 }
 
-function reset(){
-  table.innerHTML="";
-  index=0;
-}
-
-// SCROLL
-document.querySelector(".table-wrap")
-.addEventListener("scroll",(e)=>{
-
-  const el=e.target;
-  if(el.scrollTop+el.clientHeight>=el.scrollHeight-50){
-    render();
-  }
-
-});
-
-// SHOW GALLERY (FIXED)
+// ==========================
+// IMAGE PREVIEW
+// ==========================
 function show(item){
 
-  preview.innerHTML="";
+  gallery.innerHTML = "";
 
   const url =
     base + encodeURIComponent(item.file_name);
 
   const img = document.createElement("img");
   img.src = url;
-  img.loading = "lazy";
 
-  preview.appendChild(img);
+  gallery.appendChild(img);
 
   meta.innerHTML = `
     <b>Model:</b> ${item.model}<br>
     <b>Prompt:</b> ${item.prompt}<br>
     <b>Dataset:</b> ${item.dataset_type}<br>
-    <b>Impairment:</b> ${item.impairment || "None"}<br>
+    <b>Impairment:</b> ${item.impairment || "None"}
   `;
 }
 
+// ==========================
 // EVENTS
-search.addEventListener("input", apply);
-modelFilter.addEventListener("change", apply);
-datasetFilter.addEventListener("change", apply);
-impairmentFilter.addEventListener("change", apply);
+// ==========================
+search.oninput = applyFilters;
+modelFilter.onchange = applyFilters;
+datasetFilter.onchange = applyFilters;
+impairmentFilter.onchange = applyFilters;
 
 // START
-load();
-
-});
+loadCSV();

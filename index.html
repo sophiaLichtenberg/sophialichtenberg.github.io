@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dataset Explorer</title>
-
-<link rel="stylesheet" href="style.css">
 
 <style>
 body{
@@ -17,65 +15,53 @@ body{
 
 .app{
   display:grid;
-  grid-template-columns:280px 1fr 420px;
+  grid-template-columns:260px 1fr 420px;
   height:100vh;
 }
 
 /* SIDEBAR */
 .sidebar{
-  padding:16px;
+  padding:12px;
   border-right:1px solid rgba(255,255,255,0.1);
 }
 
-.search, .select{
+input, select{
   width:100%;
-  padding:10px;
   margin:8px 0;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.1);
+  padding:10px;
   background:#111827;
   color:white;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;
 }
 
 /* TABLE */
-.table-wrap{
+.table{
   overflow:auto;
   border-right:1px solid rgba(255,255,255,0.1);
 }
 
-.header-row, .row{
+.row{
   display:grid;
-  grid-template-columns:120px 1fr 160px;
-  gap:10px;
+  grid-template-columns:120px 1fr 140px;
   padding:10px;
   border-bottom:1px solid rgba(255,255,255,0.05);
+  cursor:pointer;
 }
 
 .row:hover{
   background:rgba(255,255,255,0.05);
-  cursor:pointer;
 }
 
-/* GALLERY */
+/* PREVIEW */
 .preview{
   padding:10px;
   overflow:auto;
 }
 
-.gallery{
-  display:grid;
-  gap:10px;
-}
-
-.gallery img{
+.preview img{
   width:100%;
   border-radius:10px;
-  border:1px solid rgba(255,255,255,0.1);
-}
-
-.meta{
-  font-size:12px;
-  opacity:0.8;
   margin-bottom:10px;
 }
 </style>
@@ -86,49 +72,37 @@ body{
 
 <div class="app">
 
-<!-- SIDEBAR -->
-<div class="sidebar">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
 
-  <h2>Dataset</h2>
+    <h3>Dataset</h3>
 
-  <input id="search" class="search" placeholder="Search prompt..." />
+    <input id="search" placeholder="Search prompt...">
 
-  <select id="modelFilter" class="select">
-    <option value="">All models</option>
-  </select>
+    <select id="modelFilter">
+      <option value="">All models</option>
+    </select>
 
-  <select id="datasetFilter" class="select">
-    <option value="">All datasets</option>
-  </select>
+    <select id="datasetFilter">
+      <option value="">All datasets</option>
+    </select>
 
-  <select id="impairmentFilter" class="select">
-    <option value="">All impairments</option>
-  </select>
+    <select id="impairmentFilter">
+      <option value="">All impairments</option>
+    </select>
 
-  <p id="stats"></p>
-
-</div>
-
-<!-- TABLE -->
-<div class="table-wrap">
-
-  <div class="header-row">
-    <div>Model</div>
-    <div>Prompt</div>
-    <div>Dataset</div>
   </div>
 
-  <div id="table"></div>
+  <!-- TABLE -->
+  <div class="table" id="table"></div>
 
-</div>
+  <!-- PREVIEW -->
+  <div class="preview">
 
-<!-- PREVIEW -->
-<div class="preview">
+    <div id="meta">Select row</div>
+    <div id="gallery"></div>
 
-  <div id="meta" class="meta">Select an item</div>
-  <div id="preview" class="gallery"></div>
-
-</div>
+  </div>
 
 </div>
 
