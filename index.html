@@ -22,7 +22,6 @@
 
     <div>
       <h1>Sophia Lichtenberg</h1>
-
       <div class="subtitle">
         PhD Candidate · AI & Text-to-Image Models
       </div>
@@ -34,7 +33,7 @@
     </div>
   </header>
 
-  <!-- ================= HOME TAB ================= -->
+  <!-- HOME -->
   <div id="home" class="tab active">
 
     <section>
@@ -51,38 +50,40 @@
 
   </div>
 
-  <!-- ================= DATASET TAB ================= -->
+  <!-- DATASET -->
   <div id="dataset" class="tab">
 
     <div class="dataset-layout">
 
-      <!-- LEFT: TABLE -->
-      <div class="table">
-        <div id="tableHeader" class="row header">
+      <!-- LEFT -->
+      <div class="table-panel">
+
+        <input id="search" class="search" placeholder="Search prompts..." />
+
+        <select id="modelFilter"></select>
+        <select id="datasetFilter"></select>
+        <select id="impairmentFilter"></select>
+
+        <div class="header-row">
           <div>Model</div>
           <div>Prompt</div>
           <div>Dataset</div>
         </div>
 
-        <div id="tableBody"></div>
+        <div id="table"></div>
       </div>
 
-      <!-- RIGHT: PREVIEW -->
+      <!-- RIGHT -->
       <div class="preview">
-
-        <img id="previewImg" />
-
+        <img id="preview" />
         <div id="meta"></div>
-
       </div>
 
     </div>
-
   </div>
 
 </div>
 
 <script src="app.js"></script>
-
 </body>
 </html>

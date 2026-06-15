@@ -14,9 +14,15 @@ const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
 const impairmentFilter = document.getElementById("impairmentFilter");
 
-/* =========================
-   CSV LOAD
-========================= */
+/* TAB SYSTEM */
+function openTab(id){
+  document.querySelectorAll(".tab")
+    .forEach(t => t.classList.remove("active"));
+
+  document.getElementById(id).classList.add("active");
+}
+
+/* LOAD CSV */
 async function loadCSV(){
 
   const res = await fetch("hashed_metadata_df.csv");
@@ -38,35 +44,25 @@ async function loadCSV(){
   applyFilters();
 }
 
-/* =========================
-   FILTERS
-========================= */
+/* FILTERS */
 function buildFilters(){
 
   fill(modelFilter, [...new Set(DATA.map(d=>d.model))]);
   fill(datasetFilter, [...new Set(DATA.map(d=>d.dataset_type))]);
-
-  fill(
-    impairmentFilter,
-    [...new Set(DATA.map(d=>d.impairment).filter(Boolean))]
-  );
+  fill(impairmentFilter, [...new Set(DATA.map(d=>d.impairment).filter(Boolean))]);
 }
 
 function fill(select, values){
-
   select.innerHTML = `<option value="">All</option>`;
-
   values.forEach(v=>{
-    const opt = document.createElement("option");
-    opt.value = v;
-    opt.textContent = v;
-    select.appendChild(opt);
+    const o = document.createElement("option");
+    o.value = v;
+    o.textContent = v;
+    select.appendChild(o);
   });
 }
 
-/* =========================
-   APPLY FILTERS
-========================= */
+/* FILTER APPLY */
 function applyFilters(){
 
   const s = search.value.toLowerCase();
@@ -74,19 +70,17 @@ function applyFilters(){
   const d = datasetFilter.value;
   const i = impairmentFilter.value;
 
-  VIEW = DATA.filter(x => (
+  VIEW = DATA.filter(x =>
     (!s || (x.prompt||"").toLowerCase().includes(s)) &&
     (!m || x.model===m) &&
     (!d || x.dataset_type===d) &&
     (!i || x.impairment===i)
-  ));
+  );
 
   renderTable();
 }
 
-/* =========================
-   TABLE
-========================= */
+/* TABLE */
 function renderTable(){
 
   table.innerHTML = "";
@@ -110,13 +104,10 @@ function renderTable(){
   if(VIEW.length) show(VIEW[0]);
 }
 
-/* =========================
-   IMAGE PREVIEW
-========================= */
+/* IMAGE */
 function show(item){
 
-  const url =
-    base + encodeURIComponent(item.hash_name + ".png");
+  const url = base + item.hash_name + ".png";
 
   preview.src = url;
 
@@ -128,9 +119,7 @@ function show(item){
   `;
 }
 
-/* =========================
-   EVENTS
-========================= */
+/* EVENTS */
 search.oninput = applyFilters;
 modelFilter.onchange = applyFilters;
 datasetFilter.onchange = applyFilters;
