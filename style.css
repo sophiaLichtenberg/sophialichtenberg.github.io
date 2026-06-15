@@ -5,17 +5,16 @@ body{
   color:#e5e7eb;
 }
 
-/* LAYOUT */
 .app{
   display:grid;
-  grid-template-columns:260px 1fr;
+  grid-template-columns:260px 1fr 420px;
   height:100vh;
 }
 
 /* SIDEBAR */
 .sidebar{
   padding:16px;
-  border-right:1px solid rgba(255,255,255,0.08);
+  border-right:1px solid #1f2937;
   background:#111827;
 }
 
@@ -23,10 +22,10 @@ body{
   width:100%;
   padding:10px;
   margin-bottom:10px;
+  border-radius:8px;
+  border:1px solid #374151;
   background:#0b0f19;
   color:white;
-  border:1px solid #374151;
-  border-radius:8px;
 }
 
 .btn{
@@ -47,28 +46,32 @@ body{
 
 /* MAIN */
 .main{
-  overflow:hidden;
-}
-
-.tab{
-  display:none;
-  padding:20px;
-}
-
-.tab.active{
-  display:block;
+  overflow:auto;
 }
 
 /* GRID */
-.dataset-layout{
+#gridView{
   display:grid;
-  grid-template-columns:1fr 400px;
-  height:100%;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;
+  padding:10px;
+}
+
+.card{
+  padding:10px;
+  background:#111827;
+  border:1px solid #1f2937;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.card:hover{
+  background:#1f2937;
 }
 
 /* TABLE */
-.table-wrap{
-  overflow:auto;
+#tableView{
+  display:none;
 }
 
 .header-row, .row{
@@ -82,16 +85,11 @@ body{
   top:0;
   background:#0b0f19;
   color:#38bdf8;
-  border-bottom:1px solid #222;
 }
 
 .row{
   border-bottom:1px solid #1f2937;
   cursor:pointer;
-}
-
-.row:hover{
-  background:#1f2937;
 }
 
 /* PREVIEW */
@@ -103,7 +101,6 @@ body{
 .preview img{
   width:100%;
   border-radius:10px;
-  transition:0.2s;
 }
 
 /* LOADER */
@@ -117,9 +114,7 @@ body{
   margin-bottom:10px;
 }
 
-.hidden{
-  display:none;
-}
+.hidden{ display:none; }
 
 @keyframes spin{
   to{transform:rotate(360deg);}

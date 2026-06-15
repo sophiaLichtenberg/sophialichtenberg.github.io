@@ -4,39 +4,42 @@ const base =
 let DATA = [];
 let VIEW = [];
 
-/* SAFE DOM (prevents ALL null errors) */
+/* SAFE DOM */
 const el = (id) => document.getElementById(id);
 
-const table = el("table");
-const search = el("search");
-const modelFilter = el("modelFilter");
-const datasetFilter = el("datasetFilter");
-const impairmentFilter = el("impairmentFilter");
+let search, modelFilter, datasetFilter, impairmentFilter;
+let table, gridView, tableView;
+let previewImg, meta, loader;
 
-const previewImg = el("previewImg");
-const meta = el("meta");
-const loader = el("loader");
+/* INIT (100% SAFE) */
+window.addEventListener("DOMContentLoaded", () => {
 
-const searchBtn = el("searchBtn");
+  search = el("search");
+  modelFilter = el("modelFilter");
+  datasetFilter = el("datasetFilter");
+  impairmentFilter = el("impairmentFilter");
 
-/* =========================
-   INIT SAFETY WRAPPER
-========================= */
-document.addEventListener("DOMContentLoaded", () => {
+  table = el("table");
+  gridView = el("gridView");
+  tableView = el("tableView");
 
-  if (!search || !table || !previewImg) {
-    console.error("Missing DOM elements — check HTML IDs");
+  previewImg = el("previewImg");
+  meta = el("meta");
+  loader = el("loader");
+
+  const btn = el("searchBtn");
+
+  if (!btn) {
+    console.error("Search button missing");
     return;
   }
 
-  searchBtn?.addEventListener("click", applyFilters);
+  btn.addEventListener("click", applyFilters);
 
   loadCSV();
 });
 
-/* =========================
-   LOAD CSV
-========================= */
+/* LOAD CSV */
 async function loadCSV(){
 
   try {
@@ -48,7 +51,7 @@ async function loadCSV(){
 
     DATA = lines.slice(1).map(line => {
       const cols = line.split(",");
-      const obj = {};
+      let obj = {};
       headers.forEach((h,i)=>{
         obj[h.trim()] = (cols[i] || "").trim();
       });
@@ -57,14 +60,12 @@ async function loadCSV(){
 
     buildFilters();
 
-  } catch (e) {
-    console.error("CSV load failed", e);
+  } catch (err) {
+    console.error("CSV load error:", err);
   }
 }
 
-/* =========================
-   FILTERS
-========================= */
+/* BUILD DROPDOWNS */
 function buildFilters(){
 
   fill(modelFilter, [...new Set(DATA.map(d=>d.model))]);
@@ -73,6 +74,7 @@ function buildFilters(){
 }
 
 function fill(select, values){
+
   if(!select) return;
 
   select.innerHTML = `<option value="">All</option>`;
@@ -85,9 +87,7 @@ function fill(select, values){
   });
 }
 
-/* =========================
-   APPLY FILTERS (ONLY ON BUTTON)
-========================= */
+/* SEARCH BUTTON ONLY */
 function applyFilters(){
 
   const s = (search?.value || "").toLowerCase();
@@ -102,12 +102,34 @@ function applyFilters(){
     (!i || x.impairment===i)
   );
 
+  renderGrid();
   renderTable();
 }
 
-/* =========================
-   TABLE (GRID)
-========================= */
+/* GRID VIEW */
+function renderGrid(){
+
+  if(!gridView) return;
+
+  gridView.innerHTML = "";
+
+  VIEW.forEach(item => {
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <b>${item.model || ""}</b><br/>
+      <small>${item.dataset_type || ""}</small>
+    `;
+
+    card.onclick = () => show(item);
+
+    gridView.appendChild(card);
+  });
+}
+
+/* TABLE VIEW */
 function renderTable(){
 
   if(!table) return;
@@ -131,25 +153,19 @@ function renderTable(){
   });
 }
 
-/* =========================
-   IMAGE VIEW (LAZY + LOADER)
-========================= */
+/* IMAGE PREVIEW (LAZY SAFE) */
 function show(item){
 
-  if(!previewImg || !loader) return;
-
-  loader.classList.remove("hidden");
-  previewImg.style.opacity = "0";
+  if(loader) loader.classList.remove("hidden");
 
   const url = base + encodeURIComponent(item.file_name || "");
 
   previewImg.onload = () => {
-    loader.classList.add("hidden");
-    previewImg.style.opacity = "1";
+    loader?.classList.add("hidden");
   };
 
   previewImg.onerror = () => {
-    loader.classList.add("hidden");
+    loader?.classList.add("hidden");
     console.warn("Image failed:", url);
   };
 
@@ -157,23 +173,24 @@ function show(item){
 
   if(meta){
     meta.innerHTML = `
-      <b>Model:</b> ${item.model || ""}<br>
-      <b>Prompt:</b> ${item.prompt || ""}<br>
-      <b>Dataset:</b> ${item.dataset_type || ""}<br>
+      <b>Model:</b> ${item.model}<br>
+      <b>Prompt:</b> ${item.prompt}<br>
+      <b>Dataset:</b> ${item.dataset_type}<br>
       <b>Impairment:</b> ${item.impairment || "None"}
     `;
   }
 }
 
-/* =========================
-   TAB SYSTEM (FIXED)
-========================= */
-function switchTab(tab){
+/* VIEW SWITCH */
+function setView(type){
 
-  document.querySelectorAll(".tab").forEach(t=>{
-    t.classList.remove("active");
-  });
+  if(!gridView || !tableView) return;
 
-  const elTab = document.getElementById(tab);
-  if(elTab) elTab.classList.add("active");
+  if(type === "grid"){
+    gridView.style.display = "grid";
+    tableView.style.display = "none";
+  } else {
+    gridView.style.display = "none";
+    tableView.style.display = "block";
+  }
 }
