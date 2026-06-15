@@ -90,7 +90,7 @@ function buildMulti(id, title, values){
   if (!container) return;
 
   container.innerHTML = `
-    <details>
+    <details open>
       <summary>${title}</summary>
       <div class="options">
 
@@ -109,6 +109,37 @@ function buildMulti(id, title, values){
       </div>
     </details>
   `;
+
+  const checkboxes = container.querySelectorAll("input[type='checkbox']");
+  const allBox = container.querySelector("input[value='__all__']");
+
+  const apply = () => applyFilters();
+
+  // ALL toggle
+  allBox.addEventListener("change", () => {
+    const checked = allBox.checked;
+
+    checkboxes.forEach(cb => {
+      if (cb.value !== "__all__") cb.checked = checked;
+    });
+
+    apply();
+  });
+
+  // individual toggle
+  checkboxes.forEach(cb => {
+    if (cb.value === "__all__") return;
+
+    cb.addEventListener("change", () => {
+
+      const others = [...checkboxes].filter(c => c.value !== "__all__");
+      const allChecked = others.every(c => c.checked);
+
+      allBox.checked = allChecked;
+
+      apply();
+    });
+  });
 }
 
 function escapeHtml(str){
