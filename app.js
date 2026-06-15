@@ -4,6 +4,7 @@ const base =
 let DATA = [];
 let VIEW = [];
 
+/* DOM (ALL MATCH HTML ABOVE) */
 const grid = document.getElementById("grid");
 const preview = document.getElementById("preview");
 const meta = document.getElementById("meta");
@@ -13,7 +14,14 @@ const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
 const impairmentFilter = document.getElementById("impairmentFilter");
 
-/* LOAD CSV */
+/* SAFETY CHECK (prevents silent crashes) */
+if (!grid || !preview || !meta) {
+  console.error("Missing DOM elements. Check HTML IDs.");
+}
+
+/* =========================
+   LOAD CSV
+========================= */
 async function loadCSV(){
 
   const res = await fetch("hashed_metadata_df.csv");
@@ -35,12 +43,19 @@ async function loadCSV(){
   applyFilters();
 }
 
-/* FILTERS */
+/* =========================
+   FILTERS
+========================= */
 function buildFilters(){
 
-  fill(modelFilter, [...new Set(DATA.map(d=>d.model))]);
-  fill(datasetFilter, [...new Set(DATA.map(d=>d.dataset_type))]);
-  fill(impairmentFilter, [...new Set(DATA.map(d=>d.impairment).filter(Boolean))]);
+  fill(modelFilter, unique("model"));
+  fill(datasetFilter, unique("dataset_type"));
+  fill(impairmentFilter, unique("impairment", true));
+}
+
+function unique(key, skipEmpty=false){
+  const vals = [...new Set(DATA.map(d => d[key]))];
+  return skipEmpty ? vals.filter(Boolean) : vals;
 }
 
 function fill(select, values){
@@ -53,7 +68,9 @@ function fill(select, values){
   });
 }
 
-/* FILTER APPLY */
+/* =========================
+   FILTER APPLY
+========================= */
 function applyFilters(){
 
   const s = search.value.toLowerCase();
@@ -63,48 +80,56 @@ function applyFilters(){
 
   VIEW = DATA.filter(x =>
     (!s || (x.prompt||"").toLowerCase().includes(s)) &&
-    (!m || x.model===m) &&
-    (!d || x.dataset_type===d) &&
-    (!i || x.impairment===i)
+    (!m || x.model === m) &&
+    (!d || x.dataset_type === d) &&
+    (!i || x.impairment === i)
   );
 
   renderGrid();
 }
 
-/* GRID */
+/* =========================
+   GRID RENDER
+========================= */
 function renderGrid(){
+
+  if (!grid) return;
 
   grid.innerHTML = "";
 
   VIEW.forEach(item => {
 
-    const div = document.createElement("div");
-    div.className = "tile";
+    const tile = document.createElement("div");
+    tile.className = "tile";
 
-    const url = base + item.hash_name + ".png";
+    const imgUrl = base + encodeURIComponent(item.hash_name + ".png");
 
-    div.innerHTML = `
-      <img src="${url}">
+    tile.innerHTML = `
+      <img src="${imgUrl}" loading="lazy">
       <div class="info">
         ${item.model}<br>
         ${item.dataset_type}
       </div>
     `;
 
-    div.onclick = () => show(item);
+    tile.onclick = () => show(item);
 
-    grid.appendChild(div);
+    grid.appendChild(tile);
   });
 
-  if(VIEW.length) show(VIEW[0]);
+  if (VIEW.length > 0) show(VIEW[0]);
 }
 
-/* PREVIEW */
+/* =========================
+   PREVIEW
+========================= */
 function show(item){
 
-  const url = base + item.hash_name + ".png";
+  if (!preview || !meta) return;
 
-  preview.src = url;
+  const imgUrl = base + encodeURIComponent(item.hash_name + ".png");
+
+  preview.src = imgUrl;
 
   meta.innerHTML = `
     <b>Model:</b> ${item.model}<br>
@@ -114,11 +139,13 @@ function show(item){
   `;
 }
 
-/* EVENTS */
-search.addEventListener("input", applyFilters);
-modelFilter.addEventListener("change", applyFilters);
-datasetFilter.addEventListener("change", applyFilters);
-impairmentFilter.addEventListener("change", applyFilters);
+/* =========================
+   EVENTS
+========================= */
+search?.addEventListener("input", applyFilters);
+modelFilter?.addEventListener("change", applyFilters);
+datasetFilter?.addEventListener("change", applyFilters);
+impairmentFilter?.addEventListener("change", applyFilters);
 
 /* START */
 loadCSV();
