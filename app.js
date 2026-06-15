@@ -125,13 +125,13 @@ function imgUrl(hash){
 }
 
 /* GRID */
-function renderGrid(){
+function renderGrid() {
 
-  if(!gridView) return;
+  if (!gridView) return;
 
   gridView.innerHTML = "";
 
-  if(!VIEW.length){
+  if (!VIEW.length) {
     gridView.innerHTML = `<div style="padding:10px;">No results</div>`;
     return;
   }
@@ -139,47 +139,57 @@ function renderGrid(){
   VIEW.forEach(item => {
 
     const hash = item.hash_name;
-    if(!hash) return;
+    if (!hash) return;
 
     const card = document.createElement("div");
     card.className = "card";
 
-    // WRAPPER
     const thumb = document.createElement("div");
     thumb.className = "thumb";
 
-    // LOADER (per image)
-    const loader = document.createElement("div");
-    loader.className = "img-loader";
+    // loader (IMPORTANT: no naming collision)
+    const imgLoader = document.createElement("div");
+    imgLoader.className = "img-loader";
 
-    // IMAGE
-    const img = document.createElement("img");
-    img.src = imgUrl(hash);
+    const img = new Image();
+    const url = imgUrl(hash);
+
+    img.decoding = "async";
     img.loading = "lazy";
-
-    // start hidden until loaded
     img.style.opacity = "0";
+    img.style.transition = "opacity 0.15s ease";
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit = "cover";
 
-    img.onload = () => {
-      loader.remove();
-      img.style.opacity = "1";
-    };
-
-    img.onerror = () => {
-      loader.textContent = "❌";
-    };
-
-    thumb.appendChild(loader);
+    // show loader immediately
+    thumb.appendChild(imgLoader);
     thumb.appendChild(img);
 
+    // start load after paint (feels faster)
+    requestAnimationFrame(() => {
+      img.src = url;
+    });
+
+    // smooth decode (fixes "slow feel")
+    img.decode()
+      .then(() => {
+        imgLoader.remove();
+        img.style.opacity = "1";
+      })
+      .catch(() => {
+        imgLoader.textContent = "❌";
+      });
+
+    // FIXED LABEL (no string concatenation bugs)
     const label = document.createElement("div");
     label.className = "label";
 
     label.innerHTML = `
-    <div>${item.model || "unknown"}</div>
-    <div>${item.impairment || ""}</div>
-    <div>${item.bias_subtype || ""}</div>
-    <div>${item.context_value || ""}</div>
+      <div>${item.model || "unknown"}</div>
+      <div>${item.impairment || ""}</div>
+      <div>${item.bias_subtype || ""}</div>
+      <div>${item.context_value || ""}</div>
     `;
 
     card.appendChild(thumb);
