@@ -123,6 +123,11 @@ function renderGrid(){
 
   gridView.innerHTML = "";
 
+  if(!VIEW.length){
+    gridView.innerHTML = `<div style="padding:10px;">No results</div>`;
+    return;
+  }
+
   VIEW.forEach(item => {
 
     const hash = item.hash_name;
@@ -131,12 +136,40 @@ function renderGrid(){
     const card = document.createElement("div");
     card.className = "card";
 
-    card.innerHTML = `
-      <div class="thumb">
-        <img loading="lazy" src="${imgUrl(hash)}" />
-      </div>
-      <div class="label">${item.model || ""}</div>
-    `;
+    // WRAPPER
+    const thumb = document.createElement("div");
+    thumb.className = "thumb";
+
+    // LOADER (per image)
+    const loader = document.createElement("div");
+    loader.className = "img-loader";
+
+    // IMAGE
+    const img = document.createElement("img");
+    img.src = imgUrl(hash);
+    img.loading = "lazy";
+
+    // start hidden until loaded
+    img.style.opacity = "0";
+
+    img.onload = () => {
+      loader.remove();
+      img.style.opacity = "1";
+    };
+
+    img.onerror = () => {
+      loader.textContent = "❌";
+    };
+
+    thumb.appendChild(loader);
+    thumb.appendChild(img);
+
+    const label = document.createElement("div");
+    label.className = "label";
+    label.textContent = item.model || "unknown";
+
+    card.appendChild(thumb);
+    card.appendChild(label);
 
     card.onclick = () => show(item);
 
