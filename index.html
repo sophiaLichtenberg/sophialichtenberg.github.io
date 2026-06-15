@@ -1,558 +1,67 @@
-make an interface in js with file_name,model,domain,context_type,context_value,function_group,impairment,bias_type,bias_subtype,prompt,type,action,guidance_scale,num_inference_steps,seed,dataset_type,hash_name
-output_images_EXTRA/FLUX_schnell/Default/No_Context/image_0.png,FLUX_schnell,No_Context,,,,,,,Photo of a Person ,Default,No_Action,0.0,4.0,8.989711669500141e+18,No_Context_no_Bias,11208126882101814974
-output_images_EXTRA/FLUX_schnell/Default/No_Context/image_1.png,FLUX_schnell,No_Context,,,,,,,Photo of a Person ,Default,No_Action,0.0,4.0,1.0516677757259744e+18,No_Context_no_Bias,14082437164622650326
-output_images_EXTRA/FLUX_schnell/Default/No_Context/image_2.png,FLUX_schnell,No_Context,,,,,,,Photo of a Person ,Default,No_Action,0.0,4.0,1.2101694522996312e+19,No_Context_no_Bias,10797990572701187062
-output
-
-displaying images iwth        https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=1840855029352375536.png
-
-If you want a simple JavaScript interface that takes rows like your CSV and displays the corresponding image using the Surfdrive URL pattern, here's a complete HTML/JS example.
-
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Image Dataset Viewer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        tr:hover {
-            background: #f5f5f5;
-            cursor: pointer;
-        }
-
-        #viewer {
-            margin-top: 20px;
-        }
-
-        #viewer img {
-            max-width: 600px;
-            max-height: 600px;
-            border: 1px solid #ccc;
-        }
-    </style>
-</head>
-<body>
-
-<h2>Image Dataset Viewer</h2>
-
-<table id="dataTable">
-    <thead>
-        <tr>
-            <th>file_name</th>
-            <th>model</th>
-            <th>domain</th>
-            <th>context_type</th>
-            <th>context_value</th>
-            <th>function_group</th>
-            <th>impairment</th>
-            <th>bias_type</th>
-            <th>bias_subtype</th>
-            <th>prompt</th>
-            <th>type</th>
-            <th>action</th>
-            <th>guidance_scale</th>
-            <th>num_inference_steps</th>
-            <th>seed</th>
-            <th>dataset_type</th>
-            <th>hash_name</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
-
-<div id="viewer">
-    <h3>Selected Image</h3>
-    <img id="preview" src="" alt="">
-</div>
-
-<script>
-const surfdriveBase =
-    "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
-
-const data = [
-{
-    file_name: "output_images_EXTRA/FLUX_schnell/Default/No_Context/image_0.png",
-    model: "FLUX_schnell",
-    domain: "No_Context",
-    context_type: "",
-    context_value: "",
-    function_group: "",
-    impairment: "",
-    bias_type: "",
-    bias_subtype: "",
-    prompt: "Photo of a Person",
-    type: "Default",
-    action: "No_Action",
-    guidance_scale: 0.0,
-    num_inference_steps: 4.0,
-    seed: "8.989711669500141e+18",
-    dataset_type: "No_Context_no_Bias",
-    hash_name: "11208126882101814974"
-},
-{
-    file_name: "output_images_EXTRA/FLUX_schnell/Default/No_Context/image_1.png",
-    model: "FLUX_schnell",
-    domain: "No_Context",
-    context_type: "",
-    context_value: "",
-    function_group: "",
-    impairment: "",
-    bias_type: "",
-    bias_subtype: "",
-    prompt: "Photo of a Person",
-    type: "Default",
-    action: "No_Action",
-    guidance_scale: 0.0,
-    num_inference_steps: 4.0,
-    seed: "1.0516677757259744e+18",
-    dataset_type: "No_Context_no_Bias",
-    hash_name: "14082437164622650326"
-},
-{
-    file_name: "output_images_EXTRA/FLUX_schnell/Default/No_Context/image_2.png",
-    model: "FLUX_schnell",
-    domain: "No_Context",
-    context_type: "",
-    context_value: "",
-    function_group: "",
-    impairment: "",
-    bias_type: "",
-    bias_subtype: "",
-    prompt: "Photo of a Person",
-    type: "Default",
-    action: "No_Action",
-    guidance_scale: 0.0,
-    num_inference_steps: 4.0,
-    seed: "1.2101694522996312e+19",
-    dataset_type: "No_Context_no_Bias",
-    hash_name: "10797990572701187062"
-}
-];
-
-const columns = [
-    "file_name",
-    "model",
-    "domain",
-    "context_type",
-    "context_value",
-    "function_group",
-    "impairment",
-    "bias_type",
-    "bias_subtype",
-    "prompt",
-    "type",
-    "action",
-    "guidance_scale",
-    "num_inference_steps",
-    "seed",
-    "dataset_type",
-    "hash_name"
-];
-
-const tbody = document.querySelector("#dataTable tbody");
-
-data.forEach(row => {
-    const tr = document.createElement("tr");
-
-    columns.forEach(col => {
-        const td = document.createElement("td");
-        td.textContent = row[col] ?? "";
-        tr.appendChild(td);
-    });
-
-    tr.addEventListener("click", () => {
-        document.getElementById("preview").src =
-            surfdriveBase + row.hash_name + ".png";
-    });
-
-    tbody.appendChild(tr);
-});
-
-// show first image initially
-document.getElementById("preview").src =
-    surfdriveBase + data[0].hash_name + ".png";
-</script>
-
-</body>
-</html>
-
-This creates:
-
-    A table with all columns:
-
-        file_name
-
-        model
-
-        domain
-
-        context_type
-
-        context_value
-
-        function_group
-
-        impairment
-
-        bias_type
-
-        bias_subtype
-
-        prompt
-
-        type
-
-        action
-
-        guidance_scale
-
-        num_inference_steps
-
-        seed
-
-        dataset_type
-
-        hash_name
-
-    An image preview panel.
-
-    Clicking a row loads:
-
-https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=<hash_name>.png
-
-For example:
-
-https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=11208126882101814974.png
-
-using the hash_name field automatically.
-
-make it a new tab in here <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sophia Lichtenberg</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sophia Lichtenberg</title>
 
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- 🌌 Ambient AI Background -->
-  <div class="ambient-bg"></div>
+<div class="ambient-bg"></div>
+<div class="particles"></div>
+<div class="cursor-glow"></div>
 
-  <!-- ✨ Floating Particles -->
-  <div class="particles"></div>
+<div class="container">
 
-  <!-- 🌌 Cursor Glow -->
-  <div class="cursor-glow"></div>
+<!-- HERO -->
+<header class="hero">
 
-  <div class="container">
+  <img src="profile.jpg" class="avatar" />
 
-    <!-- HERO -->
-    <header class="hero">
+  <div>
+    <h1>Sophia Lichtenberg</h1>
 
-      <img
-        src="profile.jpg"
-        class="avatar"
-        alt="Sophia Lichtenberg"
-      />
-
-      <div>
-
-        <h1>Sophia Lichtenberg</h1>
-
-        <div class="subtitle">
-          PhD Candidate · Human-Centered Computing ·
-          AI & Text-to-Image Models
-          <br/>
-          Utrecht University
-        </div>
-
-        <div class="buttons">
-
-          <a class="btn"
-             href="cv.pdf"
-             download>
-            📄 Download CV
-          </a>
-
-          <button
-            class="btn ghost"
-            onclick="copyEmail()">
-            📧 Copy Email
-          </button>
-
-          <button
-            class="btn ghost"
-            onclick="toggleTheme()">
-            🌙 Toggle Theme
-          </button>
-
-        </div>
-
-      </div>
-
-    </header>
-
-    <!-- ABOUT -->
-    <section>
-
-      <h2>About</h2>
-
-      <p>
-        I work on human-centered evaluation of generative AI systems,
-        focusing on text-to-image models, interaction behavior,
-        and responsible AI.
-      </p>
-
-      <p>
-        Contact:
-        <a href="mailto:s.lichtenberg@uu.nl">
-          s.lichtenberg@uu.nl
-        </a>
-      </p>
-
-      <p>
-        <a
-          href="https://www.uu.nl/staff/SLichtenberg"
-          target="_blank">
-          Utrecht University Profile
-        </a>
-      </p>
-
-    </section>
-
-    <!-- SUPERVISORS -->
-    <section>
-
-      <h2>Supervisors</h2>
-
-      <p><b>Prof. Albert Gatt</b></p>
-
-      <p class="meta">
-        Utrecht University · NLP Group · ICS Department
-      </p>
-
-      <p><b>Prof. Judith Masthoff</b></p>
-
-      <p class="meta">
-        Utrecht University · Human-Centered Computing Group
-      </p>
-
-    </section>
-
-    <!-- RESEARCH -->
-    <section>
-
-      <h2>Research Interests</h2>
-
-      <span class="tag">Text-to-Image Models</span>
-      <span class="tag">Human-AI Interaction</span>
-      <span class="tag">Fairness</span>
-      <span class="tag">Responsible AI</span>
-      <span class="tag">Model Evaluation</span>
-
-    </section>
-
-    <!-- PUBLICATIONS -->
-    <section>
-
-      <h2>Publications</h2>
-
-      <p class="meta">
-        Selected work and ongoing research.
-      </p>
-
-      <div class="scholar-card">
-
-        <p><b>Google Scholar</b></p>
-
-        <p class="meta">
-          Publications and citation profile
-        </p>
-
-        <a
-          class="btn"
-          href="https://scholar.google.com/citations?user=fwOtPDYAAAAJ"
-          target="_blank">
-          🔗 View Profile
-        </a>
-
-      </div>
-
-    </section>
-
-    <footer>
-      © 2026 Sophia Lichtenberg
-    </footer>
-
+    <div class="buttons">
+      <a class="btn" href="cv.pdf" download>📄 CV</a>
+      <button class="btn ghost" onclick="toggleTheme()">🌙 Theme</button>
+    </div>
   </div>
 
-  <script>
+</header>
 
-    function toggleTheme(){
-      document.body.classList.toggle("light");
-    }
-
-    function copyEmail(){
-
-      navigator.clipboard.writeText(
-        "s.lichtenberg@uu.nl"
-      );
-
-      alert("Email copied 📋");
-    }
-
-    /* 🌌 Smooth cursor glow */
-
-    const glow =
-      document.querySelector(".cursor-glow");
-
-    document.addEventListener(
-      "mousemove",
-      (e) => {
-
-        requestAnimationFrame(() => {
-
-          glow.style.left =
-            e.clientX + "px";
-
-          glow.style.top =
-            e.clientY + "px";
-
-        });
-
-      }
-    );
-
-  </script>
-
-</body>
-</html>
-
-A clean way is to turn the site into a tabbed interface and add a new "Dataset Viewer" tab next to About, Research, Publications, etc.
-1. Add a navigation bar inside .container (right after <header>)
-
+<!-- TABS -->
 <nav class="tabs">
-  <button class="tab-btn active" onclick="openTab('home')">
+  <button class="tab-btn active" onclick="openTab('home', event)">
     Home
   </button>
 
-  <button class="tab-btn" onclick="openTab('dataset')">
+  <button class="tab-btn" onclick="openTab('dataset', event)">
     Dataset Viewer
   </button>
 </nav>
 
-2. Wrap your existing content in a Home tab
-
-Replace everything from <!-- ABOUT --> down to the footer with:
-
+<!-- HOME TAB -->
 <div id="home" class="tab-content active">
 
-  <!-- ABOUT -->
   <section>
     <h2>About</h2>
-
-    <p>
-      I work on human-centered evaluation of generative AI systems,
-      focusing on text-to-image models, interaction behavior,
-      and responsible AI.
-    </p>
-
-    <p>
-      Contact:
-      <a href="mailto:s.lichtenberg@uu.nl">
-        s.lichtenberg@uu.nl
-      </a>
-    </p>
-
-    <p>
-      <a href="https://www.uu.nl/staff/SLichtenberg" target="_blank">
-        Utrecht University Profile
-      </a>
-    </p>
-  </section>
-
-  <!-- SUPERVISORS -->
-  <section>
-    <h2>Supervisors</h2>
-
-    <p><b>Prof. Albert Gatt</b></p>
-    <p class="meta">
-      Utrecht University · NLP Group · ICS Department
-    </p>
-
-    <p><b>Prof. Judith Masthoff</b></p>
-    <p class="meta">
-      Utrecht University · Human-Centered Computing Group
-    </p>
-  </section>
-
-  <!-- RESEARCH -->
-  <section>
-    <h2>Research Interests</h2>
-
-    <span class="tag">Text-to-Image Models</span>
-    <span class="tag">Human-AI Interaction</span>
-    <span class="tag">Fairness</span>
-    <span class="tag">Responsible AI</span>
-    <span class="tag">Model Evaluation</span>
-  </section>
-
-  <!-- PUBLICATIONS -->
-  <section>
-    <h2>Publications</h2>
-
-    <p class="meta">
-      Selected work and ongoing research.
-    </p>
-
-    <div class="scholar-card">
-      <p><b>Google Scholar</b></p>
-
-      <p class="meta">
-        Publications and citation profile
-      </p>
-
-      <a
-        class="btn"
-        href="https://scholar.google.com/citations?user=fwOtPDYAAAAJ"
-        target="_blank">
-        🔗 View Profile
-      </a>
-    </div>
+    <p>Human-centered AI research on text-to-image models.</p>
   </section>
 
 </div>
 
-3. Add the Dataset tab
-
-Place this directly after the Home tab:
-
+<!-- DATASET TAB -->
 <div id="dataset" class="tab-content">
 
   <section>
-
     <h2>Dataset Viewer</h2>
 
     <div class="dataset-layout">
 
+      <!-- TABLE -->
       <div class="table-container">
         <table id="dataTable">
           <thead>
@@ -567,8 +76,15 @@ Place this directly after the Home tab:
         </table>
       </div>
 
+      <!-- PREVIEW -->
       <div class="image-panel">
-        <img id="preview" src="" alt="">
+
+        <img id="preview" />
+
+        <div class="dataset-meta" id="meta">
+          Click a row to preview image
+        </div>
+
       </div>
 
     </div>
@@ -577,122 +93,48 @@ Place this directly after the Home tab:
 
 </div>
 
-4. Add CSS
+</div>
 
-Add to style.css:
+<script>
 
-.tabs{
-  display:flex;
-  gap:12px;
-  margin:30px 0;
+/* =========================
+   TABS
+========================= */
+
+function openTab(id, event){
+
+  document.querySelectorAll(".tab-content")
+    .forEach(t => t.classList.remove("active"));
+
+  document.querySelectorAll(".tab-btn")
+    .forEach(b => b.classList.remove("active"));
+
+  document.getElementById(id).classList.add("active");
+
+  event.currentTarget.classList.add("active");
 }
 
-.tab-btn{
-  padding:10px 18px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.tab-btn.active{
-  font-weight:bold;
-}
-
-.tab-content{
-  display:none;
-}
-
-.tab-content.active{
-  display:block;
-}
-
-.dataset-layout{
-  display:grid;
-  grid-template-columns: 1fr 500px;
-  gap:24px;
-}
-
-.table-container{
-  overflow:auto;
-  max-height:700px;
-}
-
-#dataTable{
-  width:100%;
-  border-collapse:collapse;
-}
-
-#dataTable th,
-#dataTable td{
-  padding:10px;
-  border-bottom:1px solid rgba(255,255,255,.1);
-}
-
-#dataTable tbody tr{
-  cursor:pointer;
-}
-
-#dataTable tbody tr:hover{
-  background:rgba(255,255,255,.05);
-}
-
-.image-panel{
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-}
-
-#preview{
-  width:100%;
-  max-width:500px;
-  border-radius:12px;
-}
-
-5. Add tab switching JS
-
-Inside your existing <script>:
-
-function openTab(tabId){
-
-  document
-    .querySelectorAll(".tab-content")
-    .forEach(tab => tab.classList.remove("active"));
-
-  document
-    .querySelectorAll(".tab-btn")
-    .forEach(btn => btn.classList.remove("active"));
-
-  document
-    .getElementById(tabId)
-    .classList.add("active");
-
-  event.target.classList.add("active");
-}
-
-6. Add dataset viewer JS
-
-Below the tab code:
+/* =========================
+   DATASET
+========================= */
 
 const surfdriveBase =
   "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
 
 const data = [
 {
-  file_name:"output_images_EXTRA/FLUX_schnell/Default/No_Context/image_0.png",
   model:"FLUX_schnell",
   prompt:"Photo of a Person",
   dataset_type:"No_Context_no_Bias",
   hash_name:"11208126882101814974"
 },
 {
-  file_name:"output_images_EXTRA/FLUX_schnell/Default/No_Context/image_1.png",
   model:"FLUX_schnell",
   prompt:"Photo of a Person",
   dataset_type:"No_Context_no_Bias",
   hash_name:"14082437164622650326"
 },
 {
-  file_name:"output_images_EXTRA/FLUX_schnell/Default/No_Context/image_2.png",
   model:"FLUX_schnell",
   prompt:"Photo of a Person",
   dataset_type:"No_Context_no_Bias",
@@ -700,13 +142,11 @@ const data = [
 }
 ];
 
-const tbody =
-  document.querySelector("#dataTable tbody");
+const tbody = document.querySelector("#dataTable tbody");
 
 data.forEach(row => {
 
-  const tr =
-    document.createElement("tr");
+  const tr = document.createElement("tr");
 
   tr.innerHTML = `
     <td>${row.model}</td>
@@ -718,474 +158,28 @@ data.forEach(row => {
   tr.onclick = () => {
 
     document.getElementById("preview").src =
-      surfdriveBase +
-      row.hash_name +
-      ".png";
+      surfdriveBase + row.hash_name + ".png";
 
+    document.getElementById("meta").innerHTML = `
+      <b>Model:</b> ${row.model}<br>
+      <b>Dataset:</b> ${row.dataset_type}<br>
+      <b>Hash:</b> ${row.hash_name}
+    `;
   };
 
   tbody.appendChild(tr);
+
 });
 
-document.getElementById("preview").src =
-  surfdriveBase +
-  data[0].hash_name +
-  ".png";
-
-This gives Sophia's site a second tab called Dataset Viewer where users can browse rows and click them to preview the corresponding Surfdrive image. For thousands of images, I'd recommend loading the CSV dynamically and adding filtering/search controls rather than hardcoding the data array.
-
-complete html
-
-
-
-📄 Download CV
-
-
-📧 Copy Email
-
-
-🌙 Toggle Theme
-
-
-Home
-
-
-Dataset Viewer
-
-Text-to-Image Models
-Human-AI Interaction
-Fairness
-Responsible AI
-Model Evaluation
-
-
-🔗 View Profile
-
-
-This is a complete single-file version with a Home tab and a Dataset Viewer tab that previews Surfdrive-hosted images when a row is clicked.
-
-html code
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sophia Lichtenberg</title>
-
-<link rel="stylesheet" href="style.css">
-
-<style>
-.tabs{
-  display:flex;
-  gap:12px;
-  margin:30px 0;
+/* default image */
+if(data.length){
+  document.getElementById("preview").src =
+    surfdriveBase + data[0].hash_name + ".png";
 }
 
-.tab-btn{
-  padding:10px 18px;
-  border:none;
-  border-radius:12px;
-  cursor:pointer;
-  background:rgba(255,255,255,.08);
-  color:inherit;
-}
-
-.tab-btn.active{
-  font-weight:600;
-}
-
-.tab-content{
-  display:none;
-}
-
-.tab-content.active{
-  display:block;
-}
-
-.dataset-layout{
-  display:grid;
-  grid-template-columns:1fr 500px;
-  gap:24px;
-  align-items:start;
-}
-
-.table-container{
-  overflow:auto;
-  max-height:700px;
-}
-
-#dataTable{
-  width:100%;
-  border-collapse:collapse;
-}
-
-#dataTable th,
-#dataTable td{
-  padding:10px;
-  text-align:left;
-  border-bottom:1px solid rgba(255,255,255,.1);
-}
-
-#dataTable tbody tr{
-  cursor:pointer;
-}
-
-#dataTable tbody tr:hover{
-  background:rgba(255,255,255,.05);
-}
-
-.image-panel{
-  position:sticky;
-  top:20px;
-}
-
-#preview{
-  width:100%;
-  border-radius:12px;
-  display:block;
-}
-
-@media (max-width: 1000px){
-  .dataset-layout{
-    grid-template-columns:1fr;
-  }
-}
-</style>
-
-</head>
-
-<body>
-
-<div class="ambient-bg"></div>
-<div class="particles"></div>
-<div class="cursor-glow"></div>
-
-<div class="container">
-
-<header class="hero">
-
-<img
-  src="profile.jpg"
-  class="avatar"
-  alt="Sophia Lichtenberg"
-/>
-
-<div>
-
-<h1>Sophia Lichtenberg</h1>
-
-<div class="subtitle">
-  PhD Candidate · Human-Centered Computing ·
-  AI & Text-to-Image Models
-  <br>
-  Utrecht University
-</div>
-
-<div class="buttons">
-
-<a
-  class="btn"
-  href="cv.pdf"
-  download>
-  📄 Download CV
-</a>
-
-<button
-  class="btn ghost"
-  onclick="copyEmail()">
-  📧 Copy Email
-</button>
-
-<button
-  class="btn ghost"
-  onclick="toggleTheme()">
-  🌙 Toggle Theme
-</button>
-
-</div>
-
-</div>
-
-</header>
-
-<nav class="tabs">
-
-<button
-  class="tab-btn active"
-  onclick="openTab(event,'home')">
-  Home
-</button>
-
-<button
-  class="tab-btn"
-  onclick="openTab(event,'dataset')">
-  Dataset Viewer
-</button>
-
-</nav>
-
-<!-- HOME TAB -->
-<div id="home" class="tab-content active">
-
-<section>
-
-<h2>About</h2>
-
-<p>
-I work on human-centered evaluation of generative AI systems,
-focusing on text-to-image models, interaction behavior,
-and responsible AI.
-</p>
-
-<p>
-Contact:
-<a href="mailto:s.lichtenberg@uu.nl">
-s.lichtenberg@uu.nl
-</a>
-</p>
-
-<p>
-<a
-href="https://www.uu.nl/staff/SLichtenberg"
-target="_blank">
-Utrecht University Profile
-</a>
-</p>
-
-</section>
-
-<section>
-
-<h2>Supervisors</h2>
-
-<p><b>Prof. Albert Gatt</b></p>
-
-<p class="meta">
-Utrecht University · NLP Group · ICS Department
-</p>
-
-<p><b>Prof. Judith Masthoff</b></p>
-
-<p class="meta">
-Utrecht University · Human-Centered Computing Group
-</p>
-
-</section>
-
-<section>
-
-<h2>Research Interests</h2>
-
-<span class="tag">Text-to-Image Models</span>
-<span class="tag">Human-AI Interaction</span>
-<span class="tag">Fairness</span>
-<span class="tag">Responsible AI</span>
-<span class="tag">Model Evaluation</span>
-
-</section>
-
-<section>
-
-<h2>Publications</h2>
-
-<p class="meta">
-Selected work and ongoing research.
-</p>
-
-<div class="scholar-card">
-
-<p><b>Google Scholar</b></p>
-
-<p class="meta">
-Publications and citation profile
-</p>
-
-<a
-class="btn"
-href="https://scholar.google.com/citations?user=fwOtPDYAAAAJ"
-target="_blank">
-🔗 View Profile
-</a>
-
-</div>
-
-</section>
-
-</div>
-
-<!-- DATASET TAB -->
-<div id="dataset" class="tab-content">
-
-<section>
-
-<h2>Dataset Viewer</h2>
-
-<div class="dataset-layout">
-
-<div class="table-container">
-
-<table id="dataTable">
-
-<thead>
-<tr>
-<th>Model</th>
-<th>Prompt</th>
-<th>Dataset</th>
-<th>Hash</th>
-</tr>
-</thead>
-
-<tbody></tbody>
-
-</table>
-
-</div>
-
-<div class="image-panel">
-
-<img
-  id="preview"
-  src=""
-  alt="Selected image"
-/>
-
-</div>
-
-</div>
-
-</section>
-
-</div>
-
-<footer>
-© 2026 Sophia Lichtenberg
-</footer>
-
-</div>
-
-<script>
-
+/* theme toggle */
 function toggleTheme(){
   document.body.classList.toggle("light");
-}
-
-function copyEmail(){
-
-  navigator.clipboard.writeText(
-    "s.lichtenberg@uu.nl"
-  );
-
-  alert("Email copied 📋");
-}
-
-function openTab(event, tabId){
-
-  document
-    .querySelectorAll(".tab-content")
-    .forEach(tab =>
-      tab.classList.remove("active")
-    );
-
-  document
-    .querySelectorAll(".tab-btn")
-    .forEach(btn =>
-      btn.classList.remove("active")
-    );
-
-  document
-    .getElementById(tabId)
-    .classList.add("active");
-
-  event.currentTarget.classList.add("active");
-}
-
-/* Cursor Glow */
-
-const glow =
-  document.querySelector(".cursor-glow");
-
-document.addEventListener(
-  "mousemove",
-  (e) => {
-
-    requestAnimationFrame(() => {
-
-      glow.style.left =
-        e.clientX + "px";
-
-      glow.style.top =
-        e.clientY + "px";
-
-    });
-
-  }
-);
-
-/* Dataset Viewer */
-
-const surfdriveBase =
-  "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
-
-const data = [
-{
-  file_name:"output_images_EXTRA/FLUX_schnell/Default/No_Context/image_0.png",
-  model:"FLUX_schnell",
-  prompt:"Photo of a Person",
-  dataset_type:"No_Context_no_Bias",
-  hash_name:"11208126882101814974"
-},
-{
-  file_name:"output_images_EXTRA/FLUX_schnell/Default/No_Context/image_1.png",
-  model:"FLUX_schnell",
-  prompt:"Photo of a Person",
-  dataset_type:"No_Context_no_Bias",
-  hash_name:"14082437164622650326"
-},
-{
-  file_name:"output_images_EXTRA/FLUX_schnell/Default/No_Context/image_2.png",
-  model:"FLUX_schnell",
-  prompt:"Photo of a Person",
-  dataset_type:"No_Context_no_Bias",
-  hash_name:"10797990572701187062"
-}
-];
-
-const tbody =
-  document.querySelector("#dataTable tbody");
-
-data.forEach(row => {
-
-  const tr =
-    document.createElement("tr");
-
-  tr.innerHTML = `
-    <td>${row.model}</td>
-    <td>${row.prompt}</td>
-    <td>${row.dataset_type}</td>
-    <td>${row.hash_name}</td>
-  `;
-
-  tr.addEventListener("click", () => {
-
-    document.getElementById("preview").src =
-      surfdriveBase +
-      row.hash_name +
-      ".png";
-
-  });
-
-  tbody.appendChild(tr);
-
-});
-
-if(data.length){
-
-  document.getElementById("preview").src =
-    surfdriveBase +
-    data[0].hash_name +
-    ".png";
-
 }
 
 </script>

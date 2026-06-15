@@ -12,7 +12,7 @@ body{
 }
 
 /* =====================================================
-   AMBIENT BACKGROUND (from your original site)
+   BACKGROUND EFFECTS
 ===================================================== */
 
 .ambient-bg{
@@ -36,10 +36,6 @@ body{
   animation:breathe 16s ease-in-out infinite alternate;
 }
 
-/* =====================================================
-   PARTICLES
-===================================================== */
-
 .particles{
   position:fixed;
   inset:0;
@@ -49,10 +45,6 @@ body{
   z-index:-1;
   pointer-events:none;
 }
-
-/* =====================================================
-   CURSOR GLOW
-===================================================== */
 
 .cursor-glow{
   position:fixed;
@@ -75,7 +67,7 @@ body{
 }
 
 /* =====================================================
-   LAYOUT CONTAINER
+   LAYOUT
 ===================================================== */
 
 .container{
@@ -94,7 +86,7 @@ body{
   display:flex;
   align-items:center;
   gap:22px;
-  margin-bottom:40px;
+  margin-bottom:30px;
 }
 
 .avatar{
@@ -102,6 +94,7 @@ body{
   height:120px;
   border-radius:50%;
   object-fit:cover;
+
   border:2px solid #38bdf8;
   box-shadow:0 0 30px rgba(56,189,248,.18);
 }
@@ -125,7 +118,7 @@ h1{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
-  margin-top:14px;
+  margin-top:12px;
 }
 
 .btn{
@@ -133,9 +126,11 @@ h1{
   padding:10px 15px;
   border-radius:10px;
   cursor:pointer;
+
   background:#38bdf8;
   color:#0b0f19;
   font-weight:600;
+
   transition:.2s;
 }
 
@@ -166,19 +161,19 @@ section{
 .tabs{
   display:flex;
   gap:10px;
-  margin:30px 0;
+  margin:20px 0 30px;
   flex-wrap:wrap;
 }
 
 .tab-btn{
   padding:10px 16px;
   border-radius:12px;
-  cursor:pointer;
 
   background:rgba(17,24,39,.58);
   border:1px solid rgba(148,163,184,.15);
   color:#cbd5e1;
 
+  cursor:pointer;
   transition:.2s;
 }
 
@@ -202,30 +197,27 @@ section{
 }
 
 /* =====================================================
-   DATASET LAYOUT (CORE)
+   DATASET LAYOUT
 ===================================================== */
 
 .dataset-layout{
   display:grid;
-  grid-template-columns:minmax(0,1fr) 420px;
-  gap:20px;
+  grid-template-columns:1fr 420px;
+  gap:18px;
   align-items:start;
 }
 
 /* =====================================================
-   TABLE PANEL
+   TABLE
 ===================================================== */
 
 .table-container{
-  max-height:750px;
+  max-height:700px;
   overflow:auto;
 
   border-radius:16px;
-  background:rgba(17,24,39,.58);
-  backdrop-filter:blur(10px);
-
-  border:1px solid rgba(148,163,184,.15);
-  box-shadow:0 10px 30px rgba(0,0,0,.2);
+  background:rgba(17,24,39,.55);
+  border:1px solid rgba(148,163,184,.12);
 }
 
 #dataTable{
@@ -237,15 +229,13 @@ section{
 #dataTable thead{
   position:sticky;
   top:0;
-  z-index:2;
   background:rgba(11,15,25,.95);
 }
 
 #dataTable th{
-  padding:12px;
   text-align:left;
+  padding:12px;
   color:#38bdf8;
-  white-space:nowrap;
 }
 
 #dataTable td{
@@ -261,7 +251,7 @@ section{
 }
 
 #dataTable tbody tr:hover{
-  background:rgba(56,189,248,.06);
+  background:rgba(56,189,248,.08);
 }
 
 /* =====================================================
@@ -272,14 +262,11 @@ section{
   position:sticky;
   top:20px;
 
-  border-radius:18px;
+  border-radius:16px;
   overflow:hidden;
 
-  background:rgba(17,24,39,.58);
-  backdrop-filter:blur(10px);
-
-  border:1px solid rgba(148,163,184,.15);
-  box-shadow:0 10px 30px rgba(0,0,0,.2);
+  background:rgba(17,24,39,.55);
+  border:1px solid rgba(148,163,184,.12);
 
   display:flex;
   flex-direction:column;
@@ -290,51 +277,15 @@ section{
   display:block;
 }
 
-/* metadata */
-.meta-box{
+.dataset-meta{
   padding:14px;
   font-size:12px;
-  line-height:1.5;
-  border-top:1px solid rgba(148,163,184,.1);
   color:#cbd5e1;
+  border-top:1px solid rgba(148,163,184,.1);
 }
 
-.meta-box b{
+.dataset-meta b{
   color:#38bdf8;
-}
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-.dataset-search{
-  width:100%;
-  margin-bottom:14px;
-  padding:12px;
-
-  border-radius:12px;
-  background:rgba(17,24,39,.58);
-  border:1px solid rgba(148,163,184,.15);
-  color:#e5e7eb;
-  outline:none;
-}
-
-.dataset-search:focus{
-  border-color:rgba(56,189,248,.35);
-  box-shadow:0 0 0 3px rgba(56,189,248,.08);
-}
-
-/* =====================================================
-   SCROLLBAR
-===================================================== */
-
-.table-container::-webkit-scrollbar{
-  width:10px;
-}
-
-.table-container::-webkit-scrollbar-thumb{
-  background:rgba(56,189,248,.22);
-  border-radius:999px;
 }
 
 /* =====================================================
@@ -361,7 +312,7 @@ body.light{
 }
 
 body.light .tab-btn{
-  background:white;
+  background:#fff;
   border-color:#e5e7eb;
   color:#374151;
 }
@@ -373,7 +324,7 @@ body.light .tab-btn.active{
 
 body.light .table-container,
 body.light .image-panel{
-  background:white;
+  background:#fff;
   border-color:#e5e7eb;
 }
 
@@ -381,6 +332,6 @@ body.light #dataTable td{
   color:#374151;
 }
 
-body.light .meta-box{
+body.light .dataset-meta{
   color:#374151;
 }
