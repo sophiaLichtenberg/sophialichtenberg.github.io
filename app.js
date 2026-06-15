@@ -101,7 +101,7 @@ function buildMulti(id, title, values){
 
         ${values.map(v => `
           <label>
-            <input type="checkbox" value="${escapeHtml(v)}">
+            <input type="checkbox" value="${escapeHtml(v)}" checked>
             ${v}
           </label>
         `).join("")}
@@ -109,33 +109,6 @@ function buildMulti(id, title, values){
       </div>
     </details>
   `;
-
-  const checkboxes = container.querySelectorAll("input[type='checkbox']");
-  const allBox = container.querySelector("input[value='__all__']");
-
-  // ALL toggle logic
-  allBox.addEventListener("change", () => {
-    const checked = allBox.checked;
-    checkboxes.forEach(cb => {
-      if (cb.value !== "__all__") cb.checked = checked;
-    });
-    applyFilters();
-  });
-
-  // individual checkbox logic
-  checkboxes.forEach(cb => {
-    if (cb.value === "__all__") return;
-
-    cb.addEventListener("change", () => {
-      const allOthers = Array.from(checkboxes).filter(c => c.value !== "__all__");
-
-      const allChecked = allOthers.every(c => c.checked);
-
-      allBox.checked = allChecked;
-
-      applyFilters();
-    });
-  });
 }
 
 function escapeHtml(str){
