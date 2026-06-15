@@ -173,3 +173,21 @@ body{
   background:#1f2937;
   color:#e5e7eb;
 }
+
+.group-section {
+  margin-bottom: 24px;
+}
+
+.group-title {
+  font-weight: 600;
+  padding: 8px 4px;
+  opacity: 0.8;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+.grid-inner {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
