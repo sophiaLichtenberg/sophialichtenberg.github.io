@@ -1,4 +1,165 @@
 /* =====================================================
+   BASE
+===================================================== */
+
+body{
+  margin:0;
+  font-family:system-ui, Arial, sans-serif;
+  background:#0b0f19;
+  color:#e5e7eb;
+  overflow-x:hidden;
+  transition: background .4s ease, color .4s ease;
+}
+
+/* =====================================================
+   AMBIENT BACKGROUND (from your original site)
+===================================================== */
+
+.ambient-bg{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+}
+
+.ambient-bg::before{
+  content:"";
+  position:absolute;
+  inset:-20%;
+
+  background:
+    radial-gradient(circle at 20% 20%, rgba(56,189,248,.12), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(99,102,241,.10), transparent 30%),
+    radial-gradient(circle at 50% 80%, rgba(14,165,233,.08), transparent 30%);
+
+  filter:blur(40px);
+  animation:breathe 16s ease-in-out infinite alternate;
+}
+
+/* =====================================================
+   PARTICLES
+===================================================== */
+
+.particles{
+  position:fixed;
+  inset:0;
+  background-image: radial-gradient(rgba(56,189,248,.08) 1px, transparent 1px);
+  background-size:40px 40px;
+  animation: drift 35s linear infinite;
+  z-index:-1;
+  pointer-events:none;
+}
+
+/* =====================================================
+   CURSOR GLOW
+===================================================== */
+
+.cursor-glow{
+  position:fixed;
+  width:260px;
+  height:260px;
+
+  background: radial-gradient(
+    circle,
+    rgba(56,189,248,.22) 0%,
+    rgba(56,189,248,.10) 35%,
+    transparent 70%
+  );
+
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  filter:blur(30px);
+  z-index:1;
+
+  transition:left .08s ease-out, top .08s ease-out;
+}
+
+/* =====================================================
+   LAYOUT CONTAINER
+===================================================== */
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:60px 20px;
+  position:relative;
+  z-index:2;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  margin-bottom:40px;
+}
+
+.avatar{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #38bdf8;
+  box-shadow:0 0 30px rgba(56,189,248,.18);
+}
+
+h1{
+  margin:0;
+  font-size:38px;
+}
+
+.subtitle{
+  margin-top:8px;
+  color:#94a3b8;
+  line-height:1.6;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.buttons{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+.btn{
+  border:none;
+  padding:10px 15px;
+  border-radius:10px;
+  cursor:pointer;
+  background:#38bdf8;
+  color:#0b0f19;
+  font-weight:600;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+}
+
+.btn.ghost{
+  background:transparent;
+  border:1px solid #38bdf8;
+  color:#38bdf8;
+}
+
+/* =====================================================
+   SECTIONS
+===================================================== */
+
+section{
+  margin-top:34px;
+  padding-top:22px;
+  border-top:1px solid rgba(148,163,184,.14);
+}
+
+/* =====================================================
    TABS
 ===================================================== */
 
@@ -6,46 +167,30 @@
   display:flex;
   gap:10px;
   margin:30px 0;
+  flex-wrap:wrap;
 }
 
 .tab-btn{
-  border:none;
+  padding:10px 16px;
+  border-radius:12px;
   cursor:pointer;
 
-  padding:10px 18px;
-  border-radius:12px;
-
-  background:
-    rgba(17,24,39,0.58);
-
-  backdrop-filter:blur(10px);
-
+  background:rgba(17,24,39,.58);
+  border:1px solid rgba(148,163,184,.15);
   color:#cbd5e1;
 
-  border:
-    1px solid rgba(148,163,184,0.15);
-
-  transition:
-    transform .2s ease,
-    border-color .2s ease,
-    background .2s ease;
+  transition:.2s;
 }
 
 .tab-btn:hover{
   transform:translateY(-2px);
-
-  border-color:
-    rgba(56,189,248,.3);
+  border-color:rgba(56,189,248,.3);
 }
 
 .tab-btn.active{
-  background:
-    rgba(56,189,248,.12);
-
+  background:rgba(56,189,248,.12);
+  border-color:rgba(56,189,248,.35);
   color:#38bdf8;
-
-  border-color:
-    rgba(56,189,248,.35);
 }
 
 .tab-content{
@@ -57,34 +202,30 @@
 }
 
 /* =====================================================
-   DATASET VIEWER
+   DATASET LAYOUT (CORE)
 ===================================================== */
 
 .dataset-layout{
   display:grid;
-  grid-template-columns:minmax(0,1fr) 450px;
-  gap:24px;
+  grid-template-columns:minmax(0,1fr) 420px;
+  gap:20px;
   align-items:start;
 }
 
+/* =====================================================
+   TABLE PANEL
+===================================================== */
+
 .table-container{
-
   max-height:750px;
-
   overflow:auto;
 
   border-radius:16px;
-
-  background:
-    rgba(17,24,39,0.58);
-
+  background:rgba(17,24,39,.58);
   backdrop-filter:blur(10px);
 
-  border:
-    1px solid rgba(148,163,184,0.15);
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.2);
+  border:1px solid rgba(148,163,184,.15);
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
 }
 
 #dataTable{
@@ -94,85 +235,54 @@
 }
 
 #dataTable thead{
-
   position:sticky;
   top:0;
-
   z-index:2;
-
-  background:
-    rgba(11,15,25,.95);
-
-  backdrop-filter:blur(10px);
+  background:rgba(11,15,25,.95);
 }
 
 #dataTable th{
-
-  color:#38bdf8;
-
+  padding:12px;
   text-align:left;
-
-  font-weight:600;
-
-  padding:14px;
-
+  color:#38bdf8;
   white-space:nowrap;
 }
 
 #dataTable td{
-
-  padding:12px 14px;
-
+  padding:10px 12px;
+  border-top:1px solid rgba(148,163,184,.08);
   color:#cbd5e1;
-
-  border-top:
-    1px solid rgba(148,163,184,.08);
-
   white-space:nowrap;
 }
 
 #dataTable tbody tr{
   cursor:pointer;
-
-  transition:
-    background .2s ease;
+  transition:.2s;
 }
 
 #dataTable tbody tr:hover{
-
-  background:
-    rgba(56,189,248,.06);
-}
-
-#dataTable tbody tr.selected{
-
-  background:
-    rgba(56,189,248,.12);
+  background:rgba(56,189,248,.06);
 }
 
 /* =====================================================
-   IMAGE PREVIEW
+   IMAGE PANEL
 ===================================================== */
 
 .image-panel{
-
   position:sticky;
   top:20px;
 
   border-radius:18px;
-
   overflow:hidden;
 
-  background:
-    rgba(17,24,39,0.58);
-
+  background:rgba(17,24,39,.58);
   backdrop-filter:blur(10px);
 
-  border:
-    1px solid rgba(148,163,184,0.15);
+  border:1px solid rgba(148,163,184,.15);
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
 
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.2);
+  display:flex;
+  flex-direction:column;
 }
 
 #preview{
@@ -180,55 +290,38 @@
   display:block;
 }
 
-.image-meta{
-  padding:16px;
+/* metadata */
+.meta-box{
+  padding:14px;
+  font-size:12px;
+  line-height:1.5;
+  border-top:1px solid rgba(148,163,184,.1);
+  color:#cbd5e1;
 }
 
-.image-meta h3{
-  margin:0 0 8px 0;
-
+.meta-box b{
   color:#38bdf8;
 }
 
-.image-meta p{
-  margin:0;
-  font-size:12px;
-}
-
 /* =====================================================
-   SEARCH BOX
+   SEARCH
 ===================================================== */
 
 .dataset-search{
-
   width:100%;
-
-  margin-bottom:16px;
-
-  padding:12px 14px;
+  margin-bottom:14px;
+  padding:12px;
 
   border-radius:12px;
-
-  outline:none;
-
+  background:rgba(17,24,39,.58);
+  border:1px solid rgba(148,163,184,.15);
   color:#e5e7eb;
-
-  background:
-    rgba(17,24,39,0.58);
-
-  border:
-    1px solid rgba(148,163,184,0.15);
-
-  backdrop-filter:blur(10px);
+  outline:none;
 }
 
 .dataset-search:focus{
-
-  border-color:
-    rgba(56,189,248,.35);
-
-  box-shadow:
-    0 0 0 3px rgba(56,189,248,.08);
+  border-color:rgba(56,189,248,.35);
+  box-shadow:0 0 0 3px rgba(56,189,248,.08);
 }
 
 /* =====================================================
@@ -237,106 +330,57 @@
 
 .table-container::-webkit-scrollbar{
   width:10px;
-  height:10px;
-}
-
-.table-container::-webkit-scrollbar-track{
-  background:transparent;
 }
 
 .table-container::-webkit-scrollbar-thumb{
-
+  background:rgba(56,189,248,.22);
   border-radius:999px;
+}
 
-  background:
-    rgba(56,189,248,.22);
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes drift{
+  from{transform:translateY(0);}
+  to{transform:translateY(-120px);}
+}
+
+@keyframes breathe{
+  from{transform:scale(1);}
+  to{transform:scale(1.08) translateY(-20px);}
 }
 
 /* =====================================================
    LIGHT MODE
 ===================================================== */
 
+body.light{
+  background:#f6f7fb;
+  color:#111827;
+}
+
 body.light .tab-btn{
-
-  background:
-    rgba(255,255,255,.8);
-
-  color:#374151;
-
+  background:white;
   border-color:#e5e7eb;
+  color:#374151;
 }
 
 body.light .tab-btn.active{
-
+  background:#e0f2fe;
   color:#0284c7;
-
-  background:
-    rgba(56,189,248,.08);
-
-  border-color:
-    rgba(56,189,248,.25);
 }
 
 body.light .table-container,
 body.light .image-panel{
-
-  background:
-    rgba(255,255,255,.75);
-
+  background:white;
   border-color:#e5e7eb;
-}
-
-body.light #dataTable thead{
-
-  background:
-    rgba(255,255,255,.95);
 }
 
 body.light #dataTable td{
   color:#374151;
 }
 
-body.light .dataset-search{
-
-  background:white;
-
-  color:#111827;
-
-  border-color:#e5e7eb;
-}
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-@media (max-width:1000px){
-
-  .dataset-layout{
-    grid-template-columns:1fr;
-  }
-
-  .image-panel{
-    position:relative;
-    top:auto;
-  }
-}
-
-@media (max-width:700px){
-
-  .hero{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .tabs{
-    overflow-x:auto;
-  }
-
-  .table-container{
-    max-height:500px;
-  }
-
-  #dataTable{
-    font-size:12px;
-  }
+body.light .meta-box{
+  color:#374151;
 }
