@@ -93,15 +93,49 @@ function buildMulti(id, title, values){
     <details>
       <summary>${title}</summary>
       <div class="options">
+
+        <label class="all-option">
+          <input type="checkbox" value="__all__" checked>
+          <b>All</b>
+        </label>
+
         ${values.map(v => `
           <label>
             <input type="checkbox" value="${escapeHtml(v)}">
             ${v}
           </label>
         `).join("")}
+
       </div>
     </details>
   `;
+
+  const checkboxes = container.querySelectorAll("input[type='checkbox']");
+  const allBox = container.querySelector("input[value='__all__']");
+
+  // ALL toggle logic
+  allBox.addEventListener("change", () => {
+    const checked = allBox.checked;
+    checkboxes.forEach(cb => {
+      if (cb.value !== "__all__") cb.checked = checked;
+    });
+    applyFilters();
+  });
+
+  // individual checkbox logic
+  checkboxes.forEach(cb => {
+    if (cb.value === "__all__") return;
+
+    cb.addEventListener("change", () => {
+      const allOthers = Array.from(checkboxes).filter(c => c.value !== "__all__");
+
+      const allChecked = allOthers.every(c => c.checked);
+
+      allBox.checked = allChecked;
+
+      applyFilters();
+    });
+  });
 }
 
 function escapeHtml(str){
@@ -272,8 +306,11 @@ function getCheckedValues(id){
   const el = $(id);
   if (!el) return [];
 
-  return Array.from(el.querySelectorAll("input:checked"))
-    .map(x => x.value);
+  const values = Array.from(el.querySelectorAll("input:checked"))
+    .map(x => x.value)
+    .filter(v => v !== "__all__");
+
+  return values;
 }
 
 /* =========================
