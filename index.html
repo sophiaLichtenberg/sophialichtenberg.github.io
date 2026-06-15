@@ -14,7 +14,8 @@
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <h2>Dataset Explorer</h2>
+
+    <h2>Explorer</h2>
 
     <input id="search" class="search" placeholder="Search prompts..." />
 
@@ -22,45 +23,61 @@
     <select id="datasetFilter" class="select"></select>
     <select id="impairmentFilter" class="select"></select>
 
-    <button class="btn" onclick="switchTab('grid')">Grid</button>
-    <button class="btn ghost" onclick="switchTab('dataset')">Table</button>
+    <button id="searchBtn" class="btn">Search</button>
+
+    <div class="tab-buttons">
+      <button class="btn ghost" onclick="switchTab('home')">Home</button>
+      <button class="btn ghost" onclick="switchTab('dataset')">Dataset</button>
+    </div>
+
   </div>
 
   <!-- MAIN -->
   <div class="main">
 
-    <!-- GRID TAB -->
-    <div id="gridTab" class="tab active">
-      <div id="grid" class="grid"></div>
+    <!-- HOME -->
+    <div id="home" class="tab active">
+      <h1>Dataset Explorer</h1>
+      <p>Search and inspect image generation results.</p>
     </div>
 
-    <!-- TABLE TAB -->
-    <div id="datasetTab" class="tab">
-      <div class="table-wrap">
-        <div class="header-row">
-          <div>Model</div>
-          <div>Prompt</div>
-          <div>Dataset</div>
+    <!-- DATASET -->
+    <div id="dataset" class="tab">
+
+      <div class="dataset-layout">
+
+        <!-- LEFT: GRID -->
+        <div class="table-wrap">
+
+          <div class="header-row">
+            <div>Model</div>
+            <div>Prompt</div>
+            <div>Dataset</div>
+          </div>
+
+          <div id="table"></div>
+
         </div>
 
-        <div id="table"></div>
+        <!-- RIGHT: PREVIEW -->
+        <div class="preview">
+
+          <div id="loader" class="loader hidden"></div>
+
+          <img id="previewImg" />
+
+          <div id="meta"></div>
+
+        </div>
+
       </div>
     </div>
 
   </div>
 
-  <!-- PREVIEW -->
-  <div class="preview">
-
-    <div id="loader" class="loader"></div>
-
-    <img id="previewImg" />
-
-    <div id="meta"></div>
-  </div>
-
 </div>
 
 <script src="app.js"></script>
+
 </body>
 </html>

@@ -4,56 +4,69 @@ const base =
 let DATA = [];
 let VIEW = [];
 
-/* SAFE DOM */
-function el(id){
-  return document.getElementById(id);
-}
+/* SAFE DOM (prevents ALL null errors) */
+const el = (id) => document.getElementById(id);
 
 const table = el("table");
-const grid = el("grid");
-const previewImg = el("previewImg");
-const meta = el("meta");
-const loader = el("loader");
-
 const search = el("search");
 const modelFilter = el("modelFilter");
 const datasetFilter = el("datasetFilter");
 const impairmentFilter = el("impairmentFilter");
 
-/* TAB SWITCH */
-window.switchTab = function(tab){
-  const g = el("gridTab");
-  const d = el("datasetTab");
+const previewImg = el("previewImg");
+const meta = el("meta");
+const loader = el("loader");
 
-  if(!g || !d) return;
+const searchBtn = el("searchBtn");
 
-  g.classList.toggle("active", tab === "grid");
-  d.classList.toggle("active", tab === "dataset");
-};
+/* =========================
+   INIT SAFETY WRAPPER
+========================= */
+document.addEventListener("DOMContentLoaded", () => {
 
-/* LOAD CSV */
+  if (!search || !table || !previewImg) {
+    console.error("Missing DOM elements — check HTML IDs");
+    return;
+  }
+
+  searchBtn?.addEventListener("click", applyFilters);
+
+  loadCSV();
+});
+
+/* =========================
+   LOAD CSV
+========================= */
 async function loadCSV(){
-  const res = await fetch("hashed_metadata_df.csv");
-  const text = await res.text();
 
-  const lines = text.trim().split("\n");
-  const headers = lines[0].split(",");
+  try {
+    const res = await fetch("hashed_metadata_df.csv");
+    const text = await res.text();
 
-  DATA = lines.slice(1).map(line=>{
-    const cols = line.split(",");
-    let obj = {};
-    headers.forEach((h,i)=>{
-      obj[h.trim()] = (cols[i] || "").trim();
+    const lines = text.trim().split("\n");
+    const headers = lines[0].split(",");
+
+    DATA = lines.slice(1).map(line => {
+      const cols = line.split(",");
+      const obj = {};
+      headers.forEach((h,i)=>{
+        obj[h.trim()] = (cols[i] || "").trim();
+      });
+      return obj;
     });
-    return obj;
-  });
 
-  buildFilters();
-  applyFilters();
+    buildFilters();
+
+  } catch (e) {
+    console.error("CSV load failed", e);
+  }
 }
 
-/* FILTERS */
+/* =========================
+   FILTERS
+========================= */
 function buildFilters(){
+
   fill(modelFilter, [...new Set(DATA.map(d=>d.model))]);
   fill(datasetFilter, [...new Set(DATA.map(d=>d.dataset_type))]);
   fill(impairmentFilter, [...new Set(DATA.map(d=>d.impairment).filter(Boolean))]);
@@ -63,16 +76,20 @@ function fill(select, values){
   if(!select) return;
 
   select.innerHTML = `<option value="">All</option>`;
+
   values.forEach(v=>{
-    const o = document.createElement("option");
-    o.value = v;
-    o.textContent = v;
-    select.appendChild(o);
+    const opt = document.createElement("option");
+    opt.value = v;
+    opt.textContent = v;
+    select.appendChild(opt);
   });
 }
 
-/* FILTER */
+/* =========================
+   APPLY FILTERS (ONLY ON BUTTON)
+========================= */
 function applyFilters(){
+
   const s = (search?.value || "").toLowerCase();
   const m = modelFilter?.value;
   const d = datasetFilter?.value;
@@ -85,38 +102,20 @@ function applyFilters(){
     (!i || x.impairment===i)
   );
 
-  renderGrid();
   renderTable();
 }
 
-/* GRID (NO IMAGES PRELOADED) */
-function renderGrid(){
-  if(!grid) return;
-
-  grid.innerHTML = "";
-
-  VIEW.forEach(item=>{
-    const card = document.createElement("div");
-    card.className = "card";
-
-    card.innerHTML = `
-      <div class="card-title">${item.model || ""}</div>
-      <div class="card-sub">${item.dataset_type || ""}</div>
-    `;
-
-    card.onclick = () => show(item);
-
-    grid.appendChild(card);
-  });
-}
-
-/* TABLE */
+/* =========================
+   TABLE (GRID)
+========================= */
 function renderTable(){
+
   if(!table) return;
 
   table.innerHTML = "";
 
-  VIEW.forEach(item=>{
+  VIEW.forEach(item => {
+
     const row = document.createElement("div");
     row.className = "row";
 
@@ -132,52 +131,49 @@ function renderTable(){
   });
 }
 
-/* IMAGE PREVIEW WITH LOADER */
+/* =========================
+   IMAGE VIEW (LAZY + LOADER)
+========================= */
 function show(item){
-  if(!previewImg || !loader || !meta) return;
 
-  loader.style.display = "block";
+  if(!previewImg || !loader) return;
+
+  loader.classList.remove("hidden");
   previewImg.style.opacity = "0";
-  previewImg.src = "";
 
   const url = base + encodeURIComponent(item.file_name || "");
 
   previewImg.onload = () => {
-    loader.style.display = "none";
+    loader.classList.add("hidden");
     previewImg.style.opacity = "1";
   };
 
   previewImg.onerror = () => {
-    loader.style.display = "none";
-    previewImg.style.opacity = "1";
-    previewImg.src =
-      "data:image/svg+xml;charset=UTF-8," +
-      encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
-          <rect width="100%" height="100%" fill="#111827"/>
-          <text x="50%" y="50%" fill="#94a3b8"
-            text-anchor="middle" font-size="14">
-            Failed to load image
-          </text>
-        </svg>
-      `);
+    loader.classList.add("hidden");
+    console.warn("Image failed:", url);
   };
 
   previewImg.src = url;
 
-  meta.innerHTML = `
-    <b>Model:</b> ${item.model || ""}<br>
-    <b>Prompt:</b> ${item.prompt || ""}<br>
-    <b>Dataset:</b> ${item.dataset_type || ""}<br>
-    <b>Impairment:</b> ${item.impairment || "None"}
-  `;
+  if(meta){
+    meta.innerHTML = `
+      <b>Model:</b> ${item.model || ""}<br>
+      <b>Prompt:</b> ${item.prompt || ""}<br>
+      <b>Dataset:</b> ${item.dataset_type || ""}<br>
+      <b>Impairment:</b> ${item.impairment || "None"}
+    `;
+  }
 }
 
-/* EVENTS */
-search?.addEventListener("input", applyFilters);
-modelFilter?.addEventListener("change", applyFilters);
-datasetFilter?.addEventListener("change", applyFilters);
-impairmentFilter?.addEventListener("change", applyFilters);
+/* =========================
+   TAB SYSTEM (FIXED)
+========================= */
+function switchTab(tab){
 
-/* INIT */
-loadCSV();
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.classList.remove("active");
+  });
+
+  const elTab = document.getElementById(tab);
+  if(elTab) elTab.classList.add("active");
+}
