@@ -3,53 +3,137 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dataset Explorer</title>
+<title>Sophia Lichtenberg</title>
 
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="app">
+<!-- BACKGROUND EFFECTS -->
+<div class="ambient-bg"></div>
+<div class="particles"></div>
+<div class="cursor-glow"></div>
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
+<div class="container">
 
-    <h2>Dataset Explorer</h2>
+  <!-- HERO -->
+  <header class="hero">
 
-    <input id="search" class="search" placeholder="Search prompt..." />
+    <img src="profile.jpg" class="avatar" alt="Profile image"/>
 
-    <select id="modelFilter" class="select"></select>
-    <select id="datasetFilter" class="select"></select>
-    <select id="impairmentFilter" class="select"></select>
+    <div>
+      <h1>Sophia Lichtenberg</h1>
 
-  </div>
+      <div class="subtitle">
+        PhD Candidate · Human-Centered Computing · AI & Text-to-Image Models<br/>
+        Utrecht University
+      </div>
 
-  <!-- GRID -->
-  <div class="table-wrap">
+      <div class="buttons">
 
-    <div class="header-row">
-      <div>Model</div>
-      <div>Prompt</div>
-      <div>Dataset</div>
+        <a class="btn" href="cv.pdf" download>
+          📄 Download CV
+        </a>
+
+        <button class="btn ghost" onclick="copyEmail()">
+          📧 Copy Email
+        </button>
+
+        <button class="btn ghost" onclick="toggleTheme()">
+          🌙 Toggle Theme
+        </button>
+
+      </div>
     </div>
 
-    <div id="table"></div>
+  </header>
 
-  </div>
+  <!-- ABOUT -->
+  <section>
+    <h2>About</h2>
 
-  <!-- PREVIEW -->
-  <div class="preview">
+    <p>
+      I work on human-centered evaluation of generative AI systems,
+      focusing on text-to-image models and responsible AI.
+    </p>
 
-    <img id="preview" />
+    <p>
+      Contact:
+      <a href="mailto:s.lichtenberg@uu.nl">s.lichtenberg@uu.nl</a>
+    </p>
 
-    <div id="meta"></div>
+    <p>
+      <a href="https://www.uu.nl/staff/SLichtenberg" target="_blank">
+        Utrecht University Profile
+      </a>
+    </p>
+  </section>
 
-  </div>
+  <!-- SUPERVISORS -->
+  <section>
+    <h2>Supervisors</h2>
+
+    <p><b>Prof. Albert Gatt</b></p>
+    <p class="meta">Utrecht University · NLP Group</p>
+
+    <p><b>Prof. Judith Masthoff</b></p>
+    <p class="meta">Human-Centered Computing Group</p>
+  </section>
+
+  <!-- RESEARCH -->
+  <section>
+    <h2>Research Interests</h2>
+
+    <span class="tag">Text-to-Image</span>
+    <span class="tag">Human-AI Interaction</span>
+    <span class="tag">Fairness</span>
+    <span class="tag">Responsible AI</span>
+    <span class="tag">Evaluation</span>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section>
+    <h2>Publications</h2>
+
+    <div class="scholar-card">
+      <p><b>Google Scholar</b></p>
+      <p class="meta">Publications and citation profile</p>
+
+      <a class="btn"
+         href="https://scholar.google.com/citations?user=fwOtPDYAAAAJ"
+         target="_blank">
+        🔗 View Profile
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Sophia Lichtenberg
+  </footer>
 
 </div>
 
-<script src="app.js"></script>
+<script>
+function toggleTheme(){
+  document.body.classList.toggle("light");
+}
+
+function copyEmail(){
+  navigator.clipboard.writeText("s.lichtenberg@uu.nl");
+  alert("Email copied 📋");
+}
+
+/* cursor glow */
+const glow = document.querySelector(".cursor-glow");
+
+document.addEventListener("mousemove", (e) => {
+  requestAnimationFrame(() => {
+    glow.style.left = e.clientX + "px";
+    glow.style.top = e.clientY + "px";
+  });
+});
+</script>
 
 </body>
 </html>
