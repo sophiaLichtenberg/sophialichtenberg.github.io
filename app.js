@@ -102,7 +102,7 @@ function applyFilters(){
       (!s || prompt.includes(s)) &&
       (!m || x.model === m) &&
       (!d || x.dataset_type === d) &&
-      (!b || x.bias_subtype === d) &&
+      (!b || x.bias_subtype === b) &&
       (!i || x.impairment === i)
     );
   });
