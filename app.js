@@ -166,7 +166,8 @@ function renderGrid() {
   gridView.innerHTML = "";
 
   if (!VIEW.length) {
-    gridView.innerHTML = `<div style="padding:10px;opacity:0.6;">No results</div>`;
+    gridView.innerHTML =
+      `<div style="padding:10px;opacity:0.6;">No results</div>`;
     return;
   }
 
@@ -179,7 +180,7 @@ function renderGrid() {
 
     const header = document.createElement("div");
     header.className = "group-title";
-    header.textContent = `▼ ${groupKey} (${items.length})`;
+    header.textContent = `${groupKey} (${items.length})`;
 
     const row = document.createElement("div");
     row.className = "group-row";
@@ -187,13 +188,9 @@ function renderGrid() {
     let collapsed = false;
 
     header.onclick = () => {
-
       collapsed = !collapsed;
-
       row.style.display = collapsed ? "none" : "flex";
-
-      header.textContent =
-        `${collapsed ? "▶" : "▼"} ${groupKey} (${items.length})`;
+      header.classList.toggle("collapsed", collapsed);
     };
 
     items.forEach(item => {
@@ -212,9 +209,9 @@ function renderGrid() {
       loaderEl.textContent = "⏳";
 
       const img = new Image();
-      img.loading = "lazy";
-      img.decoding = "async";
+
       img.style.opacity = "0";
+      img.loading = "lazy";
 
       img.onload = () => {
         loaderEl.remove();
@@ -228,18 +225,14 @@ function renderGrid() {
       thumb.appendChild(loaderEl);
       thumb.appendChild(img);
 
-      requestAnimationFrame(() => {
-        img.src = imgUrl(hash);
-      });
+      img.src = imgUrl(hash);
 
       const label = document.createElement("div");
       label.className = "label";
 
       label.innerHTML = `
-        <div>${item.model || "unknown"}</div>
+        <div>${item.model || ""}</div>
         <div>${item.impairment || ""}</div>
-        <div>${item.bias_subtype || ""}</div>
-        <div>${item.context_value || ""}</div>
       `;
 
       card.appendChild(thumb);
