@@ -1,12 +1,24 @@
+// =====================================================
+// CONFIG
+// =====================================================
+
 const base =
   "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
+
+const PAGE_SIZE = 200;
+
+// =====================================================
+// STATE
+// =====================================================
 
 let DATA = [];
 let VIEW = [];
 let index = 0;
-const PAGE = 200;
 
+// =====================================================
 // DOM
+// =====================================================
+
 const table = document.getElementById("table");
 const preview = document.getElementById("preview");
 const meta = document.getElementById("meta");
@@ -17,9 +29,9 @@ const datasetFilter = document.getElementById("datasetFilter");
 
 const stats = document.getElementById("stats");
 
-// =====================
-// LOAD CSV
-// =====================
+// =====================================================
+// LOAD CSV (GitHub Pages safe)
+// =====================================================
 
 async function loadCSV(){
 
@@ -29,48 +41,57 @@ async function loadCSV(){
   const lines = text.trim().split("\n");
   const headers = lines[0].split(",");
 
-  DATA = lines.slice(1).map(line=>{
+  DATA = lines.slice(1).map(line => {
     const cols = line.split(",");
-    let obj = {};
-    headers.forEach((h,i)=>{
-      obj[h.trim()] = cols[i]?.trim() || "";
+    const obj = {};
+
+    headers.forEach((h, i) => {
+      obj[h.trim()] = (cols[i] || "").trim();
     });
+
     return obj;
   });
 
   VIEW = DATA;
 
   buildDropdowns();
-  render();
+  applyFilters();
   updateStats();
 
-  if(DATA.length) show(DATA[0]);
+  if (DATA.length) show(DATA[0]);
 }
 
-// =====================
+// =====================================================
 // DROPDOWNS
-// =====================
+// =====================================================
 
 function buildDropdowns(){
 
-  const models =
-    [...new Set(DATA.map(d=>d.model))].sort();
+  const models = [...new Set(DATA.map(d => d.model))].sort();
+  const datasets = [...new Set(DATA.map(d => d.dataset_type))].sort();
 
-  const datasets =
-    [...new Set(DATA.map(d=>d.dataset_type))].sort();
+  // MODEL DROPDOWN
+  modelFilter.innerHTML = `<option value="">All models</option>`;
+  models.forEach(m => {
+    const opt = document.createElement("option");
+    opt.value = m;
+    opt.textContent = m;
+    modelFilter.appendChild(opt);
+  });
 
-  modelFilter.innerHTML =
-    `<option value="">All models</option>` +
-    models.map(m=>`<option>${m}</option>`).join("");
-
-  datasetFilter.innerHTML =
-    `<option value="">All datasets</option>` +
-    datasets.map(d=>`<option>${d}</option>`).join("");
+  // DATASET DROPDOWN
+  datasetFilter.innerHTML = `<option value="">All datasets</option>`;
+  datasets.forEach(d => {
+    const opt = document.createElement("option");
+    opt.value = d;
+    opt.textContent = d;
+    datasetFilter.appendChild(opt);
+  });
 }
 
-// =====================
-// FILTERS
-// =====================
+// =====================================================
+// FILTERING
+// =====================================================
 
 function applyFilters(){
 
@@ -78,94 +99,105 @@ function applyFilters(){
   const m = modelFilter.value;
   const d = datasetFilter.value;
 
-  VIEW = DATA.filter(x=>{
+  VIEW = DATA.filter(x => {
 
     return (
-      (x.prompt||"").toLowerCase().includes(s) &&
-      (m === "" || x.model === m) &&
-      (d === "" || x.dataset_type === d)
+      (!s || (x.prompt || "").toLowerCase().includes(s)) &&
+      (!m || x.model === m) &&
+      (!d || x.dataset_type === d)
     );
 
   });
 
-  index = 0;
-  table.innerHTML = "";
+  resetRender();
   render();
   updateStats();
 }
 
-// =====================
-// RENDER (VIRTUAL)
-// =====================
+// =====================================================
+// RENDER (VIRTUAL SCROLL)
+// =====================================================
 
 function render(){
 
-  const slice = VIEW.slice(index, index + PAGE);
+  const slice = VIEW.slice(index, index + PAGE_SIZE);
 
-  slice.forEach(item=>{
+  slice.forEach(item => {
 
-    const div = document.createElement("div");
-    div.className = "row";
+    const row = document.createElement("div");
+    row.className = "row";
 
-    div.innerHTML = `
-      <div>${item.model}</div>
-      <div>${item.prompt}</div>
-      <div>${item.dataset_type}</div>
+    row.innerHTML = `
+      <div>${item.model || ""}</div>
+      <div>${item.prompt || ""}</div>
+      <div>${item.dataset_type || ""}</div>
     `;
 
-    div.onclick = ()=>show(item);
+    row.onclick = () => show(item);
 
-    table.appendChild(div);
+    table.appendChild(row);
   });
 
-  index += PAGE;
+  index += PAGE_SIZE;
+}
+
+// reset table
+function resetRender(){
+  table.innerHTML = "";
+  index = 0;
 }
 
 // infinite scroll
 document.querySelector(".table-wrap")
-.addEventListener("scroll", e=>{
+.addEventListener("scroll", (e) => {
 
-  if(e.target.scrollTop + e.target.clientHeight >= e.target.scrollHeight - 50){
+  const el = e.target;
+
+  if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) {
     render();
   }
+
 });
 
-// =====================
-// PREVIEW
-// =====================
+// =====================================================
+// PREVIEW PANEL
+// =====================================================
 
 function show(item){
 
-  preview.src =
+  const imgUrl =
     base + item.hash_name + ".png";
 
+  preview.src = imgUrl;
+
   meta.innerHTML = `
-    <b>${item.model}</b><br>
-    ${item.prompt}<br>
-    ${item.dataset_type}<br>
-    seed: ${item.seed || "—"}
+    <b>Model:</b> ${item.model || "-"}<br>
+    <b>Prompt:</b> ${item.prompt || "-"}<br>
+    <b>Dataset:</b> ${item.dataset_type || "-"}<br>
+    <b>Seed:</b> ${item.seed || "-"}<br>
+    <b>Hash:</b> ${item.hash_name || "-"}
   `;
 }
 
-// =====================
+// =====================================================
 // STATS
-// =====================
+// =====================================================
 
 function updateStats(){
-  stats.innerHTML =
+  stats.textContent =
     `Showing ${VIEW.length} / ${DATA.length}`;
 }
 
-// =====================
+// =====================================================
 // EVENTS
-// =====================
+// =====================================================
 
 search.addEventListener("input", applyFilters);
 modelFilter.addEventListener("change", applyFilters);
 datasetFilter.addEventListener("change", applyFilters);
 
-// =====================
-// START
-// =====================
+// =====================================================
+// INIT
+// =====================================================
 
 loadCSV();
