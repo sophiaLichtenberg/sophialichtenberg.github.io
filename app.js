@@ -123,7 +123,7 @@ function buildMulti(id, title, values){
       if (cb.value !== "__all__") cb.checked = checked;
     });
 
-    apply();
+    //apply();
   });
 
   // individual toggle
@@ -137,7 +137,7 @@ function buildMulti(id, title, values){
 
       allBox.checked = allChecked;
 
-      apply();
+      //apply();
     });
   });
 }
