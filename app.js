@@ -74,26 +74,43 @@ async function loadCSV(){
    FILTERS
 ========================= */
 function buildFilters(){
-  fill(modelFilter, uniq("model"));
-  fill(datasetFilter, uniq("dataset_type"));
-  fill(biasFilter, uniq("bias_subtype"));
-  fill(contextFilter, uniq("context_value"));
-  fill(impairmentFilter, uniq("impairment").filter(Boolean));
+  buildMulti("modelFilter", "Models", uniq("model"));
+  buildMulti("datasetFilter", "Dataset", uniq("dataset_type"));
+  buildMulti("biasFilter", "Bias", uniq("bias_subtype"));
+  buildMulti("contextFilter", "Context", uniq("context_value"));
+  buildMulti("impairmentFilter", "Impairment", uniq("impairment").filter(Boolean));
 }
 
 function uniq(k){
   return [...new Set(DATA.map(d => d[k]))];
 }
 
-function fill(select, values){
-  if(!select) return;
-  select.innerHTML = `<option value="">All</option>`;
-  values.forEach(v=>{
-    const o = document.createElement("option");
-    o.value = v;
-    o.textContent = v;
-    select.appendChild(o);
-  });
+function buildMulti(id, title, values){
+  const container = $(id);
+  if (!container) return;
+
+  container.innerHTML = `
+    <details>
+      <summary>${title}</summary>
+      <div class="options">
+        ${values.map(v => `
+          <label>
+            <input type="checkbox" value="${escapeHtml(v)}">
+            ${v}
+          </label>
+        `).join("")}
+      </div>
+    </details>
+  `;
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 /* =========================
@@ -102,11 +119,12 @@ function fill(select, values){
 function applyFilters(){
 
   const s = (search?.value || "").toLowerCase();
-  const m = selectedValues(modelFilter);
-  const d = selectedValues(datasetFilter);
-  const b = selectedValues(biasFilter);
-  const c = selectedValues(contextFilter);
-  const i = selectedValues(impairmentFilter);
+  
+  const m = getCheckedValues("modelFilter");
+  const d = getCheckedValues("datasetFilter");
+  const b = getCheckedValues("biasFilter");
+  const c = getCheckedValues("contextFilter");
+  const i = getCheckedValues("impairmentFilter");
 
   VIEW = DATA.filter(x => {
     const prompt = (x.prompt || "").toLowerCase();
@@ -250,9 +268,12 @@ function renderGrid() {
   });
 }
 
-function selectedValues(select){
-  if (!select) return [];
-  return Array.from(select.selectedOptions).map(o => o.value);
+function getCheckedValues(id){
+  const el = $(id);
+  if (!el) return [];
+
+  return Array.from(el.querySelectorAll("input:checked"))
+    .map(x => x.value);
 }
 
 /* =========================
