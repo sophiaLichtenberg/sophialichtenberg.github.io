@@ -86,14 +86,28 @@ function fill(select, values){
 /* SEARCH */
 function applyFilters(){
 
-  const s = (search?.value||"").toLowerCase();
+  const s = (search?.value || "").toLowerCase();
+  const m = modelFilter?.value;
+  const d = datasetFilter?.value;
+  const i = impairmentFilter?.value;
 
-  VIEW = DATA.filter(x =>
-    (!s || (x.prompt||"").toLowerCase().includes(s))
-  );
+  VIEW = DATA.filter(x => {
+
+    const prompt = (x.prompt || "").toLowerCase();
+
+    return (
+      (!s || prompt.includes(s)) &&
+      (!m || x.model === m) &&
+      (!d || x.dataset_type === d) &&
+      (!i || x.impairment === i)
+    );
+  });
 
   renderGrid();
   renderTable();
+
+  // optional: auto preview first result
+  if (VIEW.length) show(VIEW[0]);
 }
 
 /* FIXED IMAGE URL */
