@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dataset Explorer</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dataset Explorer</title>
 
-  <link rel="stylesheet" href="style.css">
-  <script defer src="app.js"></script>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -18,7 +17,7 @@
 
     <h2>Dataset Explorer</h2>
 
-    <input id="search" class="search" placeholder="Search prompts..." />
+    <input id="search" class="search" placeholder="Search prompt..." />
 
     <select id="modelFilter" class="select"></select>
     <select id="datasetFilter" class="select"></select>
@@ -26,7 +25,7 @@
 
   </div>
 
-  <!-- TABLE -->
+  <!-- GRID -->
   <div class="table-wrap">
 
     <div class="header-row">
@@ -42,16 +41,15 @@
   <!-- PREVIEW -->
   <div class="preview">
 
-    <div class="ambient-bg"></div>
-    <div class="particles"></div>
-    <div class="cursor-glow"></div>
+    <img id="preview" />
 
-    <img id="gallery" />
-    <div id="meta">Click a row to preview</div>
+    <div id="meta"></div>
 
   </div>
 
 </div>
+
+<script src="app.js"></script>
 
 </body>
 </html>
