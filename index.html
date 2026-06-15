@@ -3,47 +3,32 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dataset Explorer</title>
+<title>Bulletproof Dataset Explorer</title>
+
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div id="app-root">
+<div class="app">
 
-  <!-- TABS -->
-  <div class="tabs">
-    <button data-tab="home">Home</button>
-    <button data-tab="dataset">Dataset</button>
+  <!-- LEFT -->
+  <div class="sidebar">
+    <input id="search" placeholder="Search..." />
+
+    <select id="modelFilter"></select>
+    <select id="datasetFilter"></select>
+    <select id="impairmentFilter"></select>
   </div>
 
-  <!-- HOME -->
-  <section class="tab" id="home">
-    <h1>Home</h1>
-  </section>
+  <!-- GRID -->
+  <div id="grid" class="grid"></div>
 
-  <!-- DATASET -->
-  <section class="tab" id="dataset">
-
-    <div class="layout">
-
-      <div class="sidebar">
-        <input id="search" placeholder="Search..." />
-        <select id="modelFilter"></select>
-        <select id="datasetFilter"></select>
-        <select id="impairmentFilter"></select>
-      </div>
-
-      <div id="grid" class="grid"></div>
-
-      <div class="preview">
-        <img id="preview" />
-        <div id="meta"></div>
-      </div>
-
-    </div>
-
-  </section>
+  <!-- RIGHT -->
+  <div class="preview">
+    <img id="preview" />
+    <div id="meta"></div>
+  </div>
 
 </div>
 
