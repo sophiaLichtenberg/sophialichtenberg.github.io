@@ -1,18 +1,9 @@
 // =====================
-// THEME
-// =====================
-
-function toggleTheme(){
-  document.body.classList.toggle("light");
-}
-
-// =====================
 // TAB SYSTEM
 // =====================
 
 document.querySelectorAll(".tab-btn").forEach(btn=>{
-  btn.addEventListener("click", (e)=>{
-
+  btn.addEventListener("click", ()=>{
     const tab = btn.dataset.tab;
 
     document.querySelectorAll(".tab-content")
@@ -27,7 +18,7 @@ document.querySelectorAll(".tab-btn").forEach(btn=>{
 });
 
 // =====================
-// DATASET
+// DATA
 // =====================
 
 const base =
@@ -67,6 +58,31 @@ const modelFilter = document.getElementById("modelFilter");
 const datasetFilter = document.getElementById("datasetFilter");
 
 // =====================
+// DROPDOWNS (TYPEABLE)
+// =====================
+
+function setupDropdowns(){
+
+  const models = [...new Set(data.map(d=>d.model))];
+  const datasets = [...new Set(data.map(d=>d.dataset))];
+
+  const modelList = document.getElementById("modelList");
+  const datasetList = document.getElementById("datasetList");
+
+  models.forEach(m=>{
+    const opt = document.createElement("option");
+    opt.value = m;
+    modelList.appendChild(opt);
+  });
+
+  datasets.forEach(d=>{
+    const opt = document.createElement("option");
+    opt.value = d;
+    datasetList.appendChild(opt);
+  });
+}
+
+// =====================
 // RENDER
 // =====================
 
@@ -101,7 +117,7 @@ function render(list){
 }
 
 // =====================
-// FILTERING
+// FILTER
 // =====================
 
 function applyFilters(){
@@ -119,6 +135,10 @@ function applyFilters(){
   render(filtered);
 }
 
+// =====================
+// EVENTS
+// =====================
+
 searchInput.addEventListener("input", applyFilters);
 modelFilter.addEventListener("input", applyFilters);
 datasetFilter.addEventListener("input", applyFilters);
@@ -127,6 +147,7 @@ datasetFilter.addEventListener("input", applyFilters);
 // INIT
 // =====================
 
+setupDropdowns();
 render(data);
 
 preview.src = base + data[0].hash + ".png";

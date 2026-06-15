@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Sophia Lichtenberg</title>
+<title>Dataset Explorer</title>
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -18,22 +18,10 @@
 
 <!-- HERO -->
 <header class="hero">
-
-  <img src="profile.jpg" class="avatar"/>
-
   <div>
-    <h1>Sophia Lichtenberg</h1>
-
-    <div class="subtitle">
-      PhD Candidate · Human-Centered Computing · AI & Text-to-Image Models
-    </div>
-
-    <div class="buttons">
-      <a class="btn" href="cv.pdf" download>📄 Download CV</a>
-      <button class="btn ghost" onclick="toggleTheme()">🌙 Theme</button>
-    </div>
+    <h1>Dataset Explorer</h1>
+    <div class="subtitle">Interactive image dataset viewer</div>
   </div>
-
 </header>
 
 <!-- TABS -->
@@ -45,52 +33,59 @@
 <!-- HOME -->
 <div id="home" class="tab-content active">
   <section>
-    <h2>About</h2>
-    <p>Human-centered AI research.</p>
+    <h2>Home</h2>
+    <p>Welcome to the dataset viewer.</p>
   </section>
 </div>
 
 <!-- DATASET -->
 <div id="dataset" class="tab-content">
 
-  <section>
+<section>
 
-    <h2>Dataset Viewer</h2>
+<h2>Dataset Viewer</h2>
 
-    <div class="dataset-layout">
+<div class="dataset-layout">
 
-      <!-- FILTERS -->
-      <div class="dataset-filters">
+  <!-- FILTER PANEL -->
+  <div class="dataset-filters">
 
-        <div class="filter">
-          <label>Search</label>
-          <input id="searchInput">
-        </div>
-
-        <div class="filter">
-          <label>Model</label>
-          <input id="modelFilter">
-        </div>
-
-        <div class="filter">
-          <label>Dataset</label>
-          <input id="datasetFilter">
-        </div>
-
-      </div>
-
-      <!-- GRID -->
-      <div class="dataset-grid" id="grid"></div>
-
-      <!-- PREVIEW -->
-      <div class="dataset-preview">
-        <img id="preview">
-        <div class="dataset-info" id="info"></div>
-      </div>
-
+    <div class="filter">
+      <label>Search prompt</label>
+      <input id="searchInput" placeholder="type prompt..." />
     </div>
 
-  </section>
+    <div class="filter">
+      <label>Model</label>
+      <input id="modelFilter" list="modelList" placeholder="type or select..." />
+      <datalist id="modelList"></datalist>
+    </div>
+
+    <div class="filter">
+      <label>Dataset</label>
+      <input id="datasetFilter" list="datasetList" placeholder="type or select..." />
+      <datalist id="datasetList"></datalist>
+    </div>
+
+  </div>
+
+  <!-- GRID -->
+  <div class="dataset-grid" id="grid"></div>
+
+  <!-- PREVIEW -->
+  <div class="dataset-preview">
+
+    <img id="preview" />
+
+    <div class="dataset-info" id="info">
+      Click an image
+    </div>
+
+  </div>
+
+</div>
+
+</section>
 
 </div>
 
