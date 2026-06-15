@@ -1,151 +1,209 @@
-const base =
-  "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files=";
+(() => {
 
-let DATA = [];
-let VIEW = [];
+/* =========================
+   SAFE DOM BINDING LAYER
+========================= */
 
-/* DOM (ALL MATCH HTML ABOVE) */
-const grid = document.getElementById("grid");
-const preview = document.getElementById("preview");
-const meta = document.getElementById("meta");
+function must(id) {
+  const el = document.getElementById(id);
+  if (!el) {
+    console.error(`[FATAL] Missing DOM element: #${id}`);
+  }
+  return el;
+}
 
-const search = document.getElementById("search");
-const modelFilter = document.getElementById("modelFilter");
-const datasetFilter = document.getElementById("datasetFilter");
-const impairmentFilter = document.getElementById("impairmentFilter");
+/* Wait until DOM is ready */
+document.addEventListener("DOMContentLoaded", init);
 
-/* SAFETY CHECK (prevents silent crashes) */
-if (!grid || !preview || !meta) {
-  console.error("Missing DOM elements. Check HTML IDs.");
+/* =========================
+   STATE
+========================= */
+
+const state = {
+  DATA: [],
+  VIEW: []
+};
+
+/* =========================
+   INIT
+========================= */
+
+function init() {
+
+  const el = {
+    grid: must("grid"),
+    preview: must("preview"),
+    meta: must("meta"),
+    search: must("search"),
+    model: must("modelFilter"),
+    dataset: must("datasetFilter"),
+    imp: must("impairmentFilter")
+  };
+
+  // If ANY critical DOM is missing → stop app safely
+  if (!el.grid || !el.preview || !el.meta) {
+    console.warn("App stopped safely due to missing DOM.");
+    return;
+  }
+
+  bindEvents(el);
+  loadCSV(el);
 }
 
 /* =========================
-   LOAD CSV
+   CSV LOADER (SAFE)
 ========================= */
-async function loadCSV(){
 
-  const res = await fetch("hashed_metadata_df.csv");
-  const text = await res.text();
+async function loadCSV(el) {
+  try {
 
-  const lines = text.trim().split("\n");
-  const headers = lines[0].split(",");
+    const res = await fetch("hashed_metadata_df.csv");
+    const text = await res.text();
 
-  DATA = lines.slice(1).map(line => {
-    const cols = line.split(",");
-    let obj = {};
-    headers.forEach((h,i)=>{
-      obj[h.trim()] = (cols[i] || "").trim();
+    const lines = text.trim().split("\n");
+    const headers = lines[0].split(",");
+
+    state.DATA = lines.slice(1).map(line => {
+      const cols = line.split(",");
+      let obj = {};
+      headers.forEach((h,i)=>{
+        obj[h.trim()] = (cols[i] || "").trim();
+      });
+      return obj;
     });
-    return obj;
-  });
 
-  buildFilters();
-  applyFilters();
+    buildFilters(el);
+    applyFilters(el);
+
+  } catch (err) {
+    console.error("CSV load failed", err);
+  }
 }
 
 /* =========================
    FILTERS
 ========================= */
-function buildFilters(){
 
-  fill(modelFilter, unique("model"));
-  fill(datasetFilter, unique("dataset_type"));
-  fill(impairmentFilter, unique("impairment", true));
+function buildFilters(el){
+
+  fill(el.model, unique("model"));
+  fill(el.dataset, unique("dataset_type"));
+  fill(el.imp, unique("impairment", true));
 }
 
 function unique(key, skipEmpty=false){
-  const vals = [...new Set(DATA.map(d => d[key]))];
+  const vals = [...new Set(state.DATA.map(d => d[key]))];
   return skipEmpty ? vals.filter(Boolean) : vals;
 }
 
 function fill(select, values){
+  if (!select) return;
+
   select.innerHTML = `<option value="">All</option>`;
   values.forEach(v=>{
-    const opt = document.createElement("option");
-    opt.value = v;
-    opt.textContent = v;
-    select.appendChild(opt);
+    const o = document.createElement("option");
+    o.value = v;
+    o.textContent = v;
+    select.appendChild(o);
   });
 }
 
 /* =========================
-   FILTER APPLY
+   FILTER ENGINE
 ========================= */
-function applyFilters(){
 
-  const s = search.value.toLowerCase();
-  const m = modelFilter.value;
-  const d = datasetFilter.value;
-  const i = impairmentFilter.value;
+function applyFilters(el){
 
-  VIEW = DATA.filter(x =>
+  const s = (el.search?.value || "").toLowerCase();
+  const m = el.model?.value || "";
+  const d = el.dataset?.value || "";
+  const i = el.imp?.value || "";
+
+  state.VIEW = state.DATA.filter(x =>
     (!s || (x.prompt||"").toLowerCase().includes(s)) &&
     (!m || x.model === m) &&
     (!d || x.dataset_type === d) &&
     (!i || x.impairment === i)
   );
 
-  renderGrid();
+  render(el);
 }
 
 /* =========================
-   GRID RENDER
+   RENDER (GUARDED)
 ========================= */
-function renderGrid(){
 
-  if (!grid) return;
+function render(el){
 
-  grid.innerHTML = "";
+  if (!el.grid) return;
 
-  VIEW.forEach(item => {
+  el.grid.innerHTML = "";
 
-    const tile = document.createElement("div");
-    tile.className = "tile";
+  state.VIEW.forEach(item => {
 
-    const imgUrl = base + encodeURIComponent(item.hash_name + ".png");
+    const div = document.createElement("div");
+    div.className = "tile";
 
-    tile.innerHTML = `
-      <img src="${imgUrl}" loading="lazy">
-      <div class="info">
-        ${item.model}<br>
-        ${item.dataset_type}
-      </div>
+    div.innerHTML = `
+      <div class="img"></div>
+      <div class="meta">${item.model}</div>
     `;
 
-    tile.onclick = () => show(item);
+    div.onclick = () => show(item, el);
 
-    grid.appendChild(tile);
+    el.grid.appendChild(div);
   });
 
-  if (VIEW.length > 0) show(VIEW[0]);
+  if (state.VIEW.length) show(state.VIEW[0], el);
 }
 
 /* =========================
-   PREVIEW
+   PREVIEW (SAFE)
 ========================= */
-function show(item){
 
-  if (!preview || !meta) return;
+function show(item, el){
 
-  const imgUrl = base + encodeURIComponent(item.hash_name + ".png");
+  if (!el.preview || !el.meta) return;
 
-  preview.src = imgUrl;
+  const url =
+    "https://surfdrive.surf.nl/s/YS6PcXjL9Rs2c3J/download?files="
+    + encodeURIComponent(item.hash_name + ".png");
 
-  meta.innerHTML = `
-    <b>Model:</b> ${item.model}<br>
-    <b>Prompt:</b> ${item.prompt}<br>
-    <b>Dataset:</b> ${item.dataset_type}<br>
+  el.preview.src = url;
+
+  el.meta.innerHTML = `
+    <b>Model:</b> ${item.model || "-"}<br>
+    <b>Prompt:</b> ${item.prompt || "-"}<br>
+    <b>Dataset:</b> ${item.dataset_type || "-"}<br>
     <b>Impairment:</b> ${item.impairment || "None"}
   `;
 }
 
 /* =========================
-   EVENTS
+   EVENTS (SAFE BIND)
 ========================= */
-search?.addEventListener("input", applyFilters);
-modelFilter?.addEventListener("change", applyFilters);
-datasetFilter?.addEventListener("change", applyFilters);
-impairmentFilter?.addEventListener("change", applyFilters);
 
-/* START */
-loadCSV();
+function bindEvents(el){
+
+  el.search?.addEventListener("input", () => applyFilters(el));
+  el.model?.addEventListener("change", () => applyFilters(el));
+  el.dataset?.addEventListener("change", () => applyFilters(el));
+  el.imp?.addEventListener("change", () => applyFilters(el));
+
+  document.querySelectorAll("[data-tab]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.tab;
+
+      document.querySelectorAll(".tab")
+        .forEach(t => t.style.display = "none");
+
+      document.getElementById(id).style.display = "block";
+    });
+  });
+
+  // default tab
+  document.querySelectorAll(".tab")
+    .forEach((t,i) => t.style.display = i === 0 ? "block" : "none");
+}
+
+})();

@@ -4,40 +4,46 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Dataset Explorer</title>
-
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="app">
+<div id="app-root">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-
-    <h2>Dataset Explorer</h2>
-
-    <input id="search" class="search" placeholder="Search prompt..." />
-
-    <select id="modelFilter" class="select"></select>
-    <select id="datasetFilter" class="select"></select>
-    <select id="impairmentFilter" class="select"></select>
-
+  <!-- TABS -->
+  <div class="tabs">
+    <button data-tab="home">Home</button>
+    <button data-tab="dataset">Dataset</button>
   </div>
 
-  <!-- GRID -->
-  <div class="main">
-    <div id="grid" class="grid"></div>
-  </div>
+  <!-- HOME -->
+  <section class="tab" id="home">
+    <h1>Home</h1>
+  </section>
 
-  <!-- PREVIEW -->
-  <div class="preview">
+  <!-- DATASET -->
+  <section class="tab" id="dataset">
 
-    <img id="preview" alt="preview" />
+    <div class="layout">
 
-    <div id="meta"></div>
+      <div class="sidebar">
+        <input id="search" placeholder="Search..." />
+        <select id="modelFilter"></select>
+        <select id="datasetFilter"></select>
+        <select id="impairmentFilter"></select>
+      </div>
 
-  </div>
+      <div id="grid" class="grid"></div>
+
+      <div class="preview">
+        <img id="preview" />
+        <div id="meta"></div>
+      </div>
+
+    </div>
+
+  </section>
 
 </div>
 
