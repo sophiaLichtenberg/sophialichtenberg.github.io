@@ -6,15 +6,14 @@ let VIEW = [];
 
 /* SAFE DOM */
 function el(id){
-  const node = document.getElementById(id);
-  if(!node) console.warn("Missing:", id);
-  return node;
+  return document.getElementById(id);
 }
 
 const table = el("table");
 const grid = el("grid");
 const previewImg = el("previewImg");
 const meta = el("meta");
+const loader = el("loader");
 
 const search = el("search");
 const modelFilter = el("modelFilter");
@@ -40,7 +39,7 @@ async function loadCSV(){
   const lines = text.trim().split("\n");
   const headers = lines[0].split(",");
 
-  DATA = lines.slice(1).map(line => {
+  DATA = lines.slice(1).map(line=>{
     const cols = line.split(",");
     let obj = {};
     headers.forEach((h,i)=>{
@@ -62,6 +61,7 @@ function buildFilters(){
 
 function fill(select, values){
   if(!select) return;
+
   select.innerHTML = `<option value="">All</option>`;
   values.forEach(v=>{
     const o = document.createElement("option");
@@ -71,7 +71,7 @@ function fill(select, values){
   });
 }
 
-/* FILTER LOGIC */
+/* FILTER */
 function applyFilters(){
   const s = (search?.value || "").toLowerCase();
   const m = modelFilter?.value;
@@ -89,9 +89,7 @@ function applyFilters(){
   renderTable();
 }
 
-/* =========================
-   GRID (NO IMAGES HERE!)
-========================= */
+/* GRID (NO IMAGES PRELOADED) */
 function renderGrid(){
   if(!grid) return;
 
@@ -101,10 +99,9 @@ function renderGrid(){
     const card = document.createElement("div");
     card.className = "card";
 
-    /* TEXT ONLY → NO IMAGE PRELOAD */
     card.innerHTML = `
-      <div class="card-title">${item.model}</div>
-      <div class="card-sub">${item.dataset_type}</div>
+      <div class="card-title">${item.model || ""}</div>
+      <div class="card-sub">${item.dataset_type || ""}</div>
     `;
 
     card.onclick = () => show(item);
@@ -113,9 +110,7 @@ function renderGrid(){
   });
 }
 
-/* =========================
-   TABLE
-========================= */
+/* TABLE */
 function renderTable(){
   if(!table) return;
 
@@ -126,9 +121,9 @@ function renderTable(){
     row.className = "row";
 
     row.innerHTML = `
-      <div>${item.model}</div>
-      <div>${item.prompt}</div>
-      <div>${item.dataset_type}</div>
+      <div>${item.model || ""}</div>
+      <div>${item.prompt || ""}</div>
+      <div>${item.dataset_type || ""}</div>
     `;
 
     row.onclick = () => show(item);
@@ -137,20 +132,38 @@ function renderTable(){
   });
 }
 
-/* =========================
-   IMAGE ONLY ON CLICK
-========================= */
+/* IMAGE PREVIEW WITH LOADER */
 function show(item){
-  if(!previewImg || !meta) return;
+  if(!previewImg || !loader || !meta) return;
+
+  loader.style.display = "block";
+  previewImg.style.opacity = "0";
+  previewImg.src = "";
 
   const url = base + encodeURIComponent(item.file_name || "");
 
-  /* ONLY HERE image loads */
-  previewImg.src = url;
+  previewImg.onload = () => {
+    loader.style.display = "none";
+    previewImg.style.opacity = "1";
+  };
 
   previewImg.onerror = () => {
-    previewImg.src = "placeholder.png";
+    loader.style.display = "none";
+    previewImg.style.opacity = "1";
+    previewImg.src =
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
+          <rect width="100%" height="100%" fill="#111827"/>
+          <text x="50%" y="50%" fill="#94a3b8"
+            text-anchor="middle" font-size="14">
+            Failed to load image
+          </text>
+        </svg>
+      `);
   };
+
+  previewImg.src = url;
 
   meta.innerHTML = `
     <b>Model:</b> ${item.model || ""}<br>

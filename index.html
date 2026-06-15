@@ -14,8 +14,7 @@
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-
-    <h2>Explorer</h2>
+    <h2>Dataset Explorer</h2>
 
     <input id="search" class="search" placeholder="Search prompts..." />
 
@@ -24,8 +23,7 @@
     <select id="impairmentFilter" class="select"></select>
 
     <button class="btn" onclick="switchTab('grid')">Grid</button>
-    <button class="btn" onclick="switchTab('dataset')">Dataset</button>
-
+    <button class="btn ghost" onclick="switchTab('dataset')">Table</button>
   </div>
 
   <!-- MAIN -->
@@ -38,7 +36,6 @@
 
     <!-- TABLE TAB -->
     <div id="datasetTab" class="tab">
-
       <div class="table-wrap">
         <div class="header-row">
           <div>Model</div>
@@ -48,14 +45,17 @@
 
         <div id="table"></div>
       </div>
-
     </div>
 
   </div>
 
   <!-- PREVIEW -->
   <div class="preview">
+
+    <div id="loader" class="loader"></div>
+
     <img id="previewImg" />
+
     <div id="meta"></div>
   </div>
 
